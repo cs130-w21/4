@@ -17,6 +17,7 @@ app.set('x-powered-by', false);
 
 ////// DEFINE FUNCTIONS FOR ROUTES //////
 function root(req, res, next) {
+    res.sendFile(path.resolve('../Frontend/index.html' + req.path));
     next();
 }
 
