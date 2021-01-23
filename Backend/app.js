@@ -17,11 +17,12 @@ app.set('x-powered-by', false);
 
 ////// DEFINE FUNCTIONS FOR ROUTES //////
 function root(req, res, next) {
+    res.sendFile(path.resolve('../Frontend/index.html' + req.path));
     next();
 }
 
 ////// REGISTER ROUTES //////
-app.get('/', root);
+app.all('*', root);
 
 ////// LAUNCH THE APPLICATION //////
 app.listen(port, () => console.log(`Node.js server is running on port ${port}`))
