@@ -22,7 +22,7 @@ function root(req, res, next) {
 }
 
 ////// REGISTER ROUTES //////
-app.get('/', root);
+app.all('*', root);
 
 ////// LAUNCH THE APPLICATION //////
 app.listen(port, () => console.log(`Node.js server is running on port ${port}`))
