@@ -3,7 +3,6 @@ language:
 node_js:
  - "node"
  - 14.15.4
-script:
- - node cs130-w21/4/Backend/app.js
- - cd cs130-w21/4/frontend 
- - npm start
+cache:
+  directories:
+    - node_modules
