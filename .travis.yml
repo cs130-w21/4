@@ -4,5 +4,5 @@ node_js:
  - "node"
  - 14.15.4
 script:
- - node app.js
- - npm start
+ - node cs130-w21/4/Backend/app.js
+ - cs130-w21/4/frontend npm start
