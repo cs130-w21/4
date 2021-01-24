@@ -1,7 +1,16 @@
 language: node_js
 node_js:
  - "node"
-env:
-- MY_VAR=myvar
-- NODE_ENV=TEST
+ - 14.15.4
+jobs:
+  include:
+  - stage: test
+    script:
+    - npm run build
+    - npm run lint
+    - npm run test
+  - stage: deploy
+    if: branch = master
+    script: npm run deploy
+    
 - secure: 
