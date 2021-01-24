@@ -6,11 +6,4 @@ jobs:
   include:
   - stage: test
     script:
-    - npm run build
-    - npm run lint
-    - npm run test
-  - stage: deploy
-    if: branch = master
-    script: npm run deploy
-    
-- secure: 
+    - npm start
