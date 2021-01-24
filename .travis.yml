@@ -5,4 +5,5 @@ node_js:
  - 14.15.4
 script:
  - node cs130-w21/4/Backend/app.js
- - cs130-w21/4/frontend npm start
+ - cd cs130-w21/4/frontend 
+ - npm start
