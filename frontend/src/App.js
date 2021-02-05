@@ -35,21 +35,68 @@ function App() {
           </DropdownButton>
 
           <>
-            <Button variant="primary" onClick={handleShow}>
+            <Button variant="secondary" onClick={handleShow}>
               + Add Contact
             </Button>
 
             <Modal show={show} onHide={handleClose}>
+
               <Modal.Header closeButton>
                 <Modal.Title>Add a new contact</Modal.Title>
               </Modal.Header>
-              <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+              <Modal.Body>
+                <form>
+                  <div className="form-group">
+                    <label className="control-label">Name</label>
+                    <div>
+                      <input type="name" className="form-control input-sm" name="name" value="">
+                      </input>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label className="control-label">Email</label>
+                    <div>
+                      <input type="email" className="form-control input-sm" name="email" value="">
+                      </input>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label className="control-label">Phone Number</label>
+                    <div>
+                      <input type="number" className="form-control input-sm" name="phone number" value="">
+                      </input>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label className="control-label">Company</label>
+                    <div>
+                      <input type="name" className="form-control input-sm" name="company" value="">
+                      </input>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label className="control-label">Date Met</label>
+                    <div>
+                      <input type="name" className="form-control input-sm" name="date" value="">
+                      </input>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label className="control-label">School Attended</label>
+                    <div>
+                      <input type="name" className="form-control input-group-lg" name="school" value="">
+                      </input>
+                    </div>
+                  </div>
+                  <input type="submit" value="Submit" />
+                </form>
+              </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                   Close
                 </Button>
                 <Button variant="primary" onClick={handleClose}>
-                  Save Changes
+                  Save Contact
                 </Button>
               </Modal.Footer>
             </Modal>
