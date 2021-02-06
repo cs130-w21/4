@@ -88,7 +88,6 @@ function App() {
                       </input>
                     </div>
                   </div>
-                  <input type="submit" value="Submit" />
                 </form>
               </Modal.Body>
               <Modal.Footer>
