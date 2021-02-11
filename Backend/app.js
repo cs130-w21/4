@@ -5,6 +5,7 @@ const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
 const path = require('path')
+const db = require('./db');
 const port = process.env.PORT || 4001;
 
 app.use(cors());
@@ -27,4 +28,4 @@ app.get('/', (req, res) => res.sendFile(path.resolve('../frontend/build/index.ht
 app.all('*', all);
 
 ////// LAUNCH THE APPLICATION //////
-app.listen(port, () => console.log(`Node.js server is running on port ${port}`))
+app.listen(port, () => console.log(`Node.js server is running on port ${port}`));

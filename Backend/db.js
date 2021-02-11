@@ -1,39 +1,59 @@
 const { MongoClient } = require("mongodb");
 
-uname='user-0'
-pword='user-0'
-db_name='personal-network-tracker'
-cn_name='user-network-0'
+class Database {
+  #db_name='personal-network-tracker'
+  #admin_username='admin'
+  #admin_password='admin'
+  #users_cn_name ='user-credentials'
 
-uri =
-  `mongodb+srv://${uname}:${pword}@cluster0.xpide.mongodb.net/${db_name}?retryWrites=true&w=majority`;
+  async checkLogin(username, password) {
+    var uri =
+    `mongodb+srv://${this.#admin_username}:${this.#admin_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
+    const client = new MongoClient(uri);
+    try {
+      await client.connect();
 
-const client = new MongoClient(uri);
+      const database = client.db(this.#db_name);
+      const collection = database.collection(this.#users_cn_name);
 
-async function run() {
-  try {
-    await client.connect();
+      var query = { 'username' : username, 'password' : password };
+      var userObject = await collection.findOne(query);
 
-    const database = client.db(db_name);
-    const collection = database.collection(cn_name);
+      console.log(`All the user info for ${username}:`);
+      console.log(userObject);
+    } finally {
+      await client.close();
+    }
+  }
+  
+  async getNetwork(db_username, db_password, cn_name) {
+    var uri =
+    `mongodb+srv://${db_username}:${db_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
+    const client = new MongoClient(uri);
+    try {
+      await client.connect();
 
-    // Get the name and email of each person in the database
-    projection = { _id: 0, name: 1, email: 1};
-    cursor = await collection.find().project(projection);
+      const database = client.db(this.#db_name);
+      const collection = database.collection(cn_name);
 
-    console.log('Name and email of every person:');
-    await cursor.forEach(console.dir);
+      var cursor = await collection.find();
 
-    // Find all the people affiliated with UCLA
-    projection = { _id: 0}
-    query = { 'organizations.value' : 'UCLA'};
-    cursor = await collection.find(query).project(projection);
-
-    console.log('All the info about people affiliated with UCLA:');
-    await cursor.forEach(console.dir);
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+      console.log(`All the contacts in the collection ${cn_name}:`);
+      await cursor.forEach(console.dir);
+    } finally {
+      await client.close();
+    }
   }
 }
-run().catch(console.dir);
+
+var db = new Database();
+module.exports = db; 
+
+// var uname='user-0';
+// var pword='user-0';
+// var cn_name='user-network-0';
+// db.getNetwork(uname, pword, cn_name).catch(console.dir);
+
+// var username = 'Summer';
+// var password = 'password';
+// db.checkLogin(username, password).catch(console.dir);
