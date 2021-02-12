@@ -61,6 +61,8 @@ class Database {
     }
   }
 
+  // stores some fields of userObject in active_sessions map
+  // use this before queryNetworkObject
   init_session(session, userObject) {
     this.#active_sessions.set(session, 
       {db_username: userObject.db_username,
@@ -73,17 +75,17 @@ class Database {
 }
 
 var db = new Database();
-// module.exports = db; 
+module.exports = db; 
 
 // for debugging
-async function test() {
-  var username = 'Summer'
-  var password = 'password'
-  var userObject = await db.queryUserObject(username, password).catch(console.dir)
-  let session = 0 // replace with session token?
-  db.init_session(session, userObject)
-  await db.queryNetworkObject(session).catch(console.dir)
-  db.end_session(session)
-}
+// async function test() {
+//   var username = 'Summer'
+//   var password = 'password'
+//   var userObject = await db.queryUserObject(username, password).catch(console.dir)
+//   let session = 0 // replace with session token?
+//   db.init_session(session, userObject)
+//   await db.queryNetworkObject(session).catch(console.dir)
+//   db.end_session(session)
+// }
 
-test()
+// test()
