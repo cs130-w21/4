@@ -41,20 +41,25 @@ class Database {
     `mongodb+srv://${db_username}:${db_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
     const client = new MongoClient(uri);
     try {
-      await client.connect();
+      await client.connect()
 
-      const database = client.db(this.#db_name);
-      const collection = database.collection(cn_name);
-
-      var cursor = await collection.find();
-
-      // console.log(`All the contacts in the collection ${cn_name}:`);
-      // await cursor.forEach(console.dir);
+      const database = client.db(this.#db_name)
+      const collection = database.collection(cn_name)
 
       // construct network object
       var networkObject = {'contacts':null, 'groups':null}
-      networkObject.contacts = await cursor.toArray();
-      // to do: add groups
+
+      // get contacts
+      var query = { 'type':'contact' }
+      var projection = { 'type': 0 }
+      var cursor = await collection.find(query).project(projection)
+      networkObject.contacts = await cursor.toArray()
+
+      // get groups
+      query = {'type':'group'}
+      cursor = await collection.find(query).project(projection)
+      networkObject.groups = await cursor.toArray()
+
       console.log(networkObject)
     } finally {
       await client.close();
