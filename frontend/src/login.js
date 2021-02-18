@@ -1,46 +1,42 @@
-import React from 'react'
+import React, {
+  useState
+} from "react";
+import {
+  useHistory,
+} from "react-router-dom";
 
-export default class Login extends React.Component {
+import { useAuth } from "./use-auth.js"
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: ''
-    };
+export default function Login(props) {
 
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const history = useHistory();
+  const auth = useAuth();
+
+  // TODO: submit request to server
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
+    let response = await auth.login(username, password);
+    console.log(response);
+    console.log(auth);
+    if (response.user) {
+      history.push("/"); // redirect to home page
+    }
   }
 
-  handleUsernameChange(event) {
-    this.setState({username: event.target.value});
-  }
-
-  handlePasswordChange(event) {
-    this.setState({password: event.target.value});
-  }
-
-  handleSubmit(event) {
-    alert("Submitted Login Request"); // placeholder functionality
-    event.preventDefault();
-  }
-
-  render() {
-    return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            <input type="text" name="username" value={this.state.username} placeholder="username" onChange={this.handleUsernameChange} />
-          </label>
-          <label>
-            <input type="password" name="password" value={this.state.password} placeholder="password" onChange={this.handlePasswordChange} />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
-    )
-  }
-
+  return (
+    <div>
+      <form onSubmit={evt => handleSubmit(evt)}>
+        <label>
+          <input type="text" name="username" value={username} placeholder="username" onChange={(evt) => setUsername(evt.target.value)} />
+        </label>
+        <label>
+          <input type="password" name="password" value={password} placeholder="password" onChange={(evt) => setPassword(evt.target.value)} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  );
 }

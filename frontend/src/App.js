@@ -1,20 +1,33 @@
-import './App.css';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 
 // user-defined components
-import ContactList from './contact-list'
-import NavBar from './navigation-bar'
-import FilterBar from './filter-bar'
+import Login from './login'
+import Home from './home'
+import PrivateRoute from './private-route'
+import { ProvideAuth } from './use-auth.js'
 
+// CSS
+import './App.css';
 
-function App() {
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <NavBar />
-        <FilterBar />
-        <ContactList />
-      </header>
-    </div>
+    <ProvideAuth>
+      <Router>
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <PrivateRoute path="/">
+              <Home />
+            </PrivateRoute>
+          </Switch>
+      </Router>
+    </ProvideAuth>
   );
 }
 

@@ -8,6 +8,9 @@ import ModalDialog from 'react-bootstrap/ModalDialog'
 import ModalHeader from 'react-bootstrap/ModalHeader'
 import ModalBody from 'react-bootstrap/ModalBody'
 import ModalTitle from 'react-bootstrap/ModalTitle'
+import InputGroup from 'react-bootstrap/InputGroup'
+import Form from 'react-bootstrap/Form'
+import FormControl from 'react-bootstrap/FormControl'
 
 
 export default class FilterBar extends React.Component {
@@ -37,10 +40,12 @@ export default class FilterBar extends React.Component {
 
           {/* <Button>+ Add Contact</Button> */}
 
-        <DropdownButton id="dropdown-basic-button" title="Dropdown button">
-          <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+        <DropdownButton id="dropdown-basic-button" title="Sort By">
+          <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
+          <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
+          <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
+          <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
+          <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
         </DropdownButton>
 
         <>
@@ -58,44 +63,50 @@ export default class FilterBar extends React.Component {
                 <div className="form-group">
                   <label className="control-label">Name</label>
                   <div>
-                    <input type="name" className="form-control input-sm" name="name" value="">
-                    </input>
+                    <Form.Control type="name" placeholder="Ex. John Doe" />
                   </div>
                 </div>
                 <div className="form-group">
                   <label className="control-label">Email</label>
                   <div>
-                    <input type="email" className="form-control input-sm" name="email" value="">
-                    </input>
+                    <Form.Control type="email" placeholder="Name@example.com" />
                   </div>
                 </div>
                 <div className="form-group">
                   <label className="control-label">Phone Number</label>
                   <div>
-                    <input type="number" className="form-control input-sm" name="phone number" value="">
-                    </input>
+                    <Form.Control type="phone number" placeholder="(000)000-0000" />
                   </div>
                 </div>
                 <div className="form-group">
                   <label className="control-label">Company</label>
                   <div>
-                    <input type="name" className="form-control input-sm" name="company" value="">
-                    </input>
+                    <Form.Control type="name" placeholder="Ex. Google" />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="control-label">Current Role</label>
+                  <div>
+                    <Form.Control type="name" placeholder="Ex. Embedded Software Engineer" />
                   </div>
                 </div>
                 <div className="form-group">
                   <label className="control-label">Date Met</label>
                   <div>
-                    <input type="name" className="form-control input-sm" name="date" value="">
-                    </input>
+                    <Form.Control type="date" placeholder="DD/MM/YYYY" />
                   </div>
                 </div>
                 <div className="form-group">
                   <label className="control-label">School Attended</label>
                   <div>
-                    <input type="name" className="form-control input-group-lg" name="school" value="">
-                    </input>
+                    <Form.Control type="name" placeholder="Ex. University of California, Los Angeles" />
                   </div>
+                </div>
+                <div className="form-group">
+                  <Form.Group controlId="exampleForm.ControlTextarea1">
+                    <Form.Label>General Notes</Form.Label>
+                    <Form.Control placeholder="Ex. Introduced by..." as="textarea" rows={3} />
+                  </Form.Group>
                 </div>
               </form>
             </Modal.Body>
