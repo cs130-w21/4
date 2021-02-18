@@ -32,7 +32,7 @@ app.set('x-powered-by', false);
 ////// DEFINE FUNCTIONS FOR ROUTES //////
 function all(req, res, next) {
     console.log(req.path)
-    res.sendFile(path.resolve('../frontend/build' + req.path));
+    res.sendFile(path.resolve('../frontend/public' + req.path));
 }
 
 async function login(req, res, next) {
@@ -64,7 +64,7 @@ async function logout(req, res, next) {
 }
 
 ////// REGISTER ROUTES //////
-app.get('/', (req, res) => res.sendFile(path.resolve('../frontend/build/index.html')));
+app.get('/', (req, res) => res.sendFile(path.resolve('../frontend/public/index.html')));
 app.post('/api/login', login);
 app.post('/api/logout', logout);
 //app.post('/api/user', user);
