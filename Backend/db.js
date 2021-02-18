@@ -21,8 +21,17 @@ class Database {
       var query = { 'username' : username, 'password' : password };
       var userObject = await collection.findOne(query);
 
+      if (userObject == null) {
+        console.log("Invalid username or password")
+      }
       return userObject;
-    } finally {
+    } 
+    catch (exception) {
+      console.log("Database query failed")
+      console.log(exception)
+      return null;
+    }
+    finally {
       await client.close();
     }
   }
@@ -57,7 +66,13 @@ class Database {
       networkObject.groups = await cursor.toArray()
 
       return networkObject
-    } finally {
+    } 
+    catch (exception) {
+      console.log("Database query failed")
+      console.log(exception)
+      return null
+    }
+    finally {
       await client.close();
     }
   }
@@ -66,7 +81,7 @@ class Database {
 var db = new Database();
 module.exports = db; 
 
-//// for debugging
+// for debugging
 // async function test() {
 //   var username = 'Summer'
 //   var password = 'password'
@@ -74,12 +89,14 @@ module.exports = db;
 //   console.log(`User info for ${username}:`);
 //   console.log(userObject);
 
-//   var db_username = userObject.db_username
-//   var db_password = userObject.db_password
-//   var collection = userObject.collection
-//   var networkObject = await db.queryNetworkObject(db_username, db_password, collection).catch(console.dir)
-//   console.log(`${username}'s network:`)
-//   console.log(networkObject)
+//   if (userObject != null) {
+//     var db_username = userObject.db_username
+//     var db_password = userObject.db_password
+//     var collection = userObject.collection
+//     var networkObject = await db.queryNetworkObject(db_username, db_password, collection).catch(console.dir)
+//     console.log(`${username}'s network:`)
+//     console.log(networkObject)
+//   }
 // }
 
 // test()
