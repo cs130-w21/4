@@ -32,13 +32,15 @@ class Database {
   
   // parameters: session id corresponding to a logged in client, and the collection they want to access
   // returns: an iterator over all their contacts
-  async queryNetworkObject(session, network_name) {
-    var stored_session = this.#active_sessions.get(session)
-    var db_username = stored_session.db_username
-    var db_password = stored_session.db_password
-    var cn_name = network_name || stored_session.collection
+  async queryNetworkObject(db_username, db_password, network_name) {
+    //var stored_session = this.#active_sessions.get(session)
+    //var db_username = stored_session.db_username
+    //var db_password = stored_session.db_password
+    var cn_name = network_name //|| stored_session.collection
     var uri =
     `mongodb+srv://${db_username}:${db_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
+    //var uri =
+    //`mongodb+srv://${this.#admin_username}:${this.#admin_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
     const client = new MongoClient(uri);
     try {
       await client.connect()
@@ -60,7 +62,8 @@ class Database {
       cursor = await collection.find(query).project(projection)
       networkObject.groups = await cursor.toArray()
 
-      console.log(networkObject)
+      //console.log(networkObject)
+      return networkObject
     } finally {
       await client.close();
     }
