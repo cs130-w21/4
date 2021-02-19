@@ -23,8 +23,11 @@ class Database {
       var userObject = await collection.findOne(query);
 
       if (userObject != null) { // found matching username
-        if (!bcrypt.compareSync(password, userObject.password)) // incorrect password
+        if (!bcrypt.compareSync(password, userObject.password)) { // incorrect password
           userObject = null
+        } else {
+          delete userObject.password // omit from returned userObject
+        }
       }
       return userObject;
     } 
