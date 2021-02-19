@@ -62,9 +62,9 @@ class Database {
 
       return networkObject
     } 
-    catch (exception) {
+    catch (err) {
       console.log("Database.queryNetworkObject: database query failed")
-      console.log(exception)
+      console.log(err)
       return null
     }
     finally {
@@ -72,10 +72,28 @@ class Database {
     }
   } // queryNetworkObject
 
-  // // returns: true for success, false for failure
-  // async queryAddContact(db_username, db_password, contactObject) {
-    
-  // } // queryAddContact
+  // returns: true for success, false for failure
+  async queryAddContact(db_username, db_password, contactObject) {
+    const client = this.#createClient(db_username, db_password)
+    try {
+      const network_name = 'user-network-0' // to do: figure out how to pass as parameter
+      const collection = await this.#getCollection(client, network_name)
+      
+      // insert contactObject
+      delete contactObject._id
+      contactObject.type = 'contact'
+      await collection.insertOne(contactObject)
+      return true
+    }
+    catch (err) {
+      console.log("Database.queryAddContact: database insert failed")
+      console.log(err)
+      return false
+    }
+    finally {
+      await client.close()
+    }
+  } // queryAddContact
 
   // create a mongoDB client with the user's access rights
   #createClient(db_username, db_password) {
@@ -102,20 +120,36 @@ module.exports = db;
 
 // for debugging
 // async function test() {
+//   // test queryUserObject
 //   var username = 'Summer'
 //   var password = 'password'
-//   var userObject = await db.queryUserObject(username, password).catch(console.dir)
+//   var userObject = await db.queryUserObject(username, password)
 //   console.log(`User info for ${username}:`);
 //   console.log(userObject);
 
+//   // test queryNetworkObject
 //   if (userObject != null) {
 //     var db_username = userObject.db_username
 //     var db_password = userObject.db_password
 //     var collection = userObject.collection
-//     var networkObject = await db.queryNetworkObject(db_username, db_password, collection).catch(console.dir)
+//     var networkObject = await db.queryNetworkObject(db_username, db_password, collection)
 //     if (networkObject != null) {
 //       console.log(`${username}'s network:`)
 //       console.log(networkObject)
+    
+//       // test queryAddContact
+//       var newContact = {
+//         '_id'   : null,
+//         'first' : 'Saumya',
+//         'last'  : 'Dedhia'
+//       }
+
+//       if (await db.queryAddContact(db_username, db_password, newContact)) {
+//         console.log("Successfully added a contact")
+//         networkObject = await db.queryNetworkObject(db_username, db_password, collection)
+//         console.log("Updated network:")
+//         console.log(networkObject)
+//       }
 //     }
 //   }
 // }

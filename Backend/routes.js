@@ -40,7 +40,7 @@ async function logout(req, res, next) {
 
 
 async function contactAdd(req, res, next) {
-    await db.queryAddContact(req.body);
+    await db.queryAddContact(req.session.db_username, req.session.db_password, req.body);
     return res.status(200).end()
 }
 
