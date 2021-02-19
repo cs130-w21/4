@@ -1,4 +1,5 @@
 const { MongoClient } = require("mongodb");
+const bcrypt = require('bcrypt');
 
 class Database {
   #db_name='personal-network-tracker'
@@ -6,7 +7,7 @@ class Database {
   #admin_password='admin'
   #users_cn_name ='user-credentials'
 
-  // parameters: app username and (plaintext) password
+  // parameters: app username and plaintext password
   // returns: matching userObject, or null
   async queryUserObject(username, password) {
     var uri =
@@ -18,11 +19,12 @@ class Database {
       const database = client.db(this.#db_name);
       const collection = database.collection(this.#users_cn_name);
 
-      var query = { 'username' : username, 'password' : password };
+      var query = { 'username' : username };
       var userObject = await collection.findOne(query);
 
-      if (userObject == null) {
-        console.log("Invalid username or password")
+      if (userObject != null) { // found matching username
+        if (!bcrypt.compareSync(password, userObject.password)) // incorrect password
+          userObject = null
       }
       return userObject;
     } 
