@@ -1,39 +1,99 @@
 const { MongoClient } = require("mongodb");
 
-uname='user-0'
-pword='user-0'
-db_name='personal-network-tracker'
-cn_name='user-network-0'
+class Database {
+  #db_name='personal-network-tracker'
+  #admin_username='admin'
+  #admin_password='admin'
+  #users_cn_name ='user-credentials'
+  #active_sessions= new Map(); /* key = session id, value = {db_username, db_password} */
 
-uri =
-  `mongodb+srv://${uname}:${pword}@cluster0.xpide.mongodb.net/${db_name}?retryWrites=true&w=majority`;
+  // parameters: app username and (plaintext) password
+  // returns: matching userObject, or null
+  async queryUserObject(username, password) {
+    var uri =
+    `mongodb+srv://${this.#admin_username}:${this.#admin_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
+    const client = new MongoClient(uri);
+    try {
+      await client.connect();
 
-const client = new MongoClient(uri);
+      const database = client.db(this.#db_name);
+      const collection = database.collection(this.#users_cn_name);
 
-async function run() {
-  try {
-    await client.connect();
+      var query = { 'username' : username, 'password' : password };
+      var userObject = await collection.findOne(query);
 
-    const database = client.db(db_name);
-    const collection = database.collection(cn_name);
+      // console.log(`All the user info for ${username}:`);
+      // console.log(userObject);
+      return userObject;
+    } finally {
+      await client.close();
+    }
+  }
+  
+  // parameters: session id corresponding to a logged in client, and the collection they want to access
+  // returns: an iterator over all their contacts
+  async queryNetworkObject(db_username, db_password, network_name) {
+    //var stored_session = this.#active_sessions.get(session)
+    //var db_username = stored_session.db_username
+    //var db_password = stored_session.db_password
+    var cn_name = network_name //|| stored_session.collection
+    var uri =
+    `mongodb+srv://${db_username}:${db_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
+    //var uri =
+    //`mongodb+srv://${this.#admin_username}:${this.#admin_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
+    const client = new MongoClient(uri);
+    try {
+      await client.connect()
 
-    // Get the name and email of each person in the database
-    projection = { _id: 0, name: 1, email: 1};
-    cursor = await collection.find().project(projection);
+      const database = client.db(this.#db_name)
+      const collection = database.collection(cn_name)
 
-    console.log('Name and email of every person:');
-    await cursor.forEach(console.dir);
+      // construct network object
+      var networkObject = {'contacts':null, 'groups':null}
 
-    // Find all the people affiliated with UCLA
-    projection = { _id: 0}
-    query = { 'organizations.value' : 'UCLA'};
-    cursor = await collection.find(query).project(projection);
+      // get contacts
+      var query = { 'type':'contact' }
+      var projection = { 'type': 0 }
+      var cursor = await collection.find(query).project(projection)
+      networkObject.contacts = await cursor.toArray()
 
-    console.log('All the info about people affiliated with UCLA:');
-    await cursor.forEach(console.dir);
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+      // get groups
+      query = {'type':'group'}
+      cursor = await collection.find(query).project(projection)
+      networkObject.groups = await cursor.toArray()
+
+      //console.log(networkObject)
+      return networkObject
+    } finally {
+      await client.close();
+    }
+  }
+
+  // stores some fields of userObject in active_sessions map
+  // use this before queryNetworkObject
+  init_session(session, userObject) {
+    this.#active_sessions.set(session, 
+      {db_username: userObject.db_username,
+       db_password: userObject.db_password,
+       collection:  userObject.collection})
+  }
+  end_session(session) {
+    this.#active_sessions.delete(session)
   }
 }
-run().catch(console.dir);
+
+var db = new Database();
+module.exports = db; 
+
+// for debugging
+// async function test() {
+//   var username = 'Summer'
+//   var password = 'password'
+//   var userObject = await db.queryUserObject(username, password).catch(console.dir)
+//   let session = 0 // replace with session token?
+//   db.init_session(session, userObject)
+//   await db.queryNetworkObject(session).catch(console.dir)
+//   db.end_session(session)
+// }
+
+// test()
