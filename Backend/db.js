@@ -8,16 +8,11 @@ class Database {
   #users_cn_name ='user-credentials'
 
   // parameters: app username and plaintext password
-  // returns: matching userObject, or null
+  // returns: userObject on success, null on failure
   async queryUserObject(username, password) {
-    var uri =
-    `mongodb+srv://${this.#admin_username}:${this.#admin_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
-    const client = new MongoClient(uri);
+    const client = this.#createClient(this.#admin_username, this.#admin_password);
     try {
-      await client.connect();
-
-      const database = client.db(this.#db_name);
-      const collection = database.collection(this.#users_cn_name);
+      const collection = await this.#getCollection(client, this.#users_cn_name)
 
       var query = { 'username' : username };
       var userObject = await collection.findOne(query);
@@ -32,29 +27,24 @@ class Database {
       return userObject;
     } 
     catch (exception) {
-      console.log("Database query failed")
+      console.log("Database.queryUserObject: database query failed")
       console.log(exception)
       return null;
     }
     finally {
       await client.close();
     }
-  }
+  } // queryUserObject
   
   // parameters: 
   //   db_username: the client's mongoDB username
   //   cb_password: the client's mongoDB password
   //   network_name: the collection they want to access
-  // returns: a networkObject
+  // returns: networkObject on success, null on failure
   async queryNetworkObject(db_username, db_password, network_name) {
-    var uri =
-    `mongodb+srv://${db_username}:${db_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
-    const client = new MongoClient(uri);
+    const client = this.#createClient(db_username, db_password);
     try {
-      await client.connect()
-
-      const database = client.db(this.#db_name)
-      const collection = database.collection(network_name)
+      const collection = await this.#getCollection(client, network_name)
 
       // construct network object
       var networkObject = {'contacts':null, 'groups':null}
@@ -73,12 +63,36 @@ class Database {
       return networkObject
     } 
     catch (exception) {
-      console.log("Database query failed")
+      console.log("Database.queryNetworkObject: database query failed")
       console.log(exception)
       return null
     }
     finally {
       await client.close();
+    }
+  } // queryNetworkObject
+
+  // // returns: true for success, false for failure
+  // async queryAddContact(db_username, db_password, contactObject) {
+    
+  // } // queryAddContact
+
+  // create a mongoDB client with the user's access rights
+  #createClient(db_username, db_password) {
+    var uri =
+    `mongodb+srv://${db_username}:${db_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
+    return new MongoClient(uri);
+  }
+
+  async #getCollection(client, cn_name) {
+    try {
+      await client.connect();
+      const database = client.db(this.#db_name);
+      return database.collection(cn_name);
+    }
+    catch (err) {
+      console.log("Database.#getCollection failed")
+      throw err
     }
   }
 }
@@ -99,8 +113,10 @@ module.exports = db;
 //     var db_password = userObject.db_password
 //     var collection = userObject.collection
 //     var networkObject = await db.queryNetworkObject(db_username, db_password, collection).catch(console.dir)
-//     console.log(`${username}'s network:`)
-//     console.log(networkObject)
+//     if (networkObject != null) {
+//       console.log(`${username}'s network:`)
+//       console.log(networkObject)
+//     }
 //   }
 // }
 
