@@ -1,11 +1,12 @@
 // SETUP //
 const express = require('express');
-const app = express();
+// const app = express();
 const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
-const path = require('path')
-const db = require('./db');
+// const path = require('path')
+// const db = require('./db');
+const app = require('./routes')
 const port = process.env.PORT || 4001;
 var cookieParser = require('cookie-parser')
 var session = require('express-session');

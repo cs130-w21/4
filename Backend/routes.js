@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router(); //use router instead of app
 const session = require('express-session'); 
 const bcrypt = require('bcrypt');
+const db = require('./db');
+const app = express();
+const path = require('path')
 
 ////// DEFINE FUNCTIONS FOR ROUTES //////
 function all(req, res, next) {
@@ -82,3 +85,5 @@ app.post('/api/contact/delete', errorHandler(contactDelete, 401));
 app.post('/api/core', errorHandler(getCore, 401));
 
 app.all('*', all);
+
+module.exports = app;
