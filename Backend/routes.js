@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router(); //use router instead of app
 const session = require('express-session'); 
 const bcrypt = require('bcrypt');
+const db = require('./db');
+const app = express();
+const path = require('path')
 
 ////// DEFINE FUNCTIONS FOR ROUTES //////
 function all(req, res, next) {
@@ -20,8 +23,9 @@ async function login(req, res, next) {
     req.session.loggedIn = true;
     req.session.db_username = userObject.db_username
     req.session.db_password = userObject.db_password
+    req.session.collection  = userObject.collection
 
-    networkObject = await db.queryNetworkObject(req.session.db_username, req.session.db_password, userObject.collection);
+    networkObject = await db.queryNetworkObject(req.session.db_username, req.session.db_password, req.session.collection);
     response = {"userObject":userObject, "networkObject":networkObject};
 
     res.status(200).send(response)
@@ -40,7 +44,8 @@ async function logout(req, res, next) {
 
 
 async function contactAdd(req, res, next) {
-    await db.queryAddContact(req.body);
+    await db.queryAddContact(req.session.db_username, req.session.db_password, 
+                             req.session.collection, req.body);
     return res.status(200).end()
 }
 
@@ -80,3 +85,5 @@ app.post('/api/contact/delete', errorHandler(contactDelete, 401));
 app.post('/api/core', errorHandler(getCore, 401));
 
 app.all('*', all);
+
+module.exports = app;
