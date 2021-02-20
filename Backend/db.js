@@ -73,10 +73,9 @@ class Database {
   } // queryNetworkObject
 
   // returns: true for success, false for failure
-  async queryAddContact(db_username, db_password, contactObject) {
+  async queryAddContact(db_username, db_password, network_name, contactObject) {
     const client = this.#createClient(db_username, db_password)
     try {
-      const network_name = 'user-network-0' // to do: figure out how to pass as parameter
       const collection = await this.#getCollection(client, network_name)
       
       // insert contactObject
@@ -144,7 +143,7 @@ module.exports = db;
 //         'last'  : 'Dedhia'
 //       }
 
-//       if (await db.queryAddContact(db_username, db_password, newContact)) {
+//       if (await db.queryAddContact(db_username, db_password, collection, newContact)) {
 //         console.log("Successfully added a contact")
 //         networkObject = await db.queryNetworkObject(db_username, db_password, collection)
 //         console.log("Updated network:")
