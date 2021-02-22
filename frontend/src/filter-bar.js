@@ -9,9 +9,6 @@ import FormControl from 'react-bootstrap/FormControl';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import React, {useState} from "react";
 
-
-
-
 export default function Filterbar(props) {
 
   const [firstname, setFirstname] = useState("");
@@ -75,15 +72,15 @@ export default function Filterbar(props) {
     const addContactObj = {
       "_id": "",
       "groups": "",
-      "first": "first",
-      "last": "last",
-      "email": "test@",
-      "phone": "666666",
-      "company": "something",
-      "dateMet": "00/00/1000",
+      "first": firstname,
+      "last": lastname,
+      "email": email,
+      "phone": phone,
+      "company": company,
+      "dateMet": date,
       "dateLastInteracted": "",
-      "schoolAttended": "ucla",
-      "notes": "testing"
+      "schoolAttended": school,
+      "notes": notes
     }
 
     /*
