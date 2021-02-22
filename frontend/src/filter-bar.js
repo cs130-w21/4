@@ -74,17 +74,23 @@ export default function Filterbar(props) {
     })
 const bckResponse = await response.json();
     console.log(bckResponse);
-     */
+
     console.log(addContactObj);
+     */
+
+
+    console.log(JSON.stringify(addContactObj));
+
     fetch('http://localhost:4001/api/contact/add' , {
       method: "POST",
       headers: {
         'Content-type': 'application/json'
       },
-      body: addContactObj
+      body: JSON.stringify(addContactObj)
     })
         .then((result) => result.json())
         .then((info) => { console.log(info); })
+
 
 
     handleClose();
