@@ -3,7 +3,7 @@ const router = express.Router(); //use router instead of app
 const session = require('express-session'); 
 const bcrypt = require('bcrypt');
 const db = require('./db');
-const app = express();
+const router = express.Router(); //use router instead of app
 const path = require('path')
 
 ////// DEFINE FUNCTIONS FOR ROUTES //////
@@ -76,14 +76,14 @@ function errorHandler(inputFunction, errorCode) {
 
 
 ////// REGISTER ROUTES //////
-app.get('/', (req, res) => res.sendFile(path.resolve('../frontend/build/index.html')));
-app.post('/api/login', errorHandler(login, 401));
-app.post('/api/logout', errorHandler(logout, 500));
-app.post('/api/contact/add', errorHandler(contactAdd, 500));
-app.post('/api/contact/update', errorHandler(contactUpdate, 401));
-app.post('/api/contact/delete', errorHandler(contactDelete, 401));
-app.post('/api/core', errorHandler(getCore, 401));
+router.get('/', (req, res) => res.sendFile(path.resolve('../frontend/build/index.html')));
+router.post('/api/login', errorHandler(login, 401));
+router.post('/api/logout', errorHandler(logout, 500));
+router.post('/api/contact/add', errorHandler(contactAdd, 500));
+router.post('/api/contact/update', errorHandler(contactUpdate, 401));
+router.post('/api/contact/delete', errorHandler(contactDelete, 401));
+router.post('/api/core', errorHandler(getCore, 401));
 
-app.all('*', all);
+router.all('*', all);
 
-module.exports = app;
+module.exports = router;
