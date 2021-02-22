@@ -49,13 +49,6 @@ export default function Filterbar(props) {
 }
    */
 
-
-
-
-
-
-
-
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     alert(firstname + ' ' + lastname + " was added to your network!");
@@ -107,7 +100,7 @@ const bckResponse = await response.json();
       headers: {
         'Content-type': 'application/json'
       },
-      body: JSON.stringify(addContactObj)
+      body: addContactObj
     })
         .then((result) => result.json())
         .then((info) => { console.log(info); })
