@@ -6,15 +6,32 @@ import React, {
   createContext
 } from "react";
 
+// this auth can be replaced with anything that provides the same API
+// could be extracted to separate file
 const auth = {
   user: null,
   async login(username, password) {
     // send request to backend
-    return { user: username }; // for now
+    let response = await fetch("http://localhost:4001/api/login", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({username, password})
+    })
+    .then(response => response.json())
+    .catch(err => {
+      if (err.status === 401) {
+        return null;
+      }
+    });
+
+    return response;
   },
   async logout() {
-    // send request to backend
-    return { user: null }; // for now
+    // TODO: link this with the backend
+    return { user: null };
   }
 }
 
@@ -34,16 +51,19 @@ export const useAuth = () => {
 };
 
 function useProvideAuth() {
+
   const [user, setUser] = useState(null);
 
   const login = (username, password) => {
     return auth.login(username, password)
     .then(response => {
-      // this response contains the entire user network??
-      // or send separate request for network data??
-      setUser(response.user)
+      if (response === null) {
+        return null;
+      }
+
+      setUser(response)
       return response;
-    });
+    })
   };
 
   const logout = ()  => {

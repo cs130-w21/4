@@ -19,10 +19,13 @@ export default function Login(props) {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     let response = await auth.login(username, password);
-    console.log(response);
-    console.log(auth);
-    if (response.user) {
-      history.push("/"); // redirect to home page
+    if (response) {
+        history.push("/"); // redirect to home page
+    }
+
+    // TODO: display error message on permission denied
+    else {
+      console.log("Permission denied");
     }
   }
 

@@ -8,7 +8,12 @@ import {
 import { useAuth } from './use-auth';
 
 export default function PrivateRoute({children, ...rest}) {
-  let auth = useAuth();
+  const auth = useAuth();
+
+  if (auth.user === null) {
+    // TODO: determine a way to see if we already have a session established
+  }
+
   return (
     <Route
       {...rest}
