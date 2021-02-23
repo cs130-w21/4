@@ -20,13 +20,19 @@ const auth = {
       },
       body: JSON.stringify({username, password})
     })
-    .then(response => response.json())
+    .then(response => {
+
+      console.log(response);
+
+      return response.json()
+    })
     .catch(err => {
       if (err.status === 401) {
         return null;
       }
     });
 
+    // should be userObject
     return response;
   },
   async logout() {
@@ -76,6 +82,7 @@ function useProvideAuth() {
 
   return {
     user,
+    setUser,
     login,
     logout
   };

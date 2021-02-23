@@ -23,8 +23,7 @@ export default function Home(props) {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(auth.user)
+        }
       })
       .then(response => response.json())
       .catch(err => {
