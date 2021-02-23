@@ -1,4 +1,5 @@
-const { MongoClient } = require("mongodb");
+//const { MongoClient } = require("mongodb");
+const mongo = require("mongodb");
 const bcrypt = require('bcrypt');
 
 class Database {
@@ -36,13 +37,33 @@ class Database {
     }
   } // queryUserObject
   
+  async queryUserObjectWithID(id) {
+    const client = this.#createClient(this.#admin_username, this.#admin_password);
+    try {
+      const collection = await this.#getCollection(client, this.#users_cn_name)
+
+      var query = { '_id' : mongo.ObjectID(id) };
+      var userObject = await collection.findOne(query);
+
+      return userObject;
+    } 
+    catch (exception) {
+      console.log("Database.queryUserObjectWithID: database query failed")
+      console.log(exception)
+      return null;
+    }
+    finally {
+      await client.close();
+    }
+  } //queryUserObjectWithID
+
   // parameters: 
-  //   db_username: the client's mongoDB username
-  //   cb_password: the client's mongoDB password
+  //   DEPRECATED db_username: the client's mongoDB username
+  //   DEPRECATED cb_password: the client's mongoDB password
   //   network_name: the collection they want to access
   // returns: networkObject on success, null on failure
-  async queryNetworkObject(db_username, db_password, network_name) {
-    const client = this.#createClient(db_username, db_password);
+  async queryNetworkObject(network_name) {
+    const client = this.#createClient(this.#admin_username, this.#admin_password);
     try {
       const collection = await this.#getCollection(client, network_name)
 
@@ -98,7 +119,7 @@ class Database {
   #createClient(db_username, db_password) {
     var uri =
     `mongodb+srv://${db_username}:${db_password}@cluster0.xpide.mongodb.net/${this.#db_name}?retryWrites=true&w=majority`;
-    return new MongoClient(uri);
+    return new mongo.MongoClient(uri);
   }
 
   async #getCollection(client, cn_name) {
