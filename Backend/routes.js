@@ -1,9 +1,8 @@
-const express = require('express'); 
+const express = require('express');
 const router = express.Router(); //use router instead of app
-const session = require('express-session'); 
+const session = require('express-session');
 const bcrypt = require('bcrypt');
 const db = require('./db');
-const router = express.Router(); //use router instead of app
 const path = require('path')
 
 ////// DEFINE FUNCTIONS FOR ROUTES //////
@@ -13,7 +12,7 @@ function all(req, res, next) {
 }
 
 async function login(req, res, next) {
-    console.log(req.body.username, req.body.password)
+    //console.log(req.body.username, req.body.password)
     userObject = await db.queryUserObject(req.body.username, req.body.password);
 
     if(userObject == null) {
@@ -21,12 +20,12 @@ async function login(req, res, next) {
     }
 
     req.session.loggedIn = true;
-    req.session.db_username = userObject.db_username
-    req.session.db_password = userObject.db_password
-    req.session.collection  = userObject.collection
+    // req.session.db_username = userObject.db_username
+    // req.session.db_password = userObject.db_password
+    req.session.userID = userObject._id
+    req.session.collection = userObject.collection
 
-    networkObject = await db.queryNetworkObject(req.session.db_username, req.session.db_password, req.session.collection);
-    response = {"userObject":userObject, "networkObject":networkObject};
+    response = userObject;
 
     res.status(200).send(response)
 }
@@ -44,7 +43,7 @@ async function logout(req, res, next) {
 
 
 async function contactAdd(req, res, next) {
-    await db.queryAddContact(req.session.db_username, req.session.db_password, 
+    await db.queryAddContact(req.session.db_username, req.session.db_password,
                              req.session.collection, req.body);
     return res.status(200).end()
 }
@@ -60,8 +59,11 @@ async function contactDelete(req, res, next) {
 }
 
 async function getCore(req, res, next) {
-    await db.queryGetCore(req.body);
-    return res.status(200).end()
+    //await db.queryGetCore(req.body); //TODO req.body.username, req.body.password
+    userObject = await db.queryUserObjectWithID(req.session.userID);
+    networkObject = await db.queryNetworkObject(req.session.collection)
+    response = {"userObject":userObject, "networkObject":networkObject};
+    return res.status(200).send(response);
 }
 
 function errorHandler(inputFunction, errorCode) {
