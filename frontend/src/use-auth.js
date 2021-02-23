@@ -58,7 +58,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
 
   const login = (username, password) => {
     return auth.login(username, password)
