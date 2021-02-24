@@ -46,12 +46,12 @@ async function contactAdd(req, res, next) {
 }
 
 async function contactUpdate(req, res, next) {
-    await db.queryUpdateContact(req.body);
+    await db.queryUpdateContact(req.session.collection, req.body);
     return res.status(200).end()
 }
 
 async function contactDelete(req, res, next) {
-    await db.queryDeleteContact(req.body);
+    await db.queryDeleteContact(req.session.collection, req.body);
     return res.status(200).end()
 }
 
