@@ -38,6 +38,9 @@ class Database {
     }
   } // queryUserObject
   
+  // parameters: ObjectId of a user
+  // returns matching userObject (without password) on success
+  // throws an error on failure
   async queryUserObjectWithID(id) {
     const client = this.#createClient(this.#admin_username, this.#admin_password);
     try {
@@ -46,12 +49,17 @@ class Database {
       var query = { '_id' : mongo.ObjectID(id) };
       var userObject = await collection.findOne(query);
 
-      return userObject;
+      if (userObject == null) {
+        throw Error('Invalid _id')
+      } else {
+        delete userObject.password
+        return userObject;
+      }
     } 
     catch (exception) {
       console.log("Database.queryUserObjectWithID: database query failed")
       console.log(exception)
-      return null;
+      throw exception
     }
     finally {
       await client.close();
@@ -192,6 +200,15 @@ async function test() {
   // console.log(`User info for ${username}:`);
   // console.log(userObject);
 
+  // // test queryUserObjectWithId
+  // var userId = userObject._id
+  // // queryUserObjectWithId failure
+  // await db.queryUserObjectWithID(0).catch(errorHandler)
+  // // queryUserObjectWithId success
+  // var newUserObject = await db.queryUserObjectWithID(userId)
+  // console.log("An identical userObject")
+  // console.log(newUserObject)
+
   // // test queryNetworkObject
   // if (userObject != null) {
   //   var db_username = userObject.db_username
@@ -222,14 +239,14 @@ async function test() {
   // }
   
   // test queryRegisterUser
-  var newUser = {
-    'first'    : 'Erynn',
-    'last'     : 'Phan',
-    'username' : 'Erynn',
-    'password' : 'password1',
-  }
+  // var newUser = {
+  //   'first'    : 'Erynn',
+  //   'last'     : 'Phan',
+  //   'username' : 'Erynn',
+  //   'password' : 'password1',
+  // }
 
-  await db.queryRegisterUser(newUser)
+  // await db.queryRegisterUser(newUser)
 }
 
-test()
+// test()
