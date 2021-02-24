@@ -139,11 +139,7 @@ class Database {
       userObject.collection = personal_network
 
       // hash the user's password
-      bcrypt.genSalt(saltRounds, function(saltErr, salt) {
-        bcrypt.hash(userObject.password, salt, function (hashErr, hash) {
-          userObject.password = hash
-        })
-      })
+      userObject.password = bcrypt.hashSync(userObject.password, saltRounds)
 
       // insert the userObject into the database
       delete userObject._id
