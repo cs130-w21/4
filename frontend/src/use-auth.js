@@ -10,22 +10,18 @@ import React, {
 // could be extracted to separate file
 const auth = {
   user: null,
+  setUser: null,
   async login(username, password) {
     // send request to backend
-    let response = await fetch("http://localhost:4001/api/login", {
+    let response = await fetch("/api/login", {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
       },
       body: JSON.stringify({username, password})
     })
-    .then(response => {
-
-      console.log(response);
-
-      return response.json()
-    })
+    .then(response => response.json())
     .catch(err => {
       if (err.status === 401) {
         return null;
@@ -58,7 +54,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
 
-  const [user, setUser] = useState({});
+  const [user, setTheUser] = useState();
 
   const login = (username, password) => {
     return auth.login(username, password)
@@ -67,7 +63,7 @@ function useProvideAuth() {
         return null;
       }
 
-      setUser(response)
+      setTheUser(response)
       return response;
     })
   };
@@ -76,8 +72,12 @@ function useProvideAuth() {
     return auth.logout()
     .then(response => {
       // set the user to null
-      setUser(false);
+      setTheUser(false);
     });
+  };
+
+  const setUser = (userObject) => {
+    setTheUser(userObject);
   };
 
   return {

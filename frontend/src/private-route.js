@@ -19,11 +19,11 @@ export default function PrivateRoute({children, ...rest}) {
   //
   //   // if we don't yet have a user object, check if we are signed in
   //   const getCore = async () => {
-  //     const result = await fetch("http://localhost:4001/api/core", {
+  //     const result = await fetch("/api/core", {
   //       method: 'POST',
   //       headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json'
+  //         'Content-Type': 'application/json',
+  //         'Credentials': 'include'
   //       }
   //     })
   //     .then(response => response.json())
@@ -35,9 +35,12 @@ export default function PrivateRoute({children, ...rest}) {
   //       }
   //     });
   //
-  //     console.log(result);
+  //     console.log("HEREHEREHERE");
+  //
+  //     console.log(result.userObject);
   //
   //     auth.setUser(result.userObject);
+  //     console.log(auth.user);
   //   };
   //
   //   getCore();

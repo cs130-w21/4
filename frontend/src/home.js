@@ -16,34 +16,32 @@ export default function Home(props) {
   const auth = useAuth();
   const history = useHistory();
 
-  // useEffect(() => {
-  //   const getCore = async () => {
-  //     const result = await fetch("http://localhost:4001/api/core", {
-  //       method: 'POST',
-  //       headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json'
-  //       }
-  //     })
-  //     .then(response => response.json())
-  //     .catch(err => {
-  //
-  //       // remove authentication and redirect to login page
-  //       if (err.status === 401) {
-  //         auth.setUser(null);
-  //         history.push("/login");
-  //       }
-  //     });
-  //
-  //     console.log(result);
-  //
-  //     setCore(result);
-  //   };
-  //
-  //   getCore();
-  // },
-  // // empty dependency array that way the effect is only triggered on component rendering
-  // []);
+  useEffect(() => {
+    const getCore = async () => {
+      const result = await fetch("/api/core", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Credentials': 'include'
+        }
+      })
+      .then(response => response.json())
+      .catch(err => {
+
+        // remove authentication and redirect to login page
+        if (err.status === 401) {
+          auth.setUser(null);
+          history.push("/login");
+        }
+      });
+
+      setCore(result);
+    };
+
+    getCore();
+  },
+  // empty dependency array that way the effect is only triggered on component rendering
+  []);
 
   return (
     <div className="Home">
