@@ -20,8 +20,6 @@ async function login(req, res, next) {
     }
 
     req.session.loggedIn = true;
-    // req.session.db_username = userObject.db_username
-    // req.session.db_password = userObject.db_password
     req.session.userID = userObject._id
     req.session.collection = userObject.collection
 
@@ -43,8 +41,7 @@ async function logout(req, res, next) {
 
 
 async function contactAdd(req, res, next) {
-    await db.queryAddContact(req.session.db_username, req.session.db_password,
-                             req.session.collection, req.body);
+    await db.queryAddContact(req.session.collection, req.body);
     return res.status(200).end()
 }
 

@@ -8,7 +8,7 @@ class Database {
   #admin_password='admin'
   #users_cn_name ='user-credentials'
 
-  // parameters: app username and plaintext password
+  // parameters: username and plaintext password
   // returns userObject if username and password are valid
   // throws an error if database query fails, or username or password is invalid
   async queryUserObject(username, password) {
@@ -57,11 +57,8 @@ class Database {
     }
   } //queryUserObjectWithID
 
-  // parameters: 
-  //   DEPRECATED db_username: the client's mongoDB username
-  //   DEPRECATED cb_password: the client's mongoDB password
-  //   network_name: the collection they want to access
-  // returns: networkObject on success, null on failure
+  // parameter: network_name (the name of the user's personal collection)
+  // returns networkObject on success, throws error on failure
   async queryNetworkObject(network_name) {
     const client = this.#createClient(this.#admin_username, this.#admin_password);
     try {
@@ -95,8 +92,8 @@ class Database {
 
   // inserts contactObject into database on success
   // throws an error on failure
-  async queryAddContact(db_username, db_password, network_name, contactObject) {
-    const client = this.#createClient(db_username, db_password)
+  async queryAddContact(network_name, contactObject) {
+    const client = this.#createClient(this.#admin_username, this.#admin_password)
     try {
       const collection = await this.#getCollection(client, network_name)
       
@@ -158,13 +155,11 @@ async function test() {
 
   // test queryNetworkObject
   if (userObject != null) {
-    var db_username = userObject.db_username
-    var db_password = userObject.db_password
     var collection = userObject.collection
     // queryNetworkObject failure
-    await db.queryNetworkObject(db_username, wrongpassword, collection).catch(errorHandler)
+    await db.queryNetworkObject(collection).catch(errorHandler)
     // queryNetworkObject success
-    var networkObject = await db.queryNetworkObject(db_username, db_password, collection)
+    var networkObject = await db.queryNetworkObject(collection)
     if (networkObject != null) {
       console.log(`${username}'s network:`)
       console.log(networkObject)
@@ -176,10 +171,10 @@ async function test() {
         'last'  : 'Dedhia'
       }
       // queryAddContact failure
-      await db.queryAddContact(db_username, wrongpassword, collection, newContact).catch(errorHandler)
+      await db.queryAddContact(collection, newContact).catch(errorHandler)
       // queryAddContact success
-      await db.queryAddContact(db_username, db_password, collection, newContact)
-      networkObject = await db.queryNetworkObject(db_username, db_password, collection)
+      await db.queryAddContact(collection, newContact)
+      networkObject = await db.queryNetworkObject(collection)
       console.log("Updated network:")
       console.log(networkObject)
     }
