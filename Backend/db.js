@@ -1,6 +1,7 @@
 //const { MongoClient } = require("mongodb");
 const mongo = require("mongodb");
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class Database {
   #db_name='personal-network-tracker'
@@ -8,8 +9,9 @@ class Database {
   #admin_password='admin'
   #users_cn_name ='user-credentials'
 
-  // parameters: app username and plaintext password
-  // returns: userObject on success, null on failure
+  // parameters: username and plaintext password
+  // returns userObject if username and password are valid
+  // throws an error if database query fails, or username or password is invalid
   async queryUserObject(username, password) {
     const client = this.#createClient(this.#admin_username, this.#admin_password);
     try {
@@ -18,25 +20,27 @@ class Database {
       var query = { 'username' : username };
       var userObject = await collection.findOne(query);
 
-      if (userObject != null) { // found matching username
-        if (!bcrypt.compareSync(password, userObject.password)) { // incorrect password
-          userObject = null
-        } else {
-          delete userObject.password // omit from returned userObject
-        }
+      if (userObject != null && // found matching username
+          bcrypt.compareSync(password, userObject.password)) { // correct password
+            userObject.password = null // omit hashed password from returned userObject
+            return userObject;
+      } else {
+        throw Error('Authentication Error');
       }
-      return userObject;
     } 
-    catch (exception) {
-      console.log("Database.queryUserObject: database query failed")
-      console.log(exception)
-      return null;
+    catch (err) {
+      console.log("Database.queryUserObject failed")
+      console.log(err)
+      throw err
     }
     finally {
       await client.close();
     }
   } // queryUserObject
   
+  // parameters: ObjectId of a user
+  // returns matching userObject (without password) on success
+  // throws an error on failure
   async queryUserObjectWithID(id) {
     const client = this.#createClient(this.#admin_username, this.#admin_password);
     try {
@@ -45,23 +49,25 @@ class Database {
       var query = { '_id' : mongo.ObjectID(id) };
       var userObject = await collection.findOne(query);
 
-      return userObject;
+      if (userObject == null) {
+        throw Error('Invalid _id')
+      } else {
+        delete userObject.password
+        return userObject;
+      }
     } 
     catch (exception) {
       console.log("Database.queryUserObjectWithID: database query failed")
       console.log(exception)
-      return null;
+      throw exception
     }
     finally {
       await client.close();
     }
   } //queryUserObjectWithID
 
-  // parameters: 
-  //   DEPRECATED db_username: the client's mongoDB username
-  //   DEPRECATED cb_password: the client's mongoDB password
-  //   network_name: the collection they want to access
-  // returns: networkObject on success, null on failure
+  // parameter: network_name (the name of the user's personal collection)
+  // returns networkObject on success, throws error on failure
   async queryNetworkObject(network_name) {
     const client = this.#createClient(this.#admin_username, this.#admin_password);
     try {
@@ -84,18 +90,19 @@ class Database {
       return networkObject
     } 
     catch (err) {
-      console.log("Database.queryNetworkObject: database query failed")
+      console.log("Database.queryNetworkObject failed")
       console.log(err)
-      return null
+      throw err
     }
     finally {
       await client.close();
     }
   } // queryNetworkObject
 
-  // returns: true for success, false for failure
-  async queryAddContact(db_username, db_password, network_name, contactObject) {
-    const client = this.#createClient(db_username, db_password)
+  // inserts contactObject into database on success
+  // throws an error on failure
+  async queryAddContact(network_name, contactObject) {
+    const client = this.#createClient(this.#admin_username, this.#admin_password)
     try {
       const collection = await this.#getCollection(client, network_name)
       
@@ -103,18 +110,52 @@ class Database {
       delete contactObject._id
       contactObject.type = 'contact'
       await collection.insertOne(contactObject)
-      return true
     }
     catch (err) {
-      console.log("Database.queryAddContact: database insert failed")
+      console.log("Database.queryAddContact failed")
       console.log(err)
-      return false
+      throw err
     }
     finally {
       await client.close()
     }
   } // queryAddContact
 
+  // parameters: userObject without _id or collection, and with plaintext password
+  // throws an error on failure
+  async queryRegisterUser(userObject) {
+    const client = this.#createClient(this.#admin_username, this.#admin_password);
+    try {
+      await client.connect()
+      const database = client.db(this.#db_name)
+      const users_collection = database.collection(this.#users_cn_name)
+
+      // check that username is unique?
+
+      // create a collection
+      var num_users = await users_collection.countDocuments()
+      var personal_network = `user-network-${num_users}`
+      await database.createCollection(personal_network)
+      userObject.collection = personal_network
+
+      // hash the user's password
+      userObject.password = bcrypt.hashSync(userObject.password, saltRounds)
+
+      // insert the userObject into the database
+      delete userObject._id
+      await users_collection.insertOne(userObject)
+    }
+    catch (err) {
+      console.log("Database.queryRegisterUser failed")
+      console.log(err)
+      throw err
+    }
+    finally {
+      client.close()
+    }
+  } // queryRegisterUser
+
+  // private helper methods
   // create a mongoDB client with the user's access rights
   #createClient(db_username, db_password) {
     var uri =
@@ -139,39 +180,69 @@ var db = new Database();
 module.exports = db; 
 
 // for debugging
-// async function test() {
-//   // test queryUserObject
-//   var username = 'Summer'
-//   var password = 'password'
-//   var userObject = await db.queryUserObject(username, password)
-//   console.log(`User info for ${username}:`);
-//   console.log(userObject);
+function errorHandler(err) {
+  console.log('Caught an error!')
+}
 
-//   // test queryNetworkObject
-//   if (userObject != null) {
-//     var db_username = userObject.db_username
-//     var db_password = userObject.db_password
-//     var collection = userObject.collection
-//     var networkObject = await db.queryNetworkObject(db_username, db_password, collection)
-//     if (networkObject != null) {
-//       console.log(`${username}'s network:`)
-//       console.log(networkObject)
+async function test() {
+  // // test queryUserObject
+  // var username = 'Summer'
+  // var password = 'password'
+  // var wrongpassword = 'wrongpassword'
+  // // queryUserObject failure
+  // await db.queryUserObject(username, wrongpassword).catch(errorHandler)
+  // // queryUserObject success
+  // var userObject = await db.queryUserObject(username, password)
+  // console.log(`User info for ${username}:`);
+  // console.log(userObject);
+
+  // // test queryUserObjectWithId
+  // var userId = userObject._id
+  // // queryUserObjectWithId failure
+  // await db.queryUserObjectWithID(0).catch(errorHandler)
+  // // queryUserObjectWithId success
+  // var newUserObject = await db.queryUserObjectWithID(userId)
+  // console.log("An identical userObject")
+  // console.log(newUserObject)
+
+  // // test queryNetworkObject
+  // if (userObject != null) {
+  //   var db_username = userObject.db_username
+  //   var db_password = userObject.db_password
+  //   var collection = userObject.collection
+  //   // queryNetworkObject failure
+  //   await db.queryNetworkObject(db_username, wrongpassword, collection).catch(errorHandler)
+  //   // queryNetworkObject success
+  //   var networkObject = await db.queryNetworkObject(db_username, db_password, collection)
+  //   if (networkObject != null) {
+  //     console.log(`${username}'s network:`)
+  //     console.log(networkObject)
     
-//       // test queryAddContact
-//       var newContact = {
-//         '_id'   : null,
-//         'first' : 'Saumya',
-//         'last'  : 'Dedhia'
-//       }
+  //     // test queryAddContact
+  //     var newContact = {
+  //       '_id'   : null,
+  //       'first' : 'Saumya',
+  //       'last'  : 'Dedhia'
+  //     }
+  //     // queryAddContact failure
+  //     await db.queryAddContact(db_username, wrongpassword, collection, newContact).catch(errorHandler)
+  //     // queryAddContact success
+  //     await db.queryAddContact(db_username, db_password, collection, newContact)
+  //     networkObject = await db.queryNetworkObject(db_username, db_password, collection)
+  //     console.log("Updated network:")
+  //     console.log(networkObject)
+  //   }
+  // }
+  
+  // test queryRegisterUser
+  // var newUser = {
+  //   'first'    : 'Erynn',
+  //   'last'     : 'Phan',
+  //   'username' : 'Erynn',
+  //   'password' : 'password1',
+  // }
 
-//       if (await db.queryAddContact(db_username, db_password, collection, newContact)) {
-//         console.log("Successfully added a contact")
-//         networkObject = await db.queryNetworkObject(db_username, db_password, collection)
-//         console.log("Updated network:")
-//         console.log(networkObject)
-//       }
-//     }
-//   }
-// }
+  // await db.queryRegisterUser(newUser)
+}
 
 // test()
