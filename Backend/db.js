@@ -122,10 +122,12 @@ class Database {
       const database = client.db(this.#db_name)
       const users_collection = database.collection(this.#users_cn_name)
 
-      var personal_network = "user-network-1" // to do: decide how to name
+      // check that username is unique
+
       // create a collection
-      // db.createCollection
-      // await database.createCollection(personal_network)
+      var num_users = await users_collection.countDocuments()
+      var personal_network = `user-network-${num_users}`
+      await database.createCollection(personal_network)
       userObject.collection = personal_network
 
       // hash the user's password
