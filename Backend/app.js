@@ -1,12 +1,12 @@
 // SETUP //
 const express = require('express');
-// const app = express();
+const app = express();
 const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
 // const path = require('path')
 // const db = require('./db');
-const app = require('./routes')
+const router = require('./routes')
 const port = process.env.PORT || 4001;
 var cookieParser = require('cookie-parser')
 var session = require('express-session');
@@ -26,6 +26,7 @@ app.use(session({
         maxAge: 86_400_000,
     }
 }))
+app.use(router);
 
 // remove "X-Powered-By: Express" from header
 app.set('x-powered-by', false);
