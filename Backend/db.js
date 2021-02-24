@@ -1,6 +1,7 @@
 //const { MongoClient } = require("mongodb");
 const mongo = require("mongodb");
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class Database {
   #db_name='personal-network-tracker'
@@ -112,38 +113,27 @@ class Database {
     }
   } // queryAddContact
 
-  // parameters: userObject without _id, db_username, db_password, or collection
+  // parameters: userObject without _id or collection, and with plaintext password
   // throws an error on failure
   async queryRegisterUser(userObject) {
     const client = this.#createClient(this.#admin_username, this.#admin_password);
     try {
       await client.connect()
       const database = client.db(this.#db_name)
-      var cn_name = "user-network-1" // to do: decide how to name
+      const users_collection = database.collection(this.#users_cn_name)
+
+      var personal_network = "user-network-1" // to do: decide how to name
       // create a collection
       // db.createCollection
-      // await database.createCollection(cn_name)
-
-      // create a mongoDB account for the user
-      // with access to their collection
-      // database.createRole({
-      //   'role' : 'user-1', // to do: decide how to name
-      //   'privileges' : [
-      //     // { 'resource' : { 'db' : this.#db_name, 'collection' : cn_name }, 'actions' : [] }
-      //   ],
-      //   'roles' : [
-      //     { 'role': 'readWrite', 'db' : this.#db_name, 'collection' : cn_name }
-      //   ]
-      // })
-      // admin.addUser
-      // var admin = new database.admin()
-      var db_username = 'user-1' // to do
-      var db_password = 'user-1' 
-      database.addUser(db_username, db_password, {
-        'roles' : [{ 'role' : 'readWrite', 'db' : this.#db_name, 'collection' : cn_name }]
-      })
+      // await database.createCollection(personal_network)
+      userObject.collection = personal_network
 
       // hash the user's password
+      bcrypt.genSalt(saltRounds, function(saltErr, salt) {
+        bcrypt.hash(userObject.password, salt, function (hashErr, hash) {
+          userObject.password = hash
+        })
+      })
 
       // insert the userObject into the database
     }
@@ -179,7 +169,7 @@ class Database {
 }
 
 var db = new Database();
-// module.exports = db; 
+module.exports = db; 
 
 // for debugging
 function errorHandler(err) {
