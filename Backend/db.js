@@ -122,7 +122,7 @@ class Database {
       const database = client.db(this.#db_name)
       const users_collection = database.collection(this.#users_cn_name)
 
-      // check that username is unique
+      // check that username is unique?
 
       // create a collection
       var num_users = await users_collection.countDocuments()
@@ -138,6 +138,8 @@ class Database {
       })
 
       // insert the userObject into the database
+      delete userObject._id
+      await users_collection.insertOne(userObject)
     }
     catch (err) {
       console.log("Database.queryRegisterUser failed")
