@@ -47,6 +47,7 @@ const auth = {
       if (err.status === 401) {
         return null;
       }
+      return null;
     });
 
     return response;

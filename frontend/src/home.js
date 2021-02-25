@@ -23,7 +23,7 @@ export default function Home(props) {
     }
 
     retrieveCore();
-  });
+  }, []);
 
   return (
     <div className="Home">
