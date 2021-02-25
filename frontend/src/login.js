@@ -1,9 +1,6 @@
 import React, {
   useState
 } from "react";
-import {
-  useHistory,
-} from "react-router-dom";
 
 import { useAuth } from "./use-auth.js"
 
@@ -11,8 +8,7 @@ export default function Login(props) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const history = useHistory();
+  
   const auth = useAuth();
 
   // TODO: submit request to server
@@ -20,7 +16,7 @@ export default function Login(props) {
     evt.preventDefault();
     let response = await auth.login(username, password);
     if (response) {
-        history.push("/"); // redirect to home page
+        // nothing for now
     }
 
     // TODO: display error message on permission denied

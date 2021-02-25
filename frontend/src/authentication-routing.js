@@ -1,13 +1,10 @@
-// Credits: https://reactrouter.com/web/example/auth-workflow
-
 import React, { useEffect } from 'react'
-import {
-  Route,
-  Redirect,
-} from "react-router-dom";
 import { useAuth } from './use-auth';
+import Login from './login';
+import Home from './home';
+import { ProvideCore } from './use-core';
 
-export default function PrivateRoute({children, ...rest}) {
+export default function PrivateRoute(props) {
   const auth = useAuth();
 
   // useEffect(() => {
@@ -26,20 +23,12 @@ export default function PrivateRoute({children, ...rest}) {
   // }, []);
 
   return (
-    <Route
-      {...rest}
-      render={() =>
-        auth.user ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login"
-            }}
-          />
-        )
-      }
-    />
+    auth.user ? (
+      <ProvideCore>
+        <Home />
+      </ ProvideCore>
+    ) : (
+      <Login />
+    )
   );
-
 }
