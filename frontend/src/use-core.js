@@ -1,9 +1,6 @@
-// Credits: https://usehooks.com/useAuth/
-
 import React, {
   useState,
   useContext,
-  useEffect,
   createContext
 } from "react";
 

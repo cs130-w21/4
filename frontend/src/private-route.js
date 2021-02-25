@@ -10,20 +10,20 @@ import { useAuth } from './use-auth';
 export default function PrivateRoute({children, ...rest}) {
   const auth = useAuth();
 
-  useEffect(() => {
-    const refreshPage = async () => {
-      let response = await auth.refresh();
-      if (! response) {
-        console.log("refresh didn't work");
-      }
-      else {
-        console.log("refresh worked");
-        console.log(response);
-      }
-    };
-
-    refreshPage();
-  }, []);
+  // useEffect(() => {
+  //   const refreshPage = async () => {
+  //     let response = await auth.refresh();
+  //     if (! response) {
+  //       console.log("refresh didn't work");
+  //     }
+  //     else {
+  //       console.log("refresh worked");
+  //       console.log(response);
+  //     }
+  //   };
+  //
+  //   refreshPage();
+  // }, []);
 
   return (
     <Route
