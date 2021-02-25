@@ -8,40 +8,28 @@ import ContactList from './contact-list'
 import NavBar from './navigation-bar'
 import FilterBar from './filter-bar'
 import { useAuth } from './use-auth'
+import { useCore } from './use-core'
 
 export default function Home(props) {
 
-  const [core, setCore] = useState(null);
-
   const auth = useAuth();
   const history = useHistory();
+  const core = useCore();
 
   useEffect(() => {
-    const getCore = async () => {
-      const result = await fetch("/api/core", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Credentials': 'include'
-        }
-      })
-      .then(response => response.json())
-      .catch(err => {
 
-        // remove authentication and redirect to login page
-        if (err.status === 401) {
-          auth.setUser(null);
-          history.push("/login");
-        }
-      });
+    const retrieveCore = async () => {
+      let response = await core.getCore();
+      if (! core) {
+        console.log("didn't work");
+      }
+      else {
+        console.log(core.coreObject);
+      }
+    }
 
-      setCore(result);
-    };
-
-    getCore();
-  },
-  // empty dependency array that way the effect is only triggered on component rendering
-  []);
+    retrieveCore();
+  }, []);
 
   return (
     <div className="Home">

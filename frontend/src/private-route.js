@@ -10,43 +10,20 @@ import { useAuth } from './use-auth';
 export default function PrivateRoute({children, ...rest}) {
   const auth = useAuth();
 
-  // useEffect(() => {
-  //
-  //   // if we already have a user object, continue as normal
-  //   if (auth.user) {
-  //     return;
-  //   }
-  //
-  //   // if we don't yet have a user object, check if we are signed in
-  //   const getCore = async () => {
-  //     const result = await fetch("/api/core", {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Credentials': 'include'
-  //       }
-  //     })
-  //     .then(response => response.json())
-  //     .catch(err => {
-  //
-  //       // remove authentication and redirect to login page
-  //       if (err.status === 401) {
-  //         auth.setUser(null);
-  //       }
-  //     });
-  //
-  //     console.log("HEREHEREHERE");
-  //
-  //     console.log(result.userObject);
-  //
-  //     auth.setUser(result.userObject);
-  //     console.log(auth.user);
-  //   };
-  //
-  //   getCore();
-  // },
-  // // empty dependency array that way the effect is only triggered on component rendering
-  // []);
+  useEffect(() => {
+    const refreshPage = async () => {
+      let response = await auth.refresh();
+      if (! response) {
+        console.log("refresh didn't work");
+      }
+      else {
+        console.log("refresh worked");
+        console.log(response);
+      }
+    };
+
+    refreshPage();
+  }, []);
 
   return (
     <Route
