@@ -1,6 +1,6 @@
 // Credits: https://reactrouter.com/web/example/auth-workflow
 
-import React from 'react';
+import React, { useEffect } from 'react'
 import {
   Route,
   Redirect,
@@ -8,7 +8,23 @@ import {
 import { useAuth } from './use-auth';
 
 export default function PrivateRoute({children, ...rest}) {
-  let auth = useAuth();
+  const auth = useAuth();
+
+  // useEffect(() => {
+  //   const refreshPage = async () => {
+  //     let response = await auth.refresh();
+  //     if (! response) {
+  //       console.log("refresh didn't work");
+  //     }
+  //     else {
+  //       console.log("refresh worked");
+  //       console.log(response);
+  //     }
+  //   };
+  //
+  //   refreshPage();
+  // }, []);
+
   return (
     <Route
       {...rest}

@@ -10,6 +10,7 @@ import Login from './login'
 import Home from './home'
 import PrivateRoute from './private-route'
 import { ProvideAuth } from './use-auth.js'
+import { ProvideCore } from './use-core.js'
 
 // CSS
 import './App.css';
@@ -23,7 +24,9 @@ function App(props) {
               <Login />
             </Route>
             <PrivateRoute path="/">
-              <Home />
+              <ProvideCore>
+                <Home />
+              </ProvideCore>
             </PrivateRoute>
           </Switch>
       </Router>
