@@ -42,7 +42,7 @@ async function logout(req, res, next) {
 
 async function register(req, res, next) {
     try{
-        if(req.session.loggedIn == true) {
+        if(req?.session?.loggedIn) {
             throw createError(500, null, "Cannot register new account while logged in")
         }
         else {
@@ -88,7 +88,7 @@ async function contactDelete(req, res, next) {
 
 async function getCore(req, res, next) {
     try {
-        if(req.session.loggedIn == false) {
+        if(!req?.session?.loggedIn) {
             throw createError(401, null, "Not logged in")
         }
         networkObject = await db.queryNetworkObject(req.session.collection);
