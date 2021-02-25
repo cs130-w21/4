@@ -8,7 +8,7 @@ export default function Login(props) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const auth = useAuth();
 
   // TODO: submit request to server
@@ -34,7 +34,7 @@ export default function Login(props) {
         <label>
           <input type="password" name="password" value={password} placeholder="password" onChange={(evt) => setPassword(evt.target.value)} />
         </label>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Login" />
       </form>
     </div>
   );

@@ -24,8 +24,48 @@ const core = {
     });
 
     return response;
+  },
+
+  addContact(contactObject) {
+    return fetch("/api/contact/add", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      },
+      body: JSON.stringify(contactObject)
+    })
+    // TODO: change to response.json() once backend sends back object
+    .then(response => true)
+    .catch(err => false);
+  },
+
+  updateContact(contactObject) {
+    return fetch("/api/contact/update", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      },
+      body: JSON.stringify(contactObject)
+    })
+    .then(response => true)
+    .catch(err => false);
+  },
+
+  deleteContact(contactObject) {
+    return fetch("/api/contact/delete", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      },
+      body: JSON.stringify(contactObject)
+    })
+    .then(response => true)
+    .catch(err => false);
   }
-}
+};
 
 const coreContext = createContext();
 
@@ -59,8 +99,53 @@ function useProvideCore() {
     });
   };
 
+  const addContact = (contactObject) => {
+    return core.addContact(contactObject)
+    .then(didAdd => {
+      if (didAdd) {
+        console.log("success");
+        // TODO: udpate core object
+      }
+      else {
+        console.log("error");
+        // TODO: handle add error
+      }
+    });
+  };
+
+  const updateContact = (contactObject) => {
+    return core.updateContact(contactObject)
+    .then(didUpdate => {
+      if (didUpdate) {
+        console.log("success");
+        // TODO: update core object
+      }
+      else {
+        console.log("error");
+        // TODO: handle update error
+      }
+    });
+  };
+
+  const deleteContact = (contactObject) => {
+    return core.deleteContact(contactObject)
+    .then(didDelete => {
+      if (didDelete) {
+        console.log("success");
+        // TODO: update core object
+      }
+      else {
+        console.log("error");
+        // TODO: handle delete error
+      }
+    });
+  };
+
   return {
     coreObject,
-    getCore
+    getCore,
+    addContact,
+    updateContact,
+    deleteContact
   };
 }
