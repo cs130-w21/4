@@ -1,4 +1,5 @@
 //const { MongoClient } = require("mongodb");
+const {createError, errorTransform} = require("./error.js")
 const mongo = require("mongodb");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -25,13 +26,11 @@ class Database {
             userObject.password = null // omit hashed password from returned userObject
             return userObject;
       } else {
-        throw Error('Authentication Error');
+        throw createError(401, null, "Authentication Error")
       }
     } 
     catch (err) {
-      console.log("Database.queryUserObject failed")
-      console.log(err)
-      throw err
+      throw errorTransform(err, 500, "Authentication Error")
     }
     finally {
       await client.close();
@@ -50,16 +49,15 @@ class Database {
       var userObject = await collection.findOne(query);
 
       if (userObject == null) {
-        throw Error('Invalid _id')
+        throw createError(401, "Invalid _id", null)
       } else {
         delete userObject.password
         return userObject;
       }
     } 
-    catch (exception) {
-      console.log("Database.queryUserObjectWithID: database query failed")
-      console.log(exception)
-      throw exception
+    catch (err) {
+      throw errorTransform(err, 500, "Failed getting user object with _id")
+      //"Database.queryUserObjectWithID: database query failed"
     }
     finally {
       await client.close();
@@ -90,9 +88,10 @@ class Database {
       return networkObject
     } 
     catch (err) {
-      console.log("Database.queryNetworkObject failed")
-      console.log(err)
-      throw err
+      //console.log("Database.queryNetworkObject failed")
+      //console.log(err)
+      //throw err
+      throw errorTransform(err, 401, "Failed getting network object")
     }
     finally {
       await client.close();
@@ -112,9 +111,10 @@ class Database {
       await collection.insertOne(contactObject)
     }
     catch (err) {
-      console.log("Database.queryAddContact failed")
-      console.log(err)
-      throw err
+      // console.log("Database.queryAddContact failed")
+      // console.log(err)
+      // throw err
+      throw errorTransform(err, 401, "Failed adding contact")
     }
     finally {
       await client.close()
@@ -134,7 +134,7 @@ class Database {
 
       // create a collection
       var num_users = await users_collection.countDocuments()
-      var personal_network = `user-network-${num_users}`
+      var personal_network = `user-network-${num_users+1}`
       await database.createCollection(personal_network)
       userObject.collection = personal_network
 
@@ -144,11 +144,12 @@ class Database {
       // insert the userObject into the database
       delete userObject._id
       await users_collection.insertOne(userObject)
+      return userObject
     }
     catch (err) {
-      console.log("Database.queryRegisterUser failed")
-      console.log(err)
-      throw err
+      //console.log("Database.queryRegisterUser failed")
+      //console.log(err)
+      throw errorTransform(err, 401, "Failed registering user")
     }
     finally {
       client.close()
@@ -170,8 +171,9 @@ class Database {
       return database.collection(cn_name);
     }
     catch (err) {
-      console.log("Database.#getCollection failed")
-      throw err
+      // console.log("Database.#getCollection failed")
+      // throw err
+      throw errorTransform(err, null, "Database.#getCollection failed")
     }
   }
 }
