@@ -51,7 +51,7 @@ async function register(req, res, next) {
             req.session.loggedIn = true;
             req.session.userID = userObject._id
             req.session.collection = userObject.collection
-        
+
             res.status(200).end()
         }
     } catch(err) {

@@ -28,7 +28,7 @@ class Database {
       } else {
         throw createError(401, null, "Authentication Error")
       }
-    } 
+    }
     catch (err) {
       throw errorTransform(err, 500, "Authentication Error")
     }
@@ -36,7 +36,7 @@ class Database {
       await client.close();
     }
   } // queryUserObject
-  
+
   // parameters: ObjectId of a user
   // returns matching userObject (without password) on success
   // throws an error on failure
@@ -54,7 +54,7 @@ class Database {
         delete userObject.password
         return userObject;
       }
-    } 
+    }
     catch (err) {
       throw errorTransform(err, 500, "Failed getting user object with _id")
       //"Database.queryUserObjectWithID: database query failed"
@@ -86,7 +86,7 @@ class Database {
       networkObject.groups = await cursor.toArray()
 
       return networkObject
-    } 
+    }
     catch (err) {
       //console.log("Database.queryNetworkObject failed")
       //console.log(err)
@@ -104,7 +104,7 @@ class Database {
     const client = this.#createClient(this.#admin_username, this.#admin_password)
     try {
       const collection = await this.#getCollection(client, network_name)
-      
+
       // insert contactObject
       delete contactObject._id
       contactObject.type = 'contact'
@@ -179,7 +179,7 @@ class Database {
 }
 
 var db = new Database();
-module.exports = db; 
+module.exports = db;
 
 // for debugging
 function errorHandler(err) {
@@ -219,7 +219,7 @@ async function test() {
   //   if (networkObject != null) {
   //     console.log(`${username}'s network:`)
   //     console.log(networkObject)
-    
+
   //     // test queryAddContact
   //     var newContact = {
   //       '_id'   : null,
@@ -235,7 +235,7 @@ async function test() {
   //     console.log(networkObject)
   //   }
   // }
-  
+
   // test queryRegisterUser
   // var newUser = {
   //   'first'    : 'Erynn',
