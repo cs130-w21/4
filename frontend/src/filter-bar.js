@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import React, {useState} from "react";
+import { useCore } from "./use-core.js"
 
 export default function Filterbar(props) {
 
@@ -20,29 +21,28 @@ export default function Filterbar(props) {
   const [date, setDate] = useState("");
   const [school, setSchool] = useState("");
   const [notes, setNotes] = useState("");
+  const core = useCore();
 
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    clearFields();
+  }
 
   const clearFields = () => {
-    //to do
+    setFirstname('')
+    setLastname('')
+    setEmail('')
+    setPhone('')
+    setCompany('')
+    setDate('')
+    setSchool('')
+    setNotes('')
   }
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    alert(firstname + ' ' + lastname + " was added to your network!");
-
-    console.log(firstname);
-    console.log(lastname);
-    console.log(email);
-    console.log(phone);
-    console.log(company);
-    console.log(date);
-    console.log(notes);
-    console.log(school);
-
     const addContactObj = {
       "_id": "",
       "groups": "",
@@ -57,45 +57,38 @@ export default function Filterbar(props) {
       "notes": notes
     }
 
+    let result = core.addContact(addContactObj);
+    if (result) {
+      alert("New contact added to your network!");
+    }
+    else {
+      console.log("Cannot process request.");
+    }
+
     /*
-    api tester
-    http://localhost:4001/api/login
-    {"username":"Summer","password":"password"
-    http://localhost:4001/api/contact/add
-    content:
-    {"_id": "","groups": "","first": "first","last":
-    "last","email": "test@","phone": "666666","company":
-    "something","dateMet": "00/00/1000","dateLastInteracted": "",
-    "schoolAttended": "ucla","notes": "testing"}
-    const response = fetch('http://localhost:4001', {
+    let result = fetch("http://localhost:4001/api/contact/add", {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({addContactObj})
-    })
-const bckResponse = await response.json();
-    console.log(bckResponse);
-
-    console.log(addContactObj);
-     */
-
-
-    console.log(JSON.stringify(addContactObj));
-
-    fetch('http://localhost:4001/api/contact/add' , {
-      method: "POST",
       headers: {
-        'Content-type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(addContactObj)
     })
-        .then((result) => result.json())
-        .then((info) => { console.log(info); })
-
-
-
+        .then(response => response.json())
+        .catch(err => {
+          if (err.status === 401) {
+            alert("Cannot add new contact. Please try again later.");
+            return null;
+          }
+        });
+    if (result) {
+      alert("New contact added to your network!");
+    }
+    else {
+      console.log("Cannot process request.");
+    }
+     */
     handleClose();
-    clearFields();
-
   }
 
   return (
@@ -120,7 +113,7 @@ const bckResponse = await response.json();
               <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <form method='POST' action='~/contact/add' onSubmit={evt => handleSubmit(evt)}>
+              <form onSubmit={evt => handleSubmit(evt)}>
                 <div>
                   <div>
                     <InputGroup>
@@ -135,10 +128,7 @@ const bckResponse = await response.json();
                   </div>
                   <label>First Name</label>
                 </div>
-
-
                 <div>
-
                   <div>
                     <InputGroup>
                       <FormControl
@@ -152,7 +142,6 @@ const bckResponse = await response.json();
                   </div>
                   <label>Last Name</label>
                 </div>
-
                 <div>
                   <div>
                     <InputGroup>
@@ -167,8 +156,6 @@ const bckResponse = await response.json();
                   </div>
                   <label>Email</label>
                 </div>
-
-
                 <div>
                   <div>
                     <InputGroup>
@@ -183,9 +170,6 @@ const bckResponse = await response.json();
                   </div>
                   <label>Phone</label>
                 </div>
-
-
-
                 <div>
                   <div>
                     <InputGroup>
@@ -200,8 +184,6 @@ const bckResponse = await response.json();
                   </div>
                   <label>Company</label>
                 </div>
-
-
                 <div>
                   <div>
                     <InputGroup>
@@ -216,8 +198,6 @@ const bckResponse = await response.json();
                   </div>
                   <label>Date Met</label>
                 </div>
-
-
                 <div>
                   <div>
                     <InputGroup>
@@ -232,8 +212,6 @@ const bckResponse = await response.json();
                   </div>
                   <label>School Attended</label>
                 </div>
-
-
                 <div>
                   <Form.Group>
                     <Form.Control
