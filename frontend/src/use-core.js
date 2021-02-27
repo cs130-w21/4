@@ -26,6 +26,7 @@ const core = {
     return response;
   },
 
+  /*
   addContact(contactObject) {
     return fetch("/api/contact/add", {
       method: 'POST',
@@ -38,6 +39,27 @@ const core = {
     // TODO: change to response.json() once backend sends back object
     .then(response => true)
     .catch(err => false);
+  },
+
+   */
+
+  addContact(contactObject) {
+    let result = fetch("/api/contact/add", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(contactObject)
+    })
+        .then(response => response.json())
+        .catch(err => {
+          if (err.status === 401) {
+            alert("Cannot add new contact. Please try again later.");
+            return null;
+          }
+        });
+    return result;
   },
 
   updateContact(contactObject) {
@@ -99,7 +121,16 @@ function useProvideCore() {
     });
   };
 
+
   const addContact = (contactObject) => {
+    let didAdd = core.addContact(contactObject);
+    if (didAdd) {
+      console.log("success");
+    }
+    else {
+      console.log("error");
+    }
+    /*
     return core.addContact(contactObject)
     .then(didAdd => {
       if (didAdd) {
@@ -111,7 +142,11 @@ function useProvideCore() {
         // TODO: handle add error
       }
     });
+     */
+    return didAdd;
   };
+
+
 
   const updateContact = (contactObject) => {
     return core.updateContact(contactObject)
