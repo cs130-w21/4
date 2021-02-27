@@ -1,20 +1,54 @@
-// Credits: https://usehooks.com/useAuth/
-
 import React, {
   useState,
   useContext,
   createContext
 } from "react";
 
+// this auth can be replaced with anything that provides the same API
+// could be extracted to separate file
 const auth = {
   user: null,
   async login(username, password) {
     // send request to backend
-    return { user: username }; // for now
+    let response = await fetch("/api/login", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      },
+      body: JSON.stringify({username, password})
+    })
+    .then(response => response.json())
+    .catch(err => {
+      if (err.status === 401) {
+        return null;
+      }
+    });
+
+    // should be userObject
+    return response;
   },
   async logout() {
-    // send request to backend
-    return { user: null }; // for now
+    // TODO: link this with the backend
+    return { user: null };
+  },
+  async refresh() {
+    let response = await fetch("/api/core", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      }
+    })
+    .then(response => response.json())
+    .catch(err => {
+      if (err.status === 401) {
+        return null;
+      }
+      return null;
+    });
+
+    return response;
   }
 }
 
@@ -22,6 +56,7 @@ const authContext = createContext();
 
 export function ProvideAuth({ children }) {
   const auth = useProvideAuth();
+
   return (
     <authContext.Provider value={auth}>
       { children }
@@ -34,16 +69,19 @@ export const useAuth = () => {
 };
 
 function useProvideAuth() {
+
   const [user, setUser] = useState(null);
 
   const login = (username, password) => {
     return auth.login(username, password)
     .then(response => {
-      // this response contains the entire user network??
-      // or send separate request for network data??
-      setUser(response.user)
+      if (response === null) {
+        return null;
+      }
+
+      setUser(response)
       return response;
-    });
+    })
   };
 
   const logout = ()  => {
@@ -54,9 +92,22 @@ function useProvideAuth() {
     });
   };
 
+  const refresh = () => {
+    return auth.refresh()
+    .then(response => {
+      if (response === null) {
+        return null;
+      }
+
+      setUser(response.userObject);
+      return response;
+    })
+  };
+
   return {
     user,
     login,
-    logout
+    logout,
+    refresh
   };
 }

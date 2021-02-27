@@ -1,9 +1,6 @@
 import React, {
   useState
 } from "react";
-import {
-  useHistory,
-} from "react-router-dom";
 
 import { useAuth } from "./use-auth.js"
 
@@ -12,17 +9,19 @@ export default function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const history = useHistory();
   const auth = useAuth();
 
   // TODO: submit request to server
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     let response = await auth.login(username, password);
-    console.log(response);
-    console.log(auth);
-    if (response.user) {
-      history.push("/"); // redirect to home page
+    if (response) {
+        // nothing for now
+    }
+
+    // TODO: display error message on permission denied
+    else {
+      console.log("Permission denied");
     }
   }
 
@@ -35,7 +34,7 @@ export default function Login(props) {
         <label>
           <input type="password" name="password" value={password} placeholder="password" onChange={(evt) => setPassword(evt.target.value)} />
         </label>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Login" />
       </form>
     </div>
   );

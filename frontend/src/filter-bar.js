@@ -1,127 +1,264 @@
-import React from 'react'
-import Button from 'react-bootstrap/Button'
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
-import DropdownButton from 'react-bootstrap/DropdownButton'
-import Dropdown from 'react-bootstrap/Dropdown'
-import Modal from 'react-bootstrap/Modal'
-import ModalDialog from 'react-bootstrap/ModalDialog'
-import ModalHeader from 'react-bootstrap/ModalHeader'
-import ModalBody from 'react-bootstrap/ModalBody'
-import ModalTitle from 'react-bootstrap/ModalTitle'
-import InputGroup from 'react-bootstrap/InputGroup'
-import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import React, {useState} from "react";
 
+export default function Filterbar(props) {
 
-export default class FilterBar extends React.Component {
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [company, setCompany] = useState("");
+  const [role, setRole] = useState("");
+  const [date, setDate] = useState("");
+  const [school, setSchool] = useState("");
+  const [notes, setNotes] = useState("");
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: false,
-    };
+  const [show, setShow] = useState(false);
 
-    this.handleClose = this.handleClose.bind(this);
-    this.handleShow = this.handleShow.bind(this);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const clearFields = () => {
+    //to do
   }
 
-  handleClose(event) {
-    this.setState({show: false});
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
+    alert(firstname + ' ' + lastname + " was added to your network!");
+
+    console.log(firstname);
+    console.log(lastname);
+    console.log(email);
+    console.log(phone);
+    console.log(company);
+    console.log(date);
+    console.log(notes);
+    console.log(school);
+
+    const addContactObj = {
+      "_id": "",
+      "groups": "",
+      "first": firstname,
+      "last": lastname,
+      "email": email,
+      "phone": phone,
+      "company": company,
+      "dateMet": date,
+      "dateLastInteracted": "",
+      "schoolAttended": school,
+      "notes": notes
+    }
+
+    /*
+    api tester
+    http://localhost:4001/api/login
+    {"username":"Summer","password":"password"
+    http://localhost:4001/api/contact/add
+    content:
+    {"_id": "","groups": "","first": "first","last":
+    "last","email": "test@","phone": "666666","company":
+    "something","dateMet": "00/00/1000","dateLastInteracted": "",
+    "schoolAttended": "ucla","notes": "testing"}
+    const response = fetch('http://localhost:4001', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({addContactObj})
+    })
+const bckResponse = await response.json();
+    console.log(bckResponse);
+
+    console.log(addContactObj);
+     */
+
+
+    console.log(JSON.stringify(addContactObj));
+
+    fetch('http://localhost:4001/api/contact/add' , {
+      method: "POST",
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(addContactObj)
+    })
+        .then((result) => result.json())
+        .then((info) => { console.log(info); })
+
+
+
+    handleClose();
+    clearFields();
+
   }
 
-  handleShow(event) {
-    this.setState({show: true});
-  }
-
-  render() {
-    return (
-      <div className="Contact-format">
-
-
-          {/* <Button>+ Add Contact</Button> */}
-
-        <DropdownButton id="dropdown-basic-button" title="Sort By">
-          <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
-          <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
-          <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
-        </DropdownButton>
-
+  return (
+      <div>
+        <ButtonToolbar>
+          <ButtonGroup className="mr-2" >
+            <DropdownButton variant="secondary" id="dropdown-basic-button" title="Sort By">
+              <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
+              <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
+              <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
+              <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
+              <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
+            </DropdownButton>
+            <Button variant="outline-dark" onClick={handleShow}>
+              Add Contact
+            </Button>
+          </ButtonGroup>
+        </ButtonToolbar>
         <>
-          <Button variant="secondary" onClick={this.handleShow}>
-            + Add Contact
-          </Button>
-
-          <Modal show={this.state.show} onHide={this.handleClose}>
-
+          <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Add a new contact</Modal.Title>
+              <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <form>
-                <div className="form-group">
-                  <label className="control-label">Name</label>
+              <form method='POST' action='~/contact/add' onSubmit={evt => handleSubmit(evt)}>
+                <div>
                   <div>
-                    <Form.Control type="name" placeholder="Ex. John Doe" />
+                    <InputGroup>
+                      <FormControl
+                          type="text"
+                          name="firstname"
+                          value={firstname}
+                          placeholder="Ex. John"
+                          onChange={(evt) => setFirstname(evt.target.value)}
+                      />
+                    </InputGroup>
                   </div>
+                  <label>First Name</label>
                 </div>
-                <div className="form-group">
-                  <label className="control-label">Email</label>
+
+
+                <div>
+
                   <div>
-                    <Form.Control type="email" placeholder="Name@example.com" />
+                    <InputGroup>
+                      <FormControl
+                          type="text"
+                          name="lastname"
+                          value={lastname}
+                          placeholder="Ex. Doe"
+                          onChange={(evt) => setLastname(evt.target.value)}
+                      />
+                    </InputGroup>
                   </div>
+                  <label>Last Name</label>
                 </div>
-                <div className="form-group">
-                  <label className="control-label">Phone Number</label>
+
+                <div>
                   <div>
-                    <Form.Control type="phone number" placeholder="(000)000-0000" />
+                    <InputGroup>
+                      <FormControl
+                          type="text"
+                          name="email"
+                          value={email}
+                          placeholder="Ex. Name@example.com"
+                          onChange={(evt) => setEmail(evt.target.value)}
+                      />
+                    </InputGroup>
                   </div>
+                  <label>Email</label>
                 </div>
-                <div className="form-group">
-                  <label className="control-label">Company</label>
+
+
+                <div>
                   <div>
-                    <Form.Control type="name" placeholder="Ex. Google" />
+                    <InputGroup>
+                      <FormControl
+                          type="text"
+                          name="phone"
+                          value={phone}
+                          placeholder="Ex. (000)000-0000"
+                          onChange={(evt) => setPhone(evt.target.value)}
+                      />
+                    </InputGroup>
                   </div>
+                  <label>Phone</label>
                 </div>
-                <div className="form-group">
-                  <label className="control-label">Current Role</label>
+
+
+
+                <div>
                   <div>
-                    <Form.Control type="name" placeholder="Ex. Embedded Software Engineer" />
+                    <InputGroup>
+                      <FormControl
+                          type="text"
+                          name="company"
+                          value={company}
+                          placeholder="Ex. Google"
+                          onChange={(evt) => setCompany(evt.target.value)}
+                      />
+                    </InputGroup>
                   </div>
+                  <label>Company</label>
                 </div>
-                <div className="form-group">
-                  <label className="control-label">Date Met</label>
+
+
+                <div>
                   <div>
-                    <Form.Control type="date" placeholder="DD/MM/YYYY" />
+                    <InputGroup>
+                      <FormControl
+                          type="date"
+                          name="date"
+                          value={date}
+                          placeholder="Ex. 00/00/0000"
+                          onChange={(evt) => setDate(evt.target.value)}
+                      />
+                    </InputGroup>
                   </div>
+                  <label>Date Met</label>
                 </div>
-                <div className="form-group">
-                  <label className="control-label">School Attended</label>
+
+
+                <div>
                   <div>
-                    <Form.Control type="name" placeholder="Ex. University of California, Los Angeles" />
+                    <InputGroup>
+                      <FormControl
+                          type="text"
+                          name="school"
+                          value={school}
+                          placeholder="Ex. UCLA"
+                          onChange={(evt) => setSchool(evt.target.value)}
+                      />
+                    </InputGroup>
                   </div>
+                  <label>School Attended</label>
                 </div>
-                <div className="form-group">
-                  <Form.Group controlId="exampleForm.ControlTextarea1">
-                    <Form.Label>General Notes</Form.Label>
-                    <Form.Control placeholder="Ex. Introduced by..." as="textarea" rows={3} />
+
+
+                <div>
+                  <Form.Group>
+                    <Form.Control
+                        as="textarea" rows={3}
+                        type="textarea"
+                        name="notes"
+                        value={notes}
+                        placeholder="Ex. Introduced by ..."
+                        onChange={(evt) => setNotes(evt.target.value)}
+                    />
                   </Form.Group>
+                  <label>General Notes</label>
                 </div>
               </form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={this.handleClose}>
+              <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={this.handleClose}>
-                Save Contact
+              <Button variant="primary" onClick={evt => handleSubmit(evt)}>
+                Save Changes
               </Button>
             </Modal.Footer>
           </Modal>
         </>
       </div>
-    )
-  }
-
+  );
 }

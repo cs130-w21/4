@@ -1,6 +1,7 @@
 .DS_Store
+node_modules/*
 Backend/node_modules/*
 Frontend/node_modules/*
-Frontend/dist/*
+Frontend/build/*
 frontend/.eslintcache
 

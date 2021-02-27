@@ -4,27 +4,32 @@ const app = express();
 const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
-const path = require('path')
+// const path = require('path')
+// const db = require('./db');
+const router = require('./routes')
 const port = process.env.PORT || 4001;
-
-app.use(cors());
+var cookieParser = require('cookie-parser')
+var session = require('express-session');
 
 // middleware mounted on all paths
+app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: false}));
+app.use(cookieParser());
+app.use(session({
+    secret: 'myUniqueKeyRatPotatoDog',
+    resave: false,
+    saveUninitialized: false,
+    name: 'networkTrackerSession',
+    cookie: {
+        //1 day
+        maxAge: 86_400_000,
+    }
+}))
+app.use(router);
 
 // remove "X-Powered-By: Express" from header
 app.set('x-powered-by', false);
 
-////// DEFINE FUNCTIONS FOR ROUTES //////
-function all(req, res, next) {
-    console.log(req.path)
-    res.sendFile(path.resolve('../frontend/build' + req.path));
-}
-
-////// REGISTER ROUTES //////
-app.get('/', (req, res) => res.sendFile(path.resolve('../frontend/build/index.html')));
-app.all('*', all);
-
 ////// LAUNCH THE APPLICATION //////
-app.listen(port, () => console.log(`Node.js server is running on port ${port}`))
+app.listen(port, () => console.log(`Node.js server is running on port ${port}`));
