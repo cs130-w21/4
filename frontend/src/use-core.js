@@ -43,10 +43,10 @@ const core = {
 
    */
   /**
-   * input(s): contactObject - includes: first name, last name, etc,
+   * @param contactObject - includes: first name, last name, etc,
    * which comes from the user's input within the pop-up modal. The
    * object is created in filter-bar.js then routed here.
-   * output(s): returns the result of the fetch, or null if the
+   * @return returns the result of the fetch, or null if the
    * add was unsuccessful.
    *
    * purpose: to contact the backend (which, in turn, contacts the
@@ -132,10 +132,10 @@ function useProvideCore() {
   };
 
   /**
-   * input(s): contactObject - includes: first name, last name, etc,
+   * @param contactObject - includes: first name, last name, etc,
    * which comes from the user's input within the pop-up modal. The
    * object is created in filter-bar.js then routed here.
-   * output(s): returns didAdd which is the result from the addContact
+   * @return returns didAdd which is the result from the addContact
    * work above, and logs whether core.addContact was successful or not.
    *
    * purpose: to contact core addContact work that contacts the backend.
