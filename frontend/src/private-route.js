@@ -7,6 +7,14 @@ import {
 } from "react-router-dom";
 import { useAuth } from './use-auth';
 
+/**
+ * @param children
+ * @param rest
+ * @return returns the route to the login page
+ * @constructor
+ *
+ * Purpose: to route the user to the login page.
+ */
 export default function PrivateRoute({children, ...rest}) {
   const auth = useAuth();
 

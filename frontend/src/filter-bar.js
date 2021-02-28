@@ -11,6 +11,11 @@ import React, {useState} from "react";
 import { useCore } from "./use-core.js"
 
 /**
+ * @param props
+ * @return returns the rendering of the add contact
+ * button and the input modal
+ * @constructor
+ *
  * Purpose: this function handles user input in regards to
  * adding contacts. It renders the pop-up modal which allows
  * the user to enter information for a given contact they
@@ -56,12 +61,11 @@ export default function Filterbar(props) {
   }
 
   /**
-   * input(s): evt - a trigger that sends the signal to initiate
+   * @param evt - a trigger that sends the signal to initiate
    * the new contact submission process.
+   * @return {Promise<void>}
    *
-   * output(s): n/a
-   *
-   * purpose: to create a contact object with the user's newly
+   * Purpose: to create a contact object with the user's newly
    * entered contact information, then send it to use-core.js
    * which contacts the database. The results from use-core.js
    * will dictate whether the user is notified of a successful
