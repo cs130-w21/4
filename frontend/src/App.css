@@ -55,6 +55,14 @@
   margin-left: 24px;
 }
 
+.Search-bar {
+  background-color: white;
+  margin-left: 700px;
+  border: none;
+  height: 80%;
+  padding: 10px;
+}
+
 .Contact-list {
   width: 100%;
   display: flex;
