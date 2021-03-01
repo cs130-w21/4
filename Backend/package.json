@@ -6,6 +6,7 @@
   "description": "Simple nodejs, travis and grunt demo",
   "version": "1.0.0",
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "jshint": "^2.8.0"
   },
   "scripts": {
