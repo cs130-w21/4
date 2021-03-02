@@ -1,6 +1,7 @@
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Modal from 'react-bootstrap/Modal';
@@ -91,6 +92,7 @@ export default function Filterbar(props) {
     handleClose();
   }
 
+//implement on onChange function for toggle button
   return (
       <div>
         <ButtonToolbar>
