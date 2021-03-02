@@ -55,6 +55,7 @@ export default function Filterbar(props) {
     setEmail('')
     setPhone('')
     setCompany('')
+    setRole('')
     setDate('')
     setSchool('')
     setNotes('')
@@ -81,6 +82,7 @@ export default function Filterbar(props) {
       "email": email,
       "phone": phone,
       "company": company,
+      "role": role,
       "dateMet": date,
       "dateLastInteracted": "",
       "schoolAttended": school,
@@ -97,30 +99,6 @@ export default function Filterbar(props) {
       /* bad add */
       console.log("Cannot process request.");
     }
-
-    /*
-    let result = fetch("http://localhost:4001/api/contact/add", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(addContactObj)
-    })
-        .then(response => response.json())
-        .catch(err => {
-          if (err.status === 401) {
-            alert("Cannot add new contact. Please try again later.");
-            return null;
-          }
-        });
-    if (result) {
-      alert("New contact added to your network!");
-    }
-    else {
-      console.log("Cannot process request.");
-    }
-     */
     handleClose();
   }
 
@@ -222,6 +200,20 @@ export default function Filterbar(props) {
                     </InputGroup>
                   </div>
                   <label>Company</label>
+                </div>
+                <div>
+                  <div>
+                    <InputGroup>
+                      <FormControl
+                          type="text"
+                          name="role"
+                          value={role}
+                          placeholder="Ex. Software Engineer"
+                          onChange={(evt) => setRole(evt.target.value)}
+                      />
+                    </InputGroup>
+                  </div>
+                  <label>Role</label>
                 </div>
                 <div>
                   <div>

@@ -15,6 +15,7 @@ const testAddObj = {
     "email": "test email",
     "phone": "test phone",
     "company": "test company",
+    "role": "test role",
     "dateMet": "01/01/2001",
     "dateLastInteracted": "",
     "schoolAttended": "test university",
@@ -74,6 +75,9 @@ describe("POST /api/contact/add", () => {
 deployment stuff
 
 https://dev.to/yuribenjamin/how-to-deploy-react-app-in-github-pages-2a1f
+https://aws.amazon.com/getting-started/hands-on/build-react-app-amplify-graphql/module-one/
+https://us-east-2.console.aws.amazon.com/amplify/home?region=us-east-2#/create
+
 https://github.com/iriberri/ruby-test-example/blob/master/.travis.yml
 
 testing
