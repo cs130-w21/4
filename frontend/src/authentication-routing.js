@@ -3,6 +3,7 @@ import { useAuth } from './use-auth';
 import Login from './login';
 import Home from './home';
 import { ProvideCore } from './use-core';
+import LoadingPage from './loading-page';
 
 export default function AuthenticationRouting(props) {
 
@@ -32,7 +33,7 @@ export default function AuthenticationRouting(props) {
 
   return (
     loading ? (
-      <div>Loading...</div>
+      <LoadingPage />
     ) : (
       auth.user ? (
         <ProvideCore>
