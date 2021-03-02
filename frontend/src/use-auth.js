@@ -29,8 +29,29 @@ const auth = {
     return response;
   },
   async logout() {
-    // TODO: link this with the backend
-    return { user: null };
+    let response = await fetch("/api/logout", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    })
+    .catch(err => {
+      if (err.status === 500) {
+        return false;
+      }
+      return false;
+    });
+
+    return response;
   },
   async refresh() {
     let response = await fetch("/api/core", {
@@ -141,9 +162,15 @@ function useProvideAuth() {
    */
   const logout = ()  => {
     return auth.logout()
-    .then(response => {
-      // set the user to null
-      setUser(false);
+    .then(didLogout => {
+      if (didLogout) {
+        setUser(null);
+      }
+      else {
+        // do something maybe??
+      }
+
+      return didLogout;
     });
   };
 
