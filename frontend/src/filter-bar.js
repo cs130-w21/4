@@ -11,8 +11,20 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import React, {useState} from "react";
 import { useCore } from "./use-core.js"
 
+/**
+ * @param props
+ * @return returns the rendering of the add contact
+ * button and the input modal
+ * @constructor
+ *
+ * Purpose: this function handles user input in regards to
+ * adding contacts. It renders the pop-up modal which allows
+ * the user to enter information for a given contact they
+ * wish to save in their personal network
+ */
 export default function Filterbar(props) {
 
+  /* variables to hold user input field values */
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -24,6 +36,7 @@ export default function Filterbar(props) {
   const [notes, setNotes] = useState("");
   const core = useCore();
 
+  /* modal handling */
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => {
@@ -31,17 +44,35 @@ export default function Filterbar(props) {
     clearFields();
   }
 
+  /**
+   * Purpose: to clear fields after successful submission and
+   * handling of newly entered contact information; to ensure
+   * the modal input fields are clear, and ready for the next
+   * time a contact is added.
+   */
   const clearFields = () => {
     setFirstname('')
     setLastname('')
     setEmail('')
     setPhone('')
     setCompany('')
+    setRole('')
     setDate('')
     setSchool('')
     setNotes('')
   }
 
+  /**
+   * @param evt - a trigger that sends the signal to initiate
+   * the new contact submission process.
+   * @return {Promise<void>}
+   *
+   * Purpose: to create a contact object with the user's newly
+   * entered contact information, then send it to use-core.js
+   * which contacts the database. The results from use-core.js
+   * will dictate whether the user is notified of a successful
+   * add or an unsuccessful one.
+   */
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     const addContactObj = {
@@ -52,47 +83,35 @@ export default function Filterbar(props) {
       "email": email,
       "phone": phone,
       "company": company,
+      "role": role,
       "dateMet": date,
       "dateLastInteracted": "",
       "schoolAttended": school,
       "notes": notes
     }
 
+    /* send contact obj to use-core.js & wait for result */
     let result = core.addContact(addContactObj);
     if (result) {
+      /* good add */
       alert("New contact added to your network!");
     }
     else {
+      /* bad add */
       console.log("Cannot process request.");
     }
-
-    /*
-    let result = fetch("http://localhost:4001/api/contact/add", {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(addContactObj)
-    })
-        .then(response => response.json())
-        .catch(err => {
-          if (err.status === 401) {
-            alert("Cannot add new contact. Please try again later.");
-            return null;
-          }
-        });
-    if (result) {
-      alert("New contact added to your network!");
-    }
-    else {
-      console.log("Cannot process request.");
-    }
-     */
     handleClose();
   }
 
-//implement on onChange function for toggle button
+
+  //implement on onChange function for toggle button
+  
+  /**
+   * Purpose: renders pop-up modal and buttons. It
+   * also receives the user's input to the fields and
+   * directs it to the proper variable to contain the given
+   * value.
+   */
   return (
       <div>
         <ButtonToolbar>
@@ -185,6 +204,20 @@ export default function Filterbar(props) {
                     </InputGroup>
                   </div>
                   <label>Company</label>
+                </div>
+                <div>
+                  <div>
+                    <InputGroup>
+                      <FormControl
+                          type="text"
+                          name="role"
+                          value={role}
+                          placeholder="Ex. Software Engineer"
+                          onChange={(evt) => setRole(evt.target.value)}
+                      />
+                    </InputGroup>
+                  </div>
+                  <label>Role</label>
                 </div>
                 <div>
                   <div>
