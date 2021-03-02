@@ -2,7 +2,8 @@
 const {createError, errorTransform} = require("./error.js")
 const mongo = require("mongodb");
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const saltRounds = 10; // complexity of hash
+const maxRetries = 3; // number of attempts to register a user
 
 class Database {
   #db_name='personal-network-tracker'
@@ -88,9 +89,6 @@ class Database {
       return networkObject
     }
     catch (err) {
-      //console.log("Database.queryNetworkObject failed")
-      //console.log(err)
-      //throw err
       throw errorTransform(err, 401, "Failed getting network object")
     }
     finally {
@@ -111,9 +109,6 @@ class Database {
       await collection.insertOne(contactObject)
     }
     catch (err) {
-      // console.log("Database.queryAddContact failed")
-      // console.log(err)
-      // throw err
       throw errorTransform(err, 401, "Failed adding contact")
     }
     finally {
@@ -121,20 +116,20 @@ class Database {
     }
   } // queryAddContact
 
-  // parameters: userObject without _id or collection, and with plaintext password
+  // parameters: 
+  // - userObject without _id or collection, and with plaintext password
+  // - [optional] retries, number of attempts
   // throws an error on failure
-  async queryRegisterUser(userObject) {
+  async queryRegisterUser(userObject, retries) {
     const client = this.#createClient(this.#admin_username, this.#admin_password);
     try {
       await client.connect()
       const database = client.db(this.#db_name)
       const users_collection = database.collection(this.#users_cn_name)
 
-      // check that username is unique?
-
       // create a collection
-      var num_users = await users_collection.countDocuments()
-      var personal_network = `user-network-${num_users+1}`
+      var num = randomNDigitString(5)
+      var personal_network = `user-network-${num}`
       await database.createCollection(personal_network)
       userObject.collection = personal_network
 
@@ -149,7 +144,19 @@ class Database {
     catch (err) {
       //console.log("Database.queryRegisterUser failed")
       //console.log(err)
-      throw errorTransform(err, 401, "Failed registering user")
+      if (err.message.search("Collection already exists") != -1) {
+        if (!retries) {
+          retries = 0
+        }
+        if (retries < maxRetries) {
+          // try again with a different random number
+          this.queryRegisterUser(userObject, retries+1)
+        } else {
+          throw errorTransform(err, 401, "Failed registering user")
+        }
+      } else {
+        throw errorTransform(err, 401, "Failed registering user")
+      }
     }
     finally {
       client.close()
@@ -171,11 +178,20 @@ class Database {
       return database.collection(cn_name);
     }
     catch (err) {
-      // console.log("Database.#getCollection failed")
-      // throw err
       throw errorTransform(err, null, "Database.#getCollection failed")
     }
   }
+}
+
+// another helper method
+function randomNDigitString(n) {
+  var i 
+  var output = ""
+  for (i=0; i < n; i++) {
+    var newDigit = Math.floor(Math.random() * 10)
+    output = output.concat(newDigit.toString())
+  }
+  return output
 }
 
 var db = new Database();
@@ -235,8 +251,8 @@ async function test() {
   //     console.log(networkObject)
   //   }
   // }
-
-  // test queryRegisterUser
+  
+  // // test queryRegisterUser
   // var newUser = {
   //   'first'    : 'Erynn',
   //   'last'     : 'Phan',
