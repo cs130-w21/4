@@ -49,6 +49,32 @@ const auth = {
     });
 
     return response;
+  },
+  async register(userObject) {
+    let response = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      },
+      body: JSON.stringify(userObject)
+    })
+    .then(response => {
+      if (response.status === 200) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    })
+    .catch(err => {
+      if (err.status === 401) {
+        return false;
+      }
+      return false;
+    });
+
+    return response;
   }
 }
 
@@ -130,13 +156,25 @@ function useProvideAuth() {
 
       setUser(response.userObject);
       return response;
-    })
+    });
   };
+
+  const register = (userObject) => {
+    return auth.register(userObject)
+    .then(didRegister => {
+      if (didRegister) {
+        setUser(userObject);
+      }
+
+      return didRegister;
+    });
+  }
 
   return {
     user,
     login,
     logout,
-    refresh
+    refresh,
+    register
   };
 }
