@@ -2,9 +2,9 @@ import React, {useState} from 'react'
 import './App.css';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
-import Button from 'react-bootstrap/esm/Button';
+// import Button from 'react-bootstrap/esm/Button';
 import { useCore } from './use-core.js';
-
+import SearchBar from './search-bar';
 
 export class Contact extends React.Component {
   
@@ -47,6 +47,17 @@ export function ToggleButtonGroupControlled(props){
   const toggleClass = () => {setVal((value, props) => !value);};
   let core = useCore();
   const contacts = core.coreObject.networkObject.contacts;
+
+  const [input, setInput] = useState('');
+
+  const updateInput = async (input) => {
+    const filtered = contacts.filter(contact => {
+      console.log('contact', contact)
+     return contact.first.toLowerCase().includes(input.toLowerCase())
+    })
+    setInput(filtered);
+  }
+
    return(
       <div>
         <div>
@@ -54,6 +65,12 @@ export function ToggleButtonGroupControlled(props){
             <ToggleButton variant='dark' value={true} checked={true}>List Format</ToggleButton>
             <ToggleButton variant='dark' value={false} checked={false}>Grid Format</ToggleButton>
           </ToggleButtonGroup>
+          <span>
+            <SearchBar
+              input={input}       
+              setKeyword={updateInput}
+            />
+          </span>
         </div>
         <div className = {value? "Contact-list":"Grid-contact-container"} >
           {contacts.map((cont, i) =>(
