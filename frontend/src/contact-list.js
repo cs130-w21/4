@@ -74,13 +74,16 @@ export function ToggleButtonGroupControlled(props){
   const contacts = core.coreObject.networkObject.contacts;
 
   const [input, setInput] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const updateInput = async (input) => {
     const filtered = contacts.filter(contact => {
-      console.log('contact', contact)
-     return contact.first.toLowerCase().includes(input.toLowerCase())
+      let full_name = contact.first + ' ' + contact.last
+      let options = full_name + ' ' + contact.email + ' ' + contact.company + ' ' + contact.schoolAttended
+      return options.toLowerCase().includes(input.trim().toLowerCase())
     })
-    setInput(filtered);
+    setInput(input);
+    setSearchTerm(filtered);
   }
 
    return(
@@ -98,7 +101,13 @@ export function ToggleButtonGroupControlled(props){
           </span>
         </div>
         <div className = {value? "Contact-list":"Grid-contact-container"} >
-            {contacts.map((cont, i) =>(
+            {searchTerm ? 
+              searchTerm.map((cont, i) =>(
+                <div className = {value? "Contact":"Grid-contact"} >
+                  <Name {...cont} value={value} key={i} />
+                  {!value? <FullContact {...cont}/>: null}
+                </div>)) 
+              : contacts.map((cont, i) =>(
               <div className = {value? "Contact":"Grid-contact"} >
                 <Name {...cont} value={value} key={i} />
                 {!value? <FullContact {...cont}/>: null}
