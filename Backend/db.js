@@ -58,7 +58,6 @@ class Database {
     }
     catch (err) {
       throw errorTransform(err, 500, "Failed getting user object with _id")
-      //"Database.queryUserObjectWithID: database query failed"
     }
     finally {
       await client.close();
@@ -96,26 +95,6 @@ class Database {
     }
   } // queryNetworkObject
 
-  // inserts contactObject into database on success
-  // throws an error on failure
-  async queryAddContact(network_name, contactObject) {
-    const client = this.#createClient(this.#admin_username, this.#admin_password)
-    try {
-      const collection = await this.#getCollection(client, network_name)
-
-      // insert contactObject
-      delete contactObject._id
-      contactObject.type = 'contact'
-      await collection.insertOne(contactObject)
-    }
-    catch (err) {
-      throw errorTransform(err, 401, "Failed adding contact")
-    }
-    finally {
-      await client.close()
-    }
-  } // queryAddContact
-
   // parameters: 
   // - userObject without _id or collection, and with plaintext password
   // - [optional] retries, number of attempts
@@ -142,9 +121,8 @@ class Database {
       return userObject
     }
     catch (err) {
-      //console.log("Database.queryRegisterUser failed")
-      //console.log(err)
       if (err.message.search("Collection already exists") != -1) {
+        // if the failure is due to a network naming issue
         if (!retries) {
           retries = 0
         }
@@ -162,6 +140,50 @@ class Database {
       client.close()
     }
   } // queryRegisterUser
+
+  // inserts contactObject into database on success
+  // throws an error on failure
+  async queryAddContact(network_name, contactObject) {
+    const client = this.#createClient(this.#admin_username, this.#admin_password)
+    try {
+      const collection = await this.#getCollection(client, network_name)
+
+      // insert contactObject
+      delete contactObject._id
+      contactObject.type = 'contact'
+      await collection.insertOne(contactObject)
+    }
+    catch (err) {
+      throw errorTransform(err, 401, "Failed adding contact")
+    }
+    finally {
+      await client.close()
+    }
+  } // queryAddContact
+
+  // parameters: 
+  // - network_name: the name of the collection to access
+  // - contactObject: the updated version of the contact document
+  // updates the contactObject in the given collection on success
+  // throws an error on failure
+  async queryUpdateContact(network_name, contactObject) {
+    const client = this.#createClient(this.#admin_username, this.#admin_password);
+    try {
+      const collection = await this.#getCollection(client, network_name)
+
+      // convert to database format
+      contactObject.type = 'contact'
+      // find and update contact
+      var filter = { _id : contactObject._id }
+      await collection.findOneAndReplace(filter, contactObject)
+    }
+    catch (err) {
+      throw errorTransform(err, 401, "Failed updating contact")
+    }
+    finally {
+      client.close()
+    }
+  } // queryUpdateContact
 
   // private helper methods
   // create a mongoDB client with the user's access rights
@@ -181,17 +203,17 @@ class Database {
       throw errorTransform(err, null, "Database.#getCollection failed")
     }
   }
-}
 
-// another helper method
-function randomNDigitString(n) {
-  var i 
-  var output = ""
-  for (i=0; i < n; i++) {
-    var newDigit = Math.floor(Math.random() * 10)
-    output = output.concat(newDigit.toString())
+  // for naming user network collections
+  #randomNDigitString(n) {
+    var i 
+    var output = ""
+    for (i=0; i < n; i++) {
+      var newDigit = Math.floor(Math.random() * 10)
+      output = output.concat(newDigit.toString())
+    }
+    return output
   }
-  return output
 }
 
 var db = new Database();
@@ -225,16 +247,14 @@ async function test() {
 
   // // test queryNetworkObject
   // if (userObject != null) {
-  //   var db_username = userObject.db_username
-  //   var db_password = userObject.db_password
   //   var collection = userObject.collection
-  //   // queryNetworkObject failure
-  //   await db.queryNetworkObject(db_username, wrongpassword, collection).catch(errorHandler)
-  //   // queryNetworkObject success
-  //   var networkObject = await db.queryNetworkObject(db_username, db_password, collection)
-  //   if (networkObject != null) {
-  //     console.log(`${username}'s network:`)
-  //     console.log(networkObject)
+    // queryNetworkObject failure
+    // await db.queryNetworkObject(collection).catch(errorHandler)
+    // queryNetworkObject success
+    // var networkObject = await db.queryNetworkObject(collection)
+    // if (networkObject != null) {
+      // console.log(`${username}'s network:`)
+      // console.log(networkObject)
 
   //     // test queryAddContact
   //     var newContact = {
@@ -249,8 +269,14 @@ async function test() {
   //     networkObject = await db.queryNetworkObject(db_username, db_password, collection)
   //     console.log("Updated network:")
   //     console.log(networkObject)
-  //   }
-  // }
+
+  //     // test queryUpdateContact
+  //     var contactObject = networkObject.contacts[0]
+  //     contactObject.notes = "updated notes section"
+  //     await db.queryUpdateContact(collection, contactObject)
+
+  //   } // networkObject != null
+  // } // userObject != null
   
   // // test queryRegisterUser
   // var newUser = {
