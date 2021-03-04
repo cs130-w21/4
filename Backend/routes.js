@@ -28,7 +28,7 @@ async function login(req, res, next) {
 
 async function logout(req, res, next) {
     try {
-        if(req.session.loggedIn != true) {
+        if(req?.session?.loggedIn != true) {
             throw createError(500, null, "Already logged out")
         }
         else {
@@ -61,6 +61,10 @@ async function register(req, res, next) {
 
 async function contactAdd(req, res, next) {
     try {
+        if(!req?.session?.loggedIn) {
+            throw createError(401, null, "Need to log in to add new contact")
+        }
+
         await db.queryAddContact(req.session.collection, req.body);
         return res.status(200).end()
     } catch(err) {
@@ -70,6 +74,10 @@ async function contactAdd(req, res, next) {
 
 async function contactUpdate(req, res, next) {
     try {
+        if(!req?.session?.loggedIn) {
+            throw createError(401, null, "Need to log in to update contact")
+        }
+
         await db.queryUpdateContact(req.session.collection, req.body);
         return res.status(200).end()
     } catch(err) {
@@ -79,6 +87,10 @@ async function contactUpdate(req, res, next) {
 
 async function contactDelete(req, res, next) {
     try {
+        if(!req?.session?.loggedIn) {
+            throw createError(401, null, "Need to log in to delete contact")
+        }
+
         await db.queryDeleteContact(req.session.collection, req.body);
         return res.status(200).end()
     } catch(err) {
@@ -89,7 +101,7 @@ async function contactDelete(req, res, next) {
 async function getCore(req, res, next) {
     try {
         if(!req?.session?.loggedIn) {
-            throw createError(401, null, "Not logged in")
+            throw createError(401, null, "Need to log in to get core")
         }
         networkObject = await db.queryNetworkObject(req.session.collection);
         userObject = await db.queryUserObjectWithID(req.session.userID);

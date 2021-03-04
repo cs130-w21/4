@@ -174,7 +174,9 @@ class Database {
       // convert to database format
       contactObject.type = 'contact'
       // find and update contact
-      var filter = { _id : contactObject._id }
+      var filter = { '_id' : mongo.ObjectID(contactObject._id) }
+      // delete _id field
+      delete contactObject._id
       await collection.findOneAndReplace(filter, contactObject)
     }
     catch (err) {
@@ -184,6 +186,30 @@ class Database {
       client.close()
     }
   } // queryUpdateContact
+
+  // parameters: 
+  // - network_name: the name of the collection to access
+  // - contactObject: the contact object to delete
+  // removes contactObject in the given collection on success
+  // throws an error on failure
+  async queryDeleteContact(network_name, contactObject) {
+    const client = this.#createClient(this.#admin_username, this.#admin_password);
+    try {
+      const collection = await this.#getCollection(client, network_name)
+
+      // convert to database format
+      contactObject.type = 'contact'
+      // find and delete contact
+      var filter = { '_id' : mongo.ObjectID(contactObject._id) }
+      await collection.findOneAndDelete(filter)
+    }
+    catch (err) {
+      throw errorTransform(err, 401, "Failed removing contact")
+    }
+    finally {
+      client.close()
+    }
+  } // queryDeleteContact
 
   // private helper methods
   // create a mongoDB client with the user's access rights
