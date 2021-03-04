@@ -2,8 +2,9 @@ import React, {useState} from 'react'
 import './App.css';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
+import Button from 'react-bootstrap/esm/Button';
 import { useCore } from './use-core.js';
-
+import SearchBar from './search-bar';
 
 
 export class FullContact extends React.Component {
@@ -71,6 +72,20 @@ export function ToggleButtonGroupControlled(props){
   const toggleClass = () => {setVal((value, props) => !value);};
   let core = useCore();
   const contacts = core.coreObject.networkObject.contacts;
+
+  const [input, setInput] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const updateInput = async (input) => {
+    const filtered = contacts.filter(contact => {
+      let full_name = contact.first + ' ' + contact.last
+      let options = full_name + ' ' + contact.email + ' ' + contact.company + ' ' + contact.schoolAttended
+      return options.toLowerCase().includes(input.trim().toLowerCase())
+    })
+    setInput(input);
+    setSearchTerm(filtered);
+  }
+
    return(
       <div>
         <div>
@@ -78,9 +93,21 @@ export function ToggleButtonGroupControlled(props){
             <ToggleButton variant='dark' value={true} checked={true}>List Format</ToggleButton>
             <ToggleButton variant='dark' value={false} checked={false}>Grid Format</ToggleButton>
           </ToggleButtonGroup>
+          <span>
+            <SearchBar
+              input={input}       
+              setKeyword={updateInput}
+            />
+          </span>
         </div>
         <div className = {value? "Contact-list":"Grid-contact-container"} >
-            {contacts.map((cont, i) =>(
+            {searchTerm ? 
+              searchTerm.map((cont, i) =>(
+                <div className = {value? "Contact":"Grid-contact"} >
+                  <Name {...cont} value={value} key={i} />
+                  {!value? <FullContact {...cont}/>: null}
+                </div>)) 
+              : contacts.map((cont, i) =>(
               <div className = {value? "Contact":"Grid-contact"} >
                 <Name {...cont} value={value} key={i} />
                 {!value? <FullContact {...cont}/>: null}
