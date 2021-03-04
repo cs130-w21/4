@@ -2,20 +2,15 @@ import React, {useState} from 'react'
 import './App.css';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
-// import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/esm/Button';
 import { useCore } from './use-core.js';
 import SearchBar from './search-bar';
 
-export class Contact extends React.Component {
-  
+
+export class FullContact extends React.Component {
   render() {
     return (
-      //<div className="Contact">
-      <div className="Grid-contact">
-        <div className="Name">
-          <span className="first"> Name: {this.props.first} </span>
-          <span className="last"> {this.props.last} </span>
-        </div>
+      <div >
         <div className="Email">
           <span classname="email">Email: {this.props.email}</span>
         </div>
@@ -39,6 +34,36 @@ export class Contact extends React.Component {
         </div>
       </div>
     )
+  }
+}
+
+export class Name extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { active: false}
+  }
+
+  toggleClass=() => {
+    const list = this.props.value;
+    if(list == true){
+      this.setState({
+        active: !this.state.active
+      }) 
+    } 
+  };
+  render() {
+    return (
+      <div >
+        <div className="Name" onClick={this.toggleClass}>
+          <span className="first"> {this.props.first} </span>
+          <span className="last"> {this.props.last} </span>
+        </div>
+        <div>
+          {(this.state.active && this.props.value)
+          ? <FullContact {... this.props} />: null}
+        </div>
+      </div>
+    );
   }
 }
 
@@ -73,9 +98,12 @@ export function ToggleButtonGroupControlled(props){
           </span>
         </div>
         <div className = {value? "Contact-list":"Grid-contact-container"} >
-          {contacts.map((cont, i) =>(
-            <Contact {...cont} key={i}/>
-          ))}
+            {contacts.map((cont, i) =>(
+              <div className = {value? "Contact":"Grid-contact"} >
+                <Name {...cont} value={value} key={i} />
+                {!value? <FullContact {...cont}/>: null}
+              </div>
+            ))}
         </div>
       </div>
       );
