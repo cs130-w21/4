@@ -6,9 +6,6 @@ import Button from 'react-bootstrap/esm/Button';
 import { useCore } from './use-core.js';
 import SearchBar from './search-bar';
 
-/**
- *
- */
 export class FullContact extends React.Component {
   render() {
     return (
@@ -69,6 +66,16 @@ export class Name extends React.Component {
   }
 }
 
+/**
+ *
+ * @param props
+ * @return {JSX.Element} returns the rendering associated with
+ * how the user wishes to view their contacts
+ * @constructor
+ *
+ * Purpose: to allow the user to toggle between list
+ * and grid format
+ */
 export function ToggleButtonGroupControlled(props) {
 
   const contacts = props.contacts;
@@ -121,7 +128,17 @@ export function ToggleButtonGroupControlled(props) {
       );
 }
 
-
+/**
+ *
+ * @param props
+ * @return {JSX.Element} returns the rendering associated with
+ * viewing the user's contacts
+ * @constructor
+ *
+ * Purpose: to allow the user to view their contacts. Works
+ * with ToggleButtonGroupControlled to control how the user
+ * wishes to view their contacts
+ */
 export default function ContactList(props) {
 
   let core = useCore();
