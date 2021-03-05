@@ -3,6 +3,27 @@
   background-color: #00c4cc;
 }
 
+.Login-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.Create-account {
+  margin-top: 20px;
+  margin-left: 0px;
+}
+
+.NetworkLogoLogin {
+  height: 200px;
+  width: 360px;
+  margin-bottom: 20px;
+}
+
 .NetworkLogo {
   height: 100px;
   width: 180px;
@@ -91,7 +112,7 @@
   margin-top: 10px;
   border-color: white;
 }
-.Grid-contact-container{
+.Grid-contact-container {
   display: grid;
   grid-template-columns: auto auto;
 }

@@ -11,6 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import logo from './mpn_logo.png';
 
 import { useAuth } from "./use-auth.js"
 
@@ -65,22 +66,29 @@ export default function Login(props) {
   }
 
   return (
-    <div>
+    <div className="Login-page">
+      <img alt="logo" className="NetworkLogoLogin" src={logo} />
       <div>
         <form onSubmit={evt => handleLogin(evt)}>
-          <label>
-            <input type="text" name="username" value={username} placeholder="username" onChange={(evt) => setUsername(evt.target.value)} />
-          </label>
-          <label>
-            <input type="password" name="password" value={password} placeholder="password" onChange={(evt) => setPassword(evt.target.value)} />
-          </label>
-          <input type="submit" value="Login" />
+          <div>
+            <label>
+              <input type="text" name="username" value={username} placeholder="username" onChange={(evt) => setUsername(evt.target.value)} />
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="password" name="password" value={password} placeholder="password" onChange={(evt) => setPassword(evt.target.value)} />
+            </label>
+          </div>
+          <div>
+            <input type="submit" value="Login" />
+          </div>
         </form>
-      </div>
-      <div>
-        <form onSubmit={evt => handleShowMenu(evt)}>
-          <input type="submit" value="Create New Account" />
-        </form>
+          <div className="Create-account">
+          <form onSubmit={evt => handleShowMenu(evt)}>
+            <input type="submit" value="Create New Account" />
+          </form>
+        </div>
       </div>
       <RegisterUserMenu show={showMenu} onHide={()=> setShowMenu(false)} onRegister={handleRegisterUser} />
     </div>
