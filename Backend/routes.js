@@ -5,6 +5,13 @@ const {createError, errorTransform} = require("./error.js")
 const path = require('path')
 
 ////// DEFINE FUNCTIONS FOR ROUTES //////
+/**
+ * Express.js callback function that returns static files in the '../frontend/build' directory
+ * @param {object} req Express.js representation of HTTP request
+ * @param {object} res Express.js representation of HTTP response
+ * @param {function} next The next middleware function
+ * @returns This function returns undefined
+ */
 function all(req, res, next) {
     console.log(req.path)
     res.sendFile(path.resolve('../frontend/build' + req.path));
