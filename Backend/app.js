@@ -10,6 +10,7 @@ const router = require('./routes')
 const port = process.env.PORT || 4001;
 var cookieParser = require('cookie-parser')
 var session = require('express-session');
+const path = require('path')
 
 // middleware mounted on all paths
 app.use(cors());
@@ -27,6 +28,14 @@ app.use(session({
     }
 }))
 app.use(router);
+
+// serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, '../frontend/build')))
+
+// any files that don't match the above, send back index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '../frontend/build/index.html'))
+})
 
 // remove "X-Powered-By: Express" from header
 app.set('x-powered-by', false);
