@@ -18,7 +18,7 @@ deploy:
   app: my-personal-network
   on:
     repo: cs130-w21/4
-    branch: travis_doc
+    branch: master
 notifications:
   email:
     on_success: never
