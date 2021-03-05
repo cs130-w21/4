@@ -17,6 +17,18 @@ export default function Home(props) {
 
   const [loading, setLoading] = useState(true);
 
+  /*Drop-down sorting menu handling*/
+  const [forwards, setForwards] = useState(true);
+  const [orderBy, setOrderBy] = useState("first");
+
+  const handleSortChange = (forward) => {
+    setForwards(forward);
+  }
+
+  const handleOrderChange = (index) => {
+    setOrderBy(index);
+  }
+
   const core = useCore();
 
   useEffect(() => {
@@ -46,8 +58,8 @@ export default function Home(props) {
       <div className="Home">
         <header className="App-header">
           <NavBar />
-          <FilterBar />
-          <ContactList />
+          <FilterBar handleOrderChange={handleOrderChange} handleSortChange={handleSortChange} sort={{forwards, orderBy}} />
+          <ContactList sort={{forwards, orderBy}} />
         </header>
       </div>
     )

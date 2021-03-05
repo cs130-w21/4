@@ -1,0 +1,18 @@
+{
+  "source": ".",
+  "destination": "./documentation",
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin"
+    }
+  ],
+  "includes": [
+    "^Backend\\\\.*\\.js",
+    "^frontend\\\\.*\\.js"
+  ],
+  "excludes": [
+    "^Backend\\\\node_modules",
+    "^frontend\\\\node_modules",
+    "^frontend\\\\build"
+  ]
+}

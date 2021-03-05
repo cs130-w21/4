@@ -102,9 +102,8 @@ export default function Filterbar(props) {
     handleClose();
   }
 
-
   //implement on onChange function for toggle button
-  
+
   /**
    * Purpose: renders pop-up modal and buttons. It
    * also receives the user's input to the fields and
