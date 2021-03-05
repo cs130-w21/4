@@ -6,7 +6,9 @@ import Button from 'react-bootstrap/esm/Button';
 import { useCore } from './use-core.js';
 import SearchBar from './search-bar';
 
-
+/**
+ *
+ */
 export class FullContact extends React.Component {
   render() {
     return (
@@ -67,6 +69,12 @@ export class Name extends React.Component {
   }
 }
 
+/**
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 export function ToggleButtonGroupControlled(props){
   const [value, setVal] = useState(true);
   const toggleClass = () => {setVal((value, props) => !value);};
@@ -118,6 +126,9 @@ export function ToggleButtonGroupControlled(props){
       );
 }
 
+/**
+ *
+ */
 export default class ContactList extends React.Component {
   render() {
     return (

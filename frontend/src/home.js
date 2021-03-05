@@ -7,6 +7,12 @@ import FilterBar from './filter-bar'
 import { useCore } from './use-core'
 import LoadingPage from './loading-page'
 
+/**
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 export default function Home(props) {
 
   const [loading, setLoading] = useState(true);

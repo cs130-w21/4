@@ -31,11 +31,11 @@ app.use(router);
 
 // serve static files from the React frontend app
 
-app.use(express.static(path.join(__dirname, './4/frontend/build')))
+app.use(express.static(path.join(__dirname, '../4/frontend/build')))
 
 // any files that don't match the above, send back index.html
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + './4/frontend/build/index.html'))
+    res.sendFile(path.join(__dirname + '../4/frontend/build/index.html'))
 })
 
 // remove "X-Powered-By: Express" from header

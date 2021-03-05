@@ -7,9 +7,16 @@ const path = require('path')
 ////// DEFINE FUNCTIONS FOR ROUTES //////
 function all(req, res, next) {
     console.log(req.path)
-    res.sendFile(path.resolve('./4/frontend/build' + req.path));
+    res.sendFile(path.resolve('../4/frontend/build' + req.path));
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @return {Promise<void>}
+ */
 async function login(req, res, next) {
     try {
         userObject = await db.queryUserObject(req.body.username, req.body.password);
@@ -26,6 +33,13 @@ async function login(req, res, next) {
     }
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @return {Promise<*>}
+ */
 async function logout(req, res, next) {
     try {
         if(req?.session?.loggedIn != true) {
@@ -40,6 +54,13 @@ async function logout(req, res, next) {
     }
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @return {Promise<void>}
+ */
 async function register(req, res, next) {
     try{
         if(req?.session?.loggedIn) {
@@ -59,6 +80,13 @@ async function register(req, res, next) {
     }
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @return {Promise<*>}
+ */
 async function contactAdd(req, res, next) {
     try {
         if(!req?.session?.loggedIn) {
@@ -72,6 +100,13 @@ async function contactAdd(req, res, next) {
     }
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @return {Promise<*>}
+ */
 async function contactUpdate(req, res, next) {
     try {
         if(!req?.session?.loggedIn) {
@@ -85,6 +120,13 @@ async function contactUpdate(req, res, next) {
     }
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @return {Promise<*>}
+ */
 async function contactDelete(req, res, next) {
     try {
         if(!req?.session?.loggedIn) {
@@ -98,6 +140,13 @@ async function contactDelete(req, res, next) {
     }
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @param next
+ * @return {Promise<*>}
+ */
 async function getCore(req, res, next) {
     try {
         if(!req?.session?.loggedIn) {
@@ -112,6 +161,11 @@ async function getCore(req, res, next) {
     }
 }
 
+/**
+ *
+ * @param inputFunction
+ * @return {function(*=, *=, *=): Promise<void>}
+ */
 function errorHandler(inputFunction) {
     return async function internal(req, res, next) {
         try {

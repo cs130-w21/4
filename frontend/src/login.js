@@ -87,7 +87,13 @@ export default function Login(props) {
   );
 }
 
-
+/**
+ *
+ * @param onRegister
+ * @param rest
+ * @return {JSX.Element}
+ * @constructor
+ */
 function RegisterUserMenu({onRegister, ...rest}) {
 
   const [first, setFirst] = useState("");

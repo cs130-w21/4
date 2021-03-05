@@ -1,6 +1,12 @@
 import React from 'react'
 import { useAuth } from './use-auth'
 
+/**
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 export default function NavBar(props) {
 
   const auth = useAuth();
