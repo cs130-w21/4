@@ -1,5 +1,7 @@
 import React from 'react'
 import { useAuth } from './use-auth'
+import Button from "react-bootstrap/Button";
+import logo from './mpn_logo.png';
 
 /**
  *
@@ -23,10 +25,14 @@ export default function NavBar(props) {
 
   return (
     <div className="Nav-bar">
-      <span className="Nav-bar-title">Summer's Personal Network</span>
-      <span>
-        <button onClick={handleLogout}>Sign Out</button>
-      </span>
+        <img alt="logo" className="NetworkLogo" src={logo} />
+        <div style={{float: 'right'}}>
+            <span>
+                <Button variant="info" onClick={handleLogout}>
+                    Sign Out
+                </Button>
+            </span>
+        </div>
     </div>
   )
 }

@@ -115,14 +115,14 @@ export default function Filterbar(props) {
       <div>
         <ButtonToolbar>
           <ButtonGroup className="mr-2" >
-            <DropdownButton variant="secondary" id="dropdown-basic-button" title="Sort By">
+            <DropdownButton variant="dark" id="dropdown-basic-button" title="Sort By">
               <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
               <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
               <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
               <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
               <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
             </DropdownButton>
-            <Button variant="outline-dark" onClick={handleShow}>
+            <Button variant="outline-info" onClick={handleShow}>
               Add Contact
             </Button>
           </ButtonGroup>

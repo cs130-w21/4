@@ -7,8 +7,8 @@ const path = require('path')
 ////// DEFINE FUNCTIONS FOR ROUTES //////
 function all(req, res, next) {
     console.log(req.path)
-    res.sendFile(path.resolve('./frontend/build' + req.path));
-    //res.sendFile(path.resolve('./4/frontend/build' + req.path));
+    res.sendFile(path.resolve('../frontend/build' + req.path));
+    //res.sendFile(path.resolve('../4/frontend/build' + req.path));
 }
 
 /**
