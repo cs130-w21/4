@@ -6,7 +6,9 @@ import Button from 'react-bootstrap/esm/Button';
 import { useCore } from './use-core.js';
 import SearchBar from './search-bar';
 
-
+/**
+ *
+ */
 export class FullContact extends React.Component {
   render() {
     return (
@@ -118,6 +120,7 @@ export function ToggleButtonGroupControlled(props) {
       </div>
       );
 }
+
 
 export default function ContactList(props) {
 

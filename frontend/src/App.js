@@ -7,6 +7,12 @@ import { ProvideAuth } from './use-auth';
 // CSS
 import './App.css';
 
+/**
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 function App(props) {
   return (
     <ProvideAuth>

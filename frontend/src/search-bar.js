@@ -1,5 +1,12 @@
 import React from 'react'
 
+/**
+ *
+ * @param input
+ * @param setKeyword
+ * @return {JSX.Element}
+ * @constructor
+ */
 export default function SearchBar({input, setKeyword}) {
   return (
     <span class="search-container">

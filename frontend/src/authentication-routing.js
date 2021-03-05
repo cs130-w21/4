@@ -5,6 +5,12 @@ import Home from './home';
 import { ProvideCore } from './use-core';
 import LoadingPage from './loading-page';
 
+/**
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 export default function AuthenticationRouting(props) {
 
   const [loading, setLoading] = useState(true);
