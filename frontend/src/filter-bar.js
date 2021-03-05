@@ -113,20 +113,18 @@ export default function Filterbar(props) {
    */
   return (
       <div className="Contact-buttons">
-        <ButtonToolbar>
-          <ButtonGroup className="mr-2" >
-            <DropdownButton variant="dark" id="dropdown-basic-button" title="Sort By">
-              <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
-            </DropdownButton>
-            <Button variant="outline-dark" onClick={handleShow}>
-              Add Contact
-            </Button>
-          </ButtonGroup>
-        </ButtonToolbar>
+        <ButtonGroup>
+          <Button variant="outline-dark" onClick={handleShow}>
+            Add Contact
+          </Button>{' '}
+          <DropdownButton variant="dark" id="dropdown-basic-button" title="Sort By">
+            <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
+            <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
+            <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
+          </DropdownButton>
+        </ButtonGroup>
         <>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
