@@ -48,8 +48,8 @@ export class Name extends React.Component {
     if(list == true){
       this.setState({
         active: !this.state.active
-      }) 
-    } 
+      })
+    }
   };
   render() {
     return (
@@ -67,11 +67,12 @@ export class Name extends React.Component {
   }
 }
 
-export function ToggleButtonGroupControlled(props){
+export function ToggleButtonGroupControlled(props) {
+
+  const contacts = props.contacts;
+
   const [value, setVal] = useState(true);
   const toggleClass = () => {setVal((value, props) => !value);};
-  let core = useCore();
-  const contacts = core.coreObject.networkObject.contacts;
 
   const [input, setInput] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -95,18 +96,18 @@ export function ToggleButtonGroupControlled(props){
           </ToggleButtonGroup>
           <span>
             <SearchBar
-              input={input}       
+              input={input}
               setKeyword={updateInput}
             />
           </span>
         </div>
         <div className = {value? "Contact-list":"Grid-contact-container"} >
-            {searchTerm ? 
+            {searchTerm ?
               searchTerm.map((cont, i) =>(
                 <div className = {value? "Contact":"Grid-contact"} >
                   <Name {...cont} value={value} key={i} />
                   {!value? <FullContact {...cont}/>: null}
-                </div>)) 
+                </div>))
               : contacts.map((cont, i) =>(
               <div className = {value? "Contact":"Grid-contact"} >
                 <Name {...cont} value={value} key={i} />
@@ -118,12 +119,41 @@ export function ToggleButtonGroupControlled(props){
       );
 }
 
-export default class ContactList extends React.Component {
-  render() {
-    return (
-      <div>
-         <ToggleButtonGroupControlled/>
-      </div>
-    )
+export default function ContactList(props) {
+
+  let core = useCore();
+  const contacts = core.coreObject.networkObject.contacts;
+
+  const compareValues = (forwards, key) => {
+    return function innerSort(a,b) {
+      if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+        // property doesn't exist on either object
+        return 0;
+      }
+
+      const varA = (typeof a[key] === 'string')
+        ? a[key].toUpperCase() : a[key];
+      const varB = (typeof b[key] === 'string')
+        ? b[key].toUpperCase() : b[key];
+
+      let comparison = 0;
+      if (varA > varB) {
+        comparison = 1;
+      } else if (varA < varB) {
+        comparison = -1;
+      }
+      return (
+        forwards ? comparison : (comparison * -1)
+      );
+    }
   }
+  contacts.sort(compareValues(props.sort.forwards, props.sort.orderBy));
+
+  console.log(contacts);
+
+  return (
+    <div>
+       <ToggleButtonGroupControlled contacts={contacts} />
+    </div>
+  )
 }
