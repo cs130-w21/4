@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #00c4cc;
+  background-color: #00c4cc4a;
 }
 
 .Login-page {
@@ -25,8 +25,8 @@
 }
 
 .NetworkLogo {
-  height: 100px;
-  width: 180px;
+  height: 80px;
+  width: 144px;
 }
 
 .App-logo {
@@ -47,10 +47,19 @@
   height: 100px;
   align-items: center;
   display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 30px;
 }
 
 .Contact-buttons {
-  margin-left: -975px;
+  margin-left: -930px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.Add-button {
+  margin-right: 10px;
 }
 
 .Logout-button {
@@ -93,7 +102,8 @@
   background-color: white;
   margin-left: 700px;
   border: none;
-  height: 80%;
+  height: 40px;
+  font-size: 20px;
   padding: 10px;
 }
 
@@ -118,7 +128,7 @@
 }
 
 .App-header {
-  background-color: #00c4cc;
+  background-color: #027f8670;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

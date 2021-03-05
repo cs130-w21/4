@@ -113,7 +113,7 @@ export default function Filterbar(props) {
   return (
       <div className="Contact-buttons">
         <ButtonGroup>
-          <Button variant="outline-dark" onClick={handleShow}>
+          <Button className="Add-button" variant="outline-dark" onClick={handleShow}>
             Add Contact
           </Button>{' '}
           <DropdownButton variant="dark" id="dropdown-basic-button" title="Sort By">
