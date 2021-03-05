@@ -1,25 +1,25 @@
 language:
- - node_js
+- node_js
 node_js:
- - 14
+- 14
 services:
- - mongodb
+- mongodb
 script:
- - npm install
- - npm install heroku
- - npm install chai
- - npm install chai-http
+- npm install
+- npm install heroku
+- npm install chai
+- npm install chai-http
 after_success:
- - npm test
+- npm test
 deploy:
- provider: heroku
- api_key:
-  secure: fI3BF6kosd4z3Jv6fXgemTScx7eZpbYd6lVZNoAUiGAU7x9kR1wY/WoH7Jipo9dpFlD53EjA+zLyA5vRk1e5VxqMvCL5DMf9K64DEZR9JwBXnS1QIQBB8siMM7EknSyDdcAKOM+M3JmJep3Edrw4dv6noiPQd9bqykWr8bDB/yVPd9hzDGM/DRTqrE71B17ihWcFz96lszrRbbPjkOF1sVamJY6yKJA1M6Bz2qAB4QrQN0wP8h9yg7uQYcwQYFnNzioWwlEIuIk4eX6/7vccKSk0nyBByyEgmg1y2YeNDCKXQ1dFgG8myCNC1+SY7i4MS1BDXjFo/rjJ5CX4v3wmH0FQPQJMvsrkh+RWXjyaBj33JquVBmy7gg+8ffUs+QE7xiQOyVWxk8yzBVVxMz4rQWC8V3w0JuUYtk1cr6gSLcxfW0XRX1PXUhl3JE/Ssbt6C6fbM1Pln2bh98k5TPIUMBo1o/4l9lgnSLYvzHyAuRqu0y92rk0lgdORiV7VBZsn/KBrjpLUPMoRCHCSbi/v2NtlST4XQZyiX6OjqQd3SGNCx3DrBrlKxT+r24HkbgXbpul4bt50J8UI+tX1NvHCE6cdEjSEedEi8YGMcBGET6TjSmIz5rOoaseV0MVuLEZUM3oHO9oYJPmN+udvrhcWdLKdWbXv3fHXyf5Odmo0jKg=
- app: my-personal-network
- on:
-  repo: cs130-w21/4
-  branch: travis_doc
+  provider: heroku
+  api_key:
+    secure: cer1G976LoXPun48rNa/1/zTyC4CJI4VUFzVO2CAPENgiDmL3FkK04sLZDx+h1v6uqVscx1Gpb7YFOXXqOi3onJXUOCIpbdgxkKXXFsN19q0gHUUpeQron48eGPsva7Mup3XW7Xu6WjEt7b1wxBgwihhk7VXC5bYswNKJZHEVvRm20mndUV3tc80Va3zDBsYPYDDtbFAdUi1xBJiQ+Ru9ypNFdw/9DsZ3pqZ5ne9x49YRMyJNIuGmXFg+SeM9GiqxBXiD8pJ30v+SmTTC3/BGrg01S4uUjkk1ca+6KjtEecBjvci7yq12vKODeSSSjxiD9maNH1ce9pOb4YDkbMo3RNyM677GjrsRPbJ1oQgBDfGIWJLJjLJS4168hG8wN4PeuF5TbwuJz/d4UznSCUzeLvV64nGQ/dX2qToydDHPyuLsHw2wvm+i00OsSr3O0TKW/q4Id+Ot/WNvxoKUS6C3EKmoXdstA+6zpWh2meq7cb0wWh/P/HvM+Rt9ceCiocrkniFkZbZtBE5liZ1GVOrnX58Hd/ymVuNm8nZZNamMDplwOYcMzB1xEjUaRyG9Uvres12uXzrxhbClAHf/Ob2hnqodcAVlyNeEZRoubqxXiL2qVasdrkrcvk5biwm18PjSv06yF8rs4QDVhJsjVUdh8MN/A69To/9d2PJE9dnLaI=
+  app: my-personal-network
+  on:
+    repo: cs130-w21/4
+    branch: travis_doc
 notifications:
- email:
-  on_success: never
-  on_failure: always
+  email:
+    on_success: never
+    on_failure: always
