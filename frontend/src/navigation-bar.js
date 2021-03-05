@@ -26,7 +26,7 @@ export default function NavBar(props) {
   return (
     <div className="Nav-bar">
         <img alt="logo" className="NetworkLogo" src={logo} />
-        <div style={{float: 'right'}}>
+        <div>
             <span>
                 <Button variant="info" onClick={handleLogout}>
                     Sign Out

@@ -4,8 +4,8 @@
 }
 
 .NetworkLogo {
-  height: 200px;
-  width: 200px;
+  height: 100px;
+  width: 180px;
 }
 
 .App-logo {
@@ -26,6 +26,14 @@
   height: 100px;
   align-items: center;
   display: flex;
+}
+
+.Contact-buttons {
+  margin-left: -975px;
+}
+
+.Logout-button {
+  margin-right: 1700px;
 }
 
 .Contact-format {
