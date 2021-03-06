@@ -116,7 +116,7 @@ export default function Filterbar(props) {
    */
   return (
       <div className="Contact-buttons">
-        <ButtonGroup>
+        <div className="Button-group">
           <Button className="Add-button" variant="outline-dark" onClick={handleShow}>
             Add Contact
           </Button>{' '}
@@ -127,11 +127,11 @@ export default function Filterbar(props) {
             <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
             <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
           </DropdownButton>
-        </ButtonGroup>
+        </div>
         <>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Add Contact</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form onSubmit={evt => handleSubmit(evt)}>
