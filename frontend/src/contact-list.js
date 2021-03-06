@@ -11,25 +11,32 @@ export class FullContact extends React.Component {
     return (
       <div >
         <div className="Email">
-          <span classname="email">Email: {this.props.email}</span>
+          <span className="Contact-fields">Email: </span> 
+          <span className="Contact-values">{this.props.email}</span>
         </div>
         <div className="PhoneNumber">
-          <span classname="number">Phone Number: {this.props.phoneNumber}</span>
+          <span className="Contact-fields">Phone Number: </span>
+          <span className="Contact-values">{this.props.phoneNumber}</span>
         </div>
         <div className="Company">
-          <span classname="company">Company: {this.props.company}</span>
+          <span className="Contact-fields">Company: </span>
+          <span className="Contact-values">{this.props.company}</span>
         </div>
         <div className="DateMet">
-          <span classname="dateMet">Date Met: {this.props.dateMet}</span>
+          <span className="Contact-fields">Date Met: </span>
+          <span className="Contact-values">{this.props.dateMet}</span>
         </div>
         <div className="DateLastInteracted">
-          <span classname="dateLastInteracted">Last Contacted: {this.props.dateLastInteracted}</span>
+          <span className="Contact-fields">Last Contacted: </span>
+          <span className="Contact-values">{this.props.dateLastInteracted}</span>
         </div>
         <div className="School">
-          <span classname="school">School: {this.props.schoolAttended}</span>
+          <span className="Contact-fields">School: </span>
+          <span className="Contact-values">{this.props.schoolAttended}</span>
         </div>
         <div className="Notes">
-          <span classname="notes">Notes: {this.props.notes}</span>
+          <span className="Contact-fields">Notes: </span>
+          <span className="Contact-values">{this.props.notes}</span>
         </div>
       </div>
     )
@@ -114,7 +121,7 @@ export function ToggleButtonGroupControlled(props) {
             {searchTerm ?
               searchTerm.map((cont, i) =>(
                 <div className = {value? "Contact":"Grid-contact"} >
-                  <Name {...cont} value={value} key={i} />
+                  <Name className="Contact-name" {...cont} value={value} key={i} />
                   {!value? <FullContact {...cont}/>: null}
                 </div>))
               : contacts.map((cont, i) =>(

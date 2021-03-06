@@ -52,6 +52,11 @@
   padding-right: 30px;
 }
 
+.Button-group {
+  display: flex;
+  flex-direction: row;
+}
+
 .Contact-buttons {
   margin-left: -930px;
   margin-top: 20px;
@@ -87,6 +92,7 @@
   margin-top: 24px;
   width: 1024px;
   border-color: white;
+  font-size: 1.25rem;
 }
 
 .Contact-info {
@@ -112,7 +118,23 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  margin-bottom: 50px;
 }
+
+.Name {
+  font-weight: bold;
+  color: dimgray;
+}
+
+.Contact-fields {
+  color: dimgray;
+}
+
+.Contact-values {
+  color: dimgray;
+  font-style: italic;
+}
+
 .Grid-contact {
   color: darkslategrey;
   margin-left: 50px;
