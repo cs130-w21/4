@@ -4,6 +4,11 @@ const db = require('./db');
 const {createError, errorTransform} = require("./error.js")
 const path = require('path')
 
+/**
+ * Express Routes
+ * @module 
+ */
+
 ////// DEFINE FUNCTIONS FOR ROUTES //////
 /**
  * Express.js callback function that returns static files in the '../frontend/build' directory
@@ -19,10 +24,11 @@ function all(req, res, next) {
 }
 
 /**
- *
- * @param req
- * @param res
- * @param next
+ * Express.js callback function that queries the database with sent loginObject.
+ * Sets cookie and sends userObject on success. Sends error HTTP status code on failure.
+ * @param {object} req Express.js representation of HTTP request
+ * @param {object} res Express.js representation of HTTP response
+ * @param {function} next The next middleware function
  * @return {Promise<void>}
  */
 async function login(req, res, next) {
@@ -42,11 +48,11 @@ async function login(req, res, next) {
 }
 
 /**
- *
- * @param req
- * @param res
- * @param next
- * @return {Promise<*>}
+ * Express.js callback function that clears cookie on success and sends error HTTP status code on failure.
+ * @param {object} req Express.js representation of HTTP request
+ * @param {object} res Express.js representation of HTTP response
+ * @param {function} next The next middleware function
+ * @return {Promise<void>}
  */
 async function logout(req, res, next) {
     try {
@@ -63,10 +69,11 @@ async function logout(req, res, next) {
 }
 
 /**
- *
- * @param req
- * @param res
- * @param next
+ * Express.js callback function that queries the database with sent userObject for new user request.
+ * Sets cookie on success and sends error HTTP status code on failure.
+ * @param {object} req Express.js representation of HTTP request
+ * @param {object} res Express.js representation of HTTP response
+ * @param {function} next The next middleware function
  * @return {Promise<void>}
  */
 async function register(req, res, next) {
@@ -89,11 +96,12 @@ async function register(req, res, next) {
 }
 
 /**
- *
- * @param req
- * @param res
- * @param next
- * @return {Promise<*>}
+ * Express.js callback function that queries the database with cookie information and sent contactObject for add contact request.
+ * Sends contactObject with non-null _id field on success. Sends error HTTP status code on failure.
+ * @param {object} req Express.js representation of HTTP request
+ * @param {object} res Express.js representation of HTTP response
+ * @param {function} next The next middleware function
+ * @return {Promise<void>}
  */
 async function contactAdd(req, res, next) {
     try {
@@ -109,11 +117,12 @@ async function contactAdd(req, res, next) {
 }
 
 /**
- *
- * @param req
- * @param res
- * @param next
- * @return {Promise<*>}
+ * Express.js callback function that queries the database with cookie information and sent contactObject for update contact request.
+ * Sends contactObject with non-null _id field on success. Sends error HTTP status code on failure.
+ * @param {object} req Express.js representation of HTTP request
+ * @param {object} res Express.js representation of HTTP response
+ * @param {function} next The next middleware function
+ * @return {Promise<void>}
  */
 async function contactUpdate(req, res, next) {
     try {
@@ -129,11 +138,12 @@ async function contactUpdate(req, res, next) {
 }
 
 /**
- *
- * @param req
- * @param res
- * @param next
- * @return {Promise<*>}
+ * Express.js callback function that queries the database with cookie information and sent contactObject for contactDelete contact request.
+ * Sends error HTTP status code on failure.
+ * @param {object} req Express.js representation of HTTP request
+ * @param {object} res Express.js representation of HTTP response
+ * @param {function} next The next middleware function
+ * @return {Promise<void>}
  */
 async function contactDelete(req, res, next) {
     try {
@@ -149,11 +159,12 @@ async function contactDelete(req, res, next) {
 }
 
 /**
- *
- * @param req
- * @param res
- * @param next
- * @return {Promise<*>}
+ * Express.js callback function that queries the database with cookie information core object request.
+ * Sends coreObject on success. Sends error HTTP status code on failure.
+ * @param {object} req Express.js representation of HTTP request
+ * @param {object} res Express.js representation of HTTP response
+ * @param {function} next The next middleware function
+ * @return {Promise<void>}
  */
 async function getCore(req, res, next) {
     try {
@@ -170,7 +181,7 @@ async function getCore(req, res, next) {
 }
 
 /**
- *
+ * Wrapper for all mounted callbacks for catching errors and debugging
  * @param inputFunction
  * @return {function(*=, *=, *=): Promise<void>}
  */

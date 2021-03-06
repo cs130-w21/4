@@ -2,7 +2,6 @@
     "opts": {
         "destination":"./documentation/output/"
     },
-    "plugins": [],
     "source": {
         "include":["."],
         "includePattern": "((^.+\\\\frontend\\\\.+\\.js$)|(^.+\\\\Backend\\\\.+\\.js$))",

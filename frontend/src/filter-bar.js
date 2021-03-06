@@ -120,23 +120,6 @@ export default function Filterbar(props) {
    * @function
    */
   return (
-<<<<<<< HEAD
-      <div>
-        <ButtonToolbar>
-          <ButtonGroup className="mr-2" >
-            <DropdownButton variant="secondary" id="dropdown-basic-button" title="Sort By">
-              <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
-            </DropdownButton>
-            <Button variant="outline-dark" onClick={handleShow}>
-              Add Contact
-            </Button>
-          </ButtonGroup>
-        </ButtonToolbar>
-=======
       <div className="Contact-buttons">
         <div className="Button-group">
           <Button className="Add-button" variant="outline-dark" onClick={handleShow}>
@@ -152,7 +135,6 @@ export default function Filterbar(props) {
               <Dropdown.Item onSelect={() => props.handleOrderChange("company")} active={props.sort.orderBy === "company"}>Company</Dropdown.Item>
             </DropdownButton>
         </div>
->>>>>>> ce37a4c4ba5221501a5aedad8f4154fd1513857e
         <>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>

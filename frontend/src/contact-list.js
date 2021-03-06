@@ -19,38 +19,27 @@ import FormControl from 'react-bootstrap/FormControl';
  * @module 
  */
 
-export class FullContact extends React.Component {
-  render() {
-    return (
-      <div >
-        <div className="Email">
-          <span className="Contact-fields">Email: </span> 
-          <span className="Contact-values">{this.props.email}</span>
-        </div>
-        <div className="PhoneNumber">
-          <span className="Contact-fields">Phone Number: </span>
-          <span className="Contact-values">{this.props.phoneNumber}</span>
-        </div>
-        <div className="Company">
-          <span className="Contact-fields">Company: </span>
-          <span className="Contact-values">{this.props.company}</span>
-        </div>
-        <div className="DateMet">
-          <span className="Contact-fields">Date Met: </span>
-          <span className="Contact-values">{this.props.dateMet}</span>
-        </div>
-        <div className="DateLastInteracted">
-          <span className="Contact-fields">Last Contacted: </span>
-          <span className="Contact-values">{this.props.dateLastInteracted}</span>
-        </div>
-        <div className="School">
-          <span className="Contact-fields">School: </span>
-          <span className="Contact-values">{this.props.schoolAttended}</span>
-        </div>
-        <div className="Notes">
-          <span className="Contact-fields">Notes: </span>
-          <span className="Contact-values">{this.props.notes}</span>
-        </div>
+ function StaticContact(props) {
+
+  return (
+    <div>
+      <div className="Email">
+        <span classname="email">Email: {props.email}</span>
+      </div>
+      <div className="PhoneNumber">
+        <span classname="number">Phone Number: {props.phoneNumber}</span>
+      </div>
+      <div className="Company">
+        <span classname="company">Company: {props.company}</span>
+      </div>
+      <div className="DateMet">
+        <span classname="dateMet">Date Met: {props.dateMet}</span>
+      </div>
+      <div className="DateLastInteracted">
+        <span classname="dateLastInteracted">Last Contacted: {props.dateLastInteracted}</span>
+      </div>
+      <div className="School">
+        <span classname="school">School: {props.schoolAttended}</span>
       </div>
       <div className="Notes">
         <span classname="notes">Notes: {props.notes}</span>
@@ -58,6 +47,47 @@ export class FullContact extends React.Component {
     </div>
   );
 }
+
+
+// export class FullContact extends React.Component {
+//   render() {
+//     return (
+//       <div >
+//         <div className="Email">
+//           <span className="Contact-fields">Email: </span> 
+//           <span className="Contact-values">{this.props.email}</span>
+//         </div>
+//         <div className="PhoneNumber">
+//           <span className="Contact-fields">Phone Number: </span>
+//           <span className="Contact-values">{this.props.phoneNumber}</span>
+//         </div>
+//         <div className="Company">
+//           <span className="Contact-fields">Company: </span>
+//           <span className="Contact-values">{this.props.company}</span>
+//         </div>
+//         <div className="DateMet">
+//           <span className="Contact-fields">Date Met: </span>
+//           <span className="Contact-values">{this.props.dateMet}</span>
+//         </div>
+//         <div className="DateLastInteracted">
+//           <span className="Contact-fields">Last Contacted: </span>
+//           <span className="Contact-values">{this.props.dateLastInteracted}</span>
+//         </div>
+//         <div className="School">
+//           <span className="Contact-fields">School: </span>
+//           <span className="Contact-values">{this.props.schoolAttended}</span>
+//         </div>
+//         <div className="Notes">
+//           <span className="Contact-fields">Notes: </span>
+//           <span className="Contact-values">{this.props.notes}</span>
+//         </div>
+//       </div>
+//       <div className="Notes">
+//         <span classname="notes">Notes: {props.notes}</span>
+//       </div>
+//     </div>
+//   );
+// }
 
 function EditContact(props) {
 
