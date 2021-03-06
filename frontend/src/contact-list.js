@@ -12,31 +12,31 @@ export class FullContact extends React.Component {
       <div >
         <div className="Email">
           <span className="Contact-fields">Email: </span> 
-          <span>{this.props.email}</span>
+          <span className="Contact-values">{this.props.email}</span>
         </div>
         <div className="PhoneNumber">
           <span className="Contact-fields">Phone Number: </span>
-          <span>{this.props.phoneNumber}</span>
+          <span className="Contact-values">{this.props.phoneNumber}</span>
         </div>
         <div className="Company">
           <span className="Contact-fields">Company: </span>
-          <span>{this.props.company}</span>
+          <span className="Contact-values">{this.props.company}</span>
         </div>
         <div className="DateMet">
           <span className="Contact-fields">Date Met: </span>
-          <span>{this.props.dateMet}</span>
+          <span className="Contact-values">{this.props.dateMet}</span>
         </div>
         <div className="DateLastInteracted">
           <span className="Contact-fields">Last Contacted: </span>
-          <span>{this.props.dateLastInteracted}</span>
+          <span className="Contact-values">{this.props.dateLastInteracted}</span>
         </div>
         <div className="School">
           <span className="Contact-fields">School: </span>
-          <span>{this.props.schoolAttended}</span>
+          <span className="Contact-values">{this.props.schoolAttended}</span>
         </div>
         <div className="Notes">
           <span className="Contact-fields">Notes: </span>
-          <span>{this.props.notes}</span>
+          <span className="Contact-values">{this.props.notes}</span>
         </div>
       </div>
     )

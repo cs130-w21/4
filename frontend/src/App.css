@@ -130,6 +130,11 @@
   color: dimgray;
 }
 
+.Contact-values {
+  color: dimgray;
+  font-style: italic;
+}
+
 .Grid-contact {
   color: darkslategrey;
   margin-left: 50px;
