@@ -16,7 +16,7 @@ import FormControl from 'react-bootstrap/FormControl';
 
 /**
  * Contact-list component
- * @module 
+ * @module
  */
 
  function StaticContact(props) {
@@ -54,7 +54,7 @@ import FormControl from 'react-bootstrap/FormControl';
 //     return (
 //       <div >
 //         <div className="Email">
-//           <span className="Contact-fields">Email: </span> 
+//           <span className="Contact-fields">Email: </span>
 //           <span className="Contact-values">{this.props.email}</span>
 //         </div>
 //         <div className="PhoneNumber">
@@ -372,6 +372,11 @@ function ToggleButtonGroupControlled(props) {
     setInput(input);
     setSearchTerm(filtered);
   }
+
+  useEffect(() => {
+    contacts.sort(compareValues(props.sort.forwards, props.sort.orderBy));
+    updateInput(input);
+  }, [props.sort]);
 
   useEffect(() => {
     updateInput(input);
