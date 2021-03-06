@@ -97,10 +97,15 @@ export default function Login(props) {
 
 /**
  *
- * @param onRegister
- * @param rest
- * @return {JSX.Element}
+ * @param onRegister - a flag that will signal the
+ * need to interact with handleRegisterUser
+ * @param rest - assists with handling of the modal
+ * @return {JSX.Element} returns the rendering of the
+ * new user registration form
  * @constructor
+ *
+ * Purpose: to allow the user to view the registration
+ * form and input their information within it
  */
 function RegisterUserMenu({onRegister, ...rest}) {
 

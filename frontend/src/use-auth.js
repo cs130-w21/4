@@ -133,15 +133,6 @@ function useProvideAuth() {
 
   const [user, setUser] = useState(null);
 
-  /**
-   * @param username - user's username, attained from user input
-   * within the login page
-   * @param password - user's password, attained from user input
-   * within the login page
-   * @return the result of the login or null if the login was unsuccessful
-   *
-   * Purpose: to allow a registered user access to their personal network
-   */
   const login = (username, password) => {
     return auth.login(username, password)
     .then(response => {
@@ -154,12 +145,6 @@ function useProvideAuth() {
     })
   };
 
-  /**
-   * @return logout promise
-   *
-   * Purpose: to log the user out which will then
-   * allow another, or the same user, to log in again
-   */
   const logout = ()  => {
     return auth.logout()
     .then(didLogout => {

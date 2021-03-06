@@ -10,8 +10,12 @@ import LoadingPage from './loading-page'
 /**
  *
  * @param props
- * @return {JSX.Element}
+ * @return {JSX.Element} returns the rendering associated with
+ * viewing the homepage of the web application
  * @constructor
+ *
+ * Purpose: to provide the user a view of the web application's
+ * homepage after getting through the login and loading pages
  */
 export default function Home(props) {
 

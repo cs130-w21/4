@@ -11,6 +11,7 @@ import React, {useState} from "react";
 import { useCore } from "./use-core.js"
 
 /**
+ *
  * @param props
  * @return returns the rendering of the add contact
  * button and the input modal
@@ -44,6 +45,7 @@ export default function Filterbar(props) {
   }
 
   /**
+   *
    * Purpose: to clear fields after successful submission and
    * handling of newly entered contact information; to ensure
    * the modal input fields are clear, and ready for the next
@@ -62,6 +64,7 @@ export default function Filterbar(props) {
   }
 
   /**
+   *
    * @param evt - a trigger that sends the signal to initiate
    * the new contact submission process.
    * @return {Promise<void>}
@@ -105,6 +108,7 @@ export default function Filterbar(props) {
   //implement on onChange function for toggle button
 
   /**
+   *
    * Purpose: renders pop-up modal and buttons. It
    * also receives the user's input to the fields and
    * directs it to the proper variable to contain the given
