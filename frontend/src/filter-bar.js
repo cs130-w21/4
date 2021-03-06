@@ -120,13 +120,15 @@ export default function Filterbar(props) {
           <Button className="Add-button" variant="outline-dark" onClick={handleShow}>
             Add Contact
           </Button>{' '}
-          <DropdownButton variant="dark" id="dropdown-basic-button" title="Sort By">
-            <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
-            <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
-            <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
-          </DropdownButton>
+          <DropdownButton variant="secondary" id="dropdown-basic-button" title="Order By">
+              <Dropdown.Item onSelect={() => props.handleSortChange(true)} active={props.sort.forwards}>A-Z</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleSortChange(false)} active={!props.sort.forwards}>Z-A</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onSelect={() => props.handleOrderChange("first")} active={props.sort.orderBy === "first"}>First Name</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleOrderChange("last")} active={props.sort.orderBy === "last"}>Last Name</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleOrderChange("role")} active={props.sort.orderBy === "role"}>Role</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleOrderChange("company")} active={props.sort.orderBy === "company"}>Company</Dropdown.Item>
+            </DropdownButton>
         </div>
         <>
           <Modal show={show} onHide={handleClose}>
