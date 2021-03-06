@@ -27,7 +27,7 @@ import FormControl from 'react-bootstrap/FormControl';
         <span classname="email">Email: {props.email}</span>
       </div>
       <div className="PhoneNumber">
-        <span classname="number">Phone Number: {props.phoneNumber}</span>
+        <span classname="number">Phone Number: {props.phone}</span>
       </div>
       <div className="Company">
         <span classname="company">Company: {props.company}</span>
@@ -35,8 +35,8 @@ import FormControl from 'react-bootstrap/FormControl';
       <div className="DateMet">
         <span classname="dateMet">Date Met: {props.dateMet}</span>
       </div>
-      <div className="DateLastInteracted">
-        <span classname="dateLastInteracted">Last Contacted: {props.dateLastInteracted}</span>
+      <div className="Role">
+        <span classname="role">Role: {props.role}</span>
       </div>
       <div className="School">
         <span classname="school">School: {props.schoolAttended}</span>
