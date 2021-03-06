@@ -29,22 +29,6 @@ const core = {
     return response;
   },
 
-  /*
-  addContact(contactObject) {
-    return fetch("/api/contact/add", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Credentials': 'include'
-      },
-      body: JSON.stringify(contactObject)
-    })
-    // TODO: change to response.json() once backend sends back object
-    .then(response => true)
-    .catch(err => false);
-  },
-
-   */
   /**
    * @param contactObject - includes: first name, last name, etc,
    * which comes from the user's input within the pop-up modal. The
@@ -65,13 +49,13 @@ const core = {
       },
       body: JSON.stringify(contactObject)
     })
-        .then(response => response.json())
-        .catch(err => {
-          if (err.status === 401) {
-            alert("Cannot add new contact. Please try again later.");
-            return null;
-          }
-        });
+    .then(response => response.json())
+    .catch(err => {
+      if (err.status === 401) {
+        return null;
+      }
+    });
+
     return result;
   },
 
@@ -95,7 +79,13 @@ const core = {
       },
       body: JSON.stringify(contactObject)
     })
-    .then(response => true)
+    .then(response => {
+      if (response.status === 200) {
+        return true;
+      } else {
+        return false;
+      }
+    })
     .catch(err => false);
   },
 
@@ -117,7 +107,13 @@ const core = {
       },
       body: JSON.stringify(contactObject)
     })
-    .then(response => true)
+    .then(response => {
+      if (response.status === 200) {
+        return true;
+      } else {
+        return false;
+      }
+    })
     .catch(err => false);
   }
 };
@@ -187,27 +183,20 @@ function useProvideCore() {
    * This is primarily used for routing and updating core object.
    */
   const addContact = (contactObject) => {
-    let didAdd = core.addContact(contactObject);
-    if (didAdd) {
-      console.log("success");
-    }
-    else {
-      console.log("error");
-    }
-    /*
     return core.addContact(contactObject)
-    .then(didAdd => {
-      if (didAdd) {
-        console.log("success");
-        // TODO: udpate core object
+    .then(response => {
+      if (response == null) {
+        return null;
       }
-      else {
-        console.log("error");
-        // TODO: handle add error
-      }
+
+      console.log(response);
+      setCoreObject((prev, props) => {
+        prev.networkObject.contacts.push(response);
+        return prev;
+      });
+
+      return response;
     });
-     */
-    return didAdd;
   };
 
 
@@ -225,13 +214,16 @@ function useProvideCore() {
     return core.updateContact(contactObject)
     .then(didUpdate => {
       if (didUpdate) {
-        console.log("success");
-        // TODO: update core object
+        let coreCopy = {...coreObject};
+        let contactsCopy = coreCopy.networkObject.contacts.filter((obj) => {
+          return obj["_id"] !== contactObject["_id"];
+        });
+        coreCopy.networkObject.contacts = contactsCopy;
+        coreCopy.networkObject.contacts.push(contactObject);
+        setCoreObject(coreCopy);
       }
-      else {
-        console.log("error");
-        // TODO: handle update error
-      }
+
+      return didUpdate;
     });
   };
 
@@ -248,13 +240,15 @@ function useProvideCore() {
     return core.deleteContact(contactObject)
     .then(didDelete => {
       if (didDelete) {
-        console.log("success");
-        // TODO: update core object
+        let coreCopy = {...coreObject};
+        let contactsCopy = coreCopy.networkObject.filter((obj) => {
+          return obj["_id"] !== contactObject["_id"];
+        });
+        coreCopy.networkObject.contacts = contactsCopy;
+        setCoreObject(coreCopy);
       }
-      else {
-        console.log("error");
-        // TODO: handle delete error
-      }
+
+      return didDelete;
     });
   };
 
