@@ -69,6 +69,18 @@ function EditContact(props) {
     }
   }
 
+  const handleDelete = async () => {
+    let newObject = {
+      _id: props._id, first, last, email, phone, company, role, dateMet, schoolAttended, notes
+    };
+    let success = await core.deleteContact(newObject);
+    if (success) {
+      props.onHide();
+    } else {
+      alert("Failed to delete contact. Please try again later.");
+    }
+  }
+
   return (
     <Modal {...props} backdrop="static">
       <Modal.Header closeButton>
@@ -202,8 +214,8 @@ function EditContact(props) {
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.onHide}>
-          Close
+        <Button variant="danger" onClick={() => handleDelete()}>
+          Delete Contact
         </Button>
         <Button variant="primary" onClick={() => handleSubmit()}>
           Save Changes
@@ -277,7 +289,6 @@ function ToggleButtonGroupControlled(props) {
 
   let core = useCore();
   const contacts = core.coreObject.networkObject.contacts;
-
   const compareValues = (forwards, key) => {
     return function innerSort(a,b) {
       if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {

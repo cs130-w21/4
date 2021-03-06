@@ -241,7 +241,7 @@ function useProvideCore() {
     .then(didDelete => {
       if (didDelete) {
         let coreCopy = {...coreObject};
-        let contactsCopy = coreCopy.networkObject.filter((obj) => {
+        let contactsCopy = coreCopy.networkObject.contacts.filter((obj) => {
           return obj["_id"] !== contactObject["_id"];
         });
         coreCopy.networkObject.contacts = contactsCopy;
