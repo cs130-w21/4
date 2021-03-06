@@ -4,6 +4,11 @@ import React, {
   createContext
 } from "react";
 
+/**
+ * Use-auth component
+ * @module 
+ */
+
 // this auth can be replaced with anything that provides the same API
 // could be extracted to separate file
 const auth = {
@@ -102,11 +107,10 @@ const auth = {
 const authContext = createContext();
 
 /**
+ * Purpose: to get the authentication object which is needed
+ * to allow the user to enter and use the web app
  * @return returns the authentication required
  * for login, logout, session cookies, etc
- *
- * purpose: to get the authentication object which is needed
- * to allow the user to enter and use the web app
  */
 export function ProvideAuth({ children }) {
   const auth = useProvideAuth();
@@ -123,11 +127,10 @@ export const useAuth = () => {
 };
 
 /**
+ * Purpose: to use the authentication object to allow the
+ * user to login to the web app
  * @return returns the response from the login attempt, or
  * null if the attempt was successful.
- *
- * purpose: to use the authentication object to allow the
- * user to login to the web app
  */
 function useProvideAuth() {
 

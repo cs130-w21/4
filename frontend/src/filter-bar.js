@@ -11,16 +11,18 @@ import React, {useState} from "react";
 import { useCore } from "./use-core.js"
 
 /**
- *
- * @param props
- * @return returns the rendering of the add contact
- * button and the input modal
- * @constructor
- *
+ * Filter-bar component
+ * @module 
+ */
+
+/**
  * Purpose: this function handles user input in regards to
  * adding contacts. It renders the pop-up modal which allows
  * the user to enter information for a given contact they
  * wish to save in their personal network
+ * @param {object} props
+ * @return {JSX.Element} returns the rendering of the add contact
+ * button and the input modal
  */
 export default function Filterbar(props) {
 
@@ -45,11 +47,12 @@ export default function Filterbar(props) {
   }
 
   /**
-   *
    * Purpose: to clear fields after successful submission and
    * handling of newly entered contact information; to ensure
    * the modal input fields are clear, and ready for the next
    * time a contact is added.
+   * @name clearFields
+   * @function
    */
   const clearFields = () => {
     setFirstname('')
@@ -64,16 +67,16 @@ export default function Filterbar(props) {
   }
 
   /**
-   *
-   * @param evt - a trigger that sends the signal to initiate
-   * the new contact submission process.
-   * @return {Promise<void>}
-   *
    * Purpose: to create a contact object with the user's newly
    * entered contact information, then send it to use-core.js
    * which contacts the database. The results from use-core.js
    * will dictate whether the user is notified of a successful
    * add or an unsuccessful one.
+   * @name handleSubmit
+   * @function
+   * @param evt - a trigger that sends the signal to initiate
+   * the new contact submission process.
+   * @return {Promise<void>}
    */
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -105,31 +108,33 @@ export default function Filterbar(props) {
     handleClose();
   }
 
-  //implement on onChange function for toggle button
 
+  //implement on onChange function for toggle button
+  
   /**
-   *
    * Purpose: renders pop-up modal and buttons. It
    * also receives the user's input to the fields and
    * directs it to the proper variable to contain the given
    * value.
+   * @name render
+   * @function
    */
   return (
-      <div className="Contact-buttons">
-        <ButtonGroup>
-          <Button className="Add-button" variant="outline-dark" onClick={handleShow}>
-            Add Contact
-          </Button>{' '}
-          <DropdownButton variant="secondary" id="dropdown-basic-button" title="Order By">
-              <Dropdown.Item onSelect={() => props.handleSortChange(true)} active={props.sort.forwards}>A-Z</Dropdown.Item>
-              <Dropdown.Item onSelect={() => props.handleSortChange(false)} active={!props.sort.forwards}>Z-A</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item onSelect={() => props.handleOrderChange("first")} active={props.sort.orderBy === "first"}>First Name</Dropdown.Item>
-              <Dropdown.Item onSelect={() => props.handleOrderChange("last")} active={props.sort.orderBy === "last"}>Last Name</Dropdown.Item>
-              <Dropdown.Item onSelect={() => props.handleOrderChange("role")} active={props.sort.orderBy === "role"}>Role</Dropdown.Item>
-              <Dropdown.Item onSelect={() => props.handleOrderChange("company")} active={props.sort.orderBy === "company"}>Company</Dropdown.Item>
+      <div>
+        <ButtonToolbar>
+          <ButtonGroup className="mr-2" >
+            <DropdownButton variant="secondary" id="dropdown-basic-button" title="Sort By">
+              <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
+              <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
+              <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
+              <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
+              <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
             </DropdownButton>
-        </ButtonGroup>
+            <Button variant="outline-dark" onClick={handleShow}>
+              Add Contact
+            </Button>
+          </ButtonGroup>
+        </ButtonToolbar>
         <>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>

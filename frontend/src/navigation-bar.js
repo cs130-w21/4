@@ -4,15 +4,17 @@ import Button from "react-bootstrap/Button";
 import logo from './mpn_logo.png';
 
 /**
- *
- * @param props
- * @return {JSX.Element} returns the rendering associated with
- * homepage's navigation bar.
- * @constructor
- *
+ * Navigation-bar component
+ * @module 
+ */
+
+/**
  * Purpose: to allow the user to view the navigation bar
  * (including the application logo) and interact with
  * the logout button
+ * @param props
+ * @return {JSX.Element} returns the rendering associated with
+ * homepage's navigation bar.
  */
 export default function NavBar(props) {
 

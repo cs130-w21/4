@@ -8,14 +8,16 @@ import { ProvideAuth } from './use-auth';
 import './App.css';
 
 /**
- *
- * @param props
- * @return {JSX.Element} returns the route which allows the
- * user to get to the login
- * @constructor
- *
+ * React app
+ * @module 
+ */
+
+/**
  * Purpose: to provide a path for the user to enter the
  * login aspect of the application
+ * @param {object} props
+ * @return {JSX.Element} returns the route which allows the
+ * user to get to the login
  */
 function App(props) {
   return (

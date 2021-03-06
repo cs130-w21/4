@@ -8,12 +8,15 @@ import {
 import { useAuth } from './use-auth';
 
 /**
+ * Private-route component
+ * @module 
+ */
+
+/**
+ * Purpose: to route the user to the login page.
  * @param children
  * @param rest
  * @return returns the route to the login page
- * @constructor
- *
- * Purpose: to route the user to the login page.
  */
 export default function PrivateRoute({children, ...rest}) {
   const auth = useAuth();

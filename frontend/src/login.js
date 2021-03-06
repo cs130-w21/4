@@ -16,15 +16,18 @@ import logo from './mpn_logo.png';
 import { useAuth } from "./use-auth.js"
 
 /**
- * @param props
- * @return returns the rendering of the login page (a submit buttons and
- * 2 input forms; one for username, one for password.
- * @constructor
- *
+ * Login component
+ * @module 
+ */
+
+/**
  * Purpose: to collect the user's login credentials via
  * the input form, then send said credentials to use-auth.js
  * to verify thus allowing the user to login & view their
  * personal network (given their credentials are correct)
+ * @param props
+ * @return returns the rendering of the login page (a submit buttons and
+ * 2 input forms; one for username, one for password.
  */
 export default function Login(props) {
 
@@ -96,16 +99,13 @@ export default function Login(props) {
 }
 
 /**
- *
+ * Purpose: to allow the user to view the registration
+ * form and input their information within it
  * @param onRegister - a flag that will signal the
  * need to interact with handleRegisterUser
  * @param rest - assists with handling of the modal
  * @return {JSX.Element} returns the rendering of the
  * new user registration form
- * @constructor
- *
- * Purpose: to allow the user to view the registration
- * form and input their information within it
  */
 function RegisterUserMenu({onRegister, ...rest}) {
 

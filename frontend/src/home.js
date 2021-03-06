@@ -8,14 +8,16 @@ import { useCore } from './use-core'
 import LoadingPage from './loading-page'
 
 /**
- *
+ * Home component
+ * @module 
+ */
+
+/**
+ * Purpose: to provide the user a view of the web application's
+ * homepage after getting through the login and loading pages
  * @param props
  * @return {JSX.Element} returns the rendering associated with
  * viewing the homepage of the web application
- * @constructor
- *
- * Purpose: to provide the user a view of the web application's
- * homepage after getting through the login and loading pages
  */
 export default function Home(props) {
 

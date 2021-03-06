@@ -14,6 +14,11 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 
+/**
+ * Contact-list component
+ * @module 
+ */
+
 function StaticContact(props) {
 
   return (
@@ -276,14 +281,11 @@ class Name extends React.Component {
 }
 
 /**
- *
+ * Purpose: to allow the user to toggle between list
+ * and grid format
  * @param props
  * @return {JSX.Element} returns the rendering associated with
  * how the user wishes to view their contacts
- * @constructor
- *
- * Purpose: to allow the user to toggle between list
- * and grid format
  */
 function ToggleButtonGroupControlled(props) {
 
@@ -362,15 +364,12 @@ function ToggleButtonGroupControlled(props) {
 }
 
 /**
- *
- * @param props
- * @return {JSX.Element} returns the rendering associated with
- * viewing the user's contacts
- * @constructor
- *
  * Purpose: to allow the user to view their contacts. Works
  * with ToggleButtonGroupControlled to control how the user
  * wishes to view their contacts
+ * @param props
+ * @return {JSX.Element} returns the rendering associated with
+ * viewing the user's contacts
  */
 export default function ContactList(props) {
 
