@@ -120,6 +120,7 @@ export default function Filterbar(props) {
    * @function
    */
   return (
+<<<<<<< HEAD
       <div>
         <ButtonToolbar>
           <ButtonGroup className="mr-2" >
@@ -135,10 +136,27 @@ export default function Filterbar(props) {
             </Button>
           </ButtonGroup>
         </ButtonToolbar>
+=======
+      <div className="Contact-buttons">
+        <div className="Button-group">
+          <Button className="Add-button" variant="outline-dark" onClick={handleShow}>
+            Add Contact
+          </Button>{' '}
+          <DropdownButton variant="secondary" id="dropdown-basic-button" title="Order By">
+              <Dropdown.Item onSelect={() => props.handleSortChange(true)} active={props.sort.forwards}>A-Z</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleSortChange(false)} active={!props.sort.forwards}>Z-A</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onSelect={() => props.handleOrderChange("first")} active={props.sort.orderBy === "first"}>First Name</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleOrderChange("last")} active={props.sort.orderBy === "last"}>Last Name</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleOrderChange("role")} active={props.sort.orderBy === "role"}>Role</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleOrderChange("company")} active={props.sort.orderBy === "company"}>Company</Dropdown.Item>
+            </DropdownButton>
+        </div>
+>>>>>>> ce37a4c4ba5221501a5aedad8f4154fd1513857e
         <>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Add Contact</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form onSubmit={evt => handleSubmit(evt)}>
