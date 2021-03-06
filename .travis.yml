@@ -1,10 +1,25 @@
-install:
- - npm install
-language: 
- - node_js
+language:
+- node_js
 node_js:
- - 14
-script: 
- - npm install
+- 14
+services:
+- mongodb
+script:
+- npm install
+- npm install heroku
+- npm install chai
+- npm install chai-http
 after_success:
- - npm test
+- npm test
+deploy:
+  provider: heroku
+  api_key:
+    secure: nP+Zqpyd1QhVWuQYICrURWoIWkYoRiq01q22VJR1wCm5B3lJcke7xGI480ECIM1DuVoEebxqzX4fiGN9/tNU0M3g97FYbhYADRHfI2Azvs6pBl3zC/1ialdSTDWPqPk75sBgZSXrKCuPGp2DjQ5iOT6LRmgu9XTkb+9SsoE2HdQTZM3wX65+fHMM0kRO+H86vYkQofwAVj2ayr37ILxcRUXl7bwzeZm4LUjGh/hRekJmZd3vF4tYooGC/fjopVJtEiNPA/OJMjisy70XcV4JDWRBoeEDNokwb48uvb/xnK+FLpodSvNxs/eEkf+f+j9pybdAlgjJbQVNBjeoW9vncDo2ppLkXE01eByOhA7U2L+s3WBrGw94Gs3Yp9uD+UckKin0iywxDEZSqKHp9Wd31ldWGPTPaamml+WHBPwt7drxsCD86Wx+58OVluMxKAWiFCgI1osxVKkr5nXEQXtg5igKcJbW94wlXLkIzJbA4w76FmQtk9BwOJzmr2RLaDC3JHqJLw2/9bYANmJzGyf70hPkwQibaibMNyKuix4W8QWgMG4JyxA1a06U/fAppAUCPA/egiqOTsRyQeLtixabOTqrlUZjqxitRTq6/oOXS0rjnV1wsm73m6SkP3HilfO7vZp1PHA51sZ6nh/LXL/m/NkMhmD04IJFyH6LOsf1xcM=
+  app: my-personal-network
+  on:
+    repo: cs130-w21/4
+    branch: master
+notifications:
+  email:
+    on_success: never
+    on_failure: always

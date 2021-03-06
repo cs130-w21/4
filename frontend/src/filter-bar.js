@@ -11,6 +11,7 @@ import React, {useState} from "react";
 import { useCore } from "./use-core.js"
 
 /**
+ *
  * @param props
  * @return returns the rendering of the add contact
  * button and the input modal
@@ -44,6 +45,7 @@ export default function Filterbar(props) {
   }
 
   /**
+   *
    * Purpose: to clear fields after successful submission and
    * handling of newly entered contact information; to ensure
    * the modal input fields are clear, and ready for the next
@@ -62,6 +64,7 @@ export default function Filterbar(props) {
   }
 
   /**
+   *
    * @param evt - a trigger that sends the signal to initiate
    * the new contact submission process.
    * @return {Promise<void>}
@@ -102,31 +105,31 @@ export default function Filterbar(props) {
     handleClose();
   }
 
-
   //implement on onChange function for toggle button
-  
+
   /**
+   *
    * Purpose: renders pop-up modal and buttons. It
    * also receives the user's input to the fields and
    * directs it to the proper variable to contain the given
    * value.
    */
   return (
-      <div>
-        <ButtonToolbar>
-          <ButtonGroup className="mr-2" >
-            <DropdownButton variant="secondary" id="dropdown-basic-button" title="Sort By">
-              <Dropdown.Item href="#/action-1">First Name A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Last Name A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Role A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-4">Company A-Z</Dropdown.Item>
-              <Dropdown.Item href="#/action-5">Newly Added</Dropdown.Item>
+      <div className="Contact-buttons">
+        <ButtonGroup>
+          <Button className="Add-button" variant="outline-dark" onClick={handleShow}>
+            Add Contact
+          </Button>{' '}
+          <DropdownButton variant="secondary" id="dropdown-basic-button" title="Order By">
+              <Dropdown.Item onSelect={() => props.handleSortChange(true)} active={props.sort.forwards}>A-Z</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleSortChange(false)} active={!props.sort.forwards}>Z-A</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item onSelect={() => props.handleOrderChange("first")} active={props.sort.orderBy === "first"}>First Name</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleOrderChange("last")} active={props.sort.orderBy === "last"}>Last Name</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleOrderChange("role")} active={props.sort.orderBy === "role"}>Role</Dropdown.Item>
+              <Dropdown.Item onSelect={() => props.handleOrderChange("company")} active={props.sort.orderBy === "company"}>Company</Dropdown.Item>
             </DropdownButton>
-            <Button variant="outline-dark" onClick={handleShow}>
-              Add Contact
-            </Button>
-          </ButtonGroup>
-        </ButtonToolbar>
+        </ButtonGroup>
         <>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>

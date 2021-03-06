@@ -1,6 +1,19 @@
 import React from 'react'
 import { useAuth } from './use-auth'
+import Button from "react-bootstrap/Button";
+import logo from './mpn_logo.png';
 
+/**
+ *
+ * @param props
+ * @return {JSX.Element} returns the rendering associated with
+ * homepage's navigation bar.
+ * @constructor
+ *
+ * Purpose: to allow the user to view the navigation bar
+ * (including the application logo) and interact with
+ * the logout button
+ */
 export default function NavBar(props) {
 
   const auth = useAuth();
@@ -17,10 +30,14 @@ export default function NavBar(props) {
 
   return (
     <div className="Nav-bar">
-      <span className="Nav-bar-title">Summer's Personal Network</span>
-      <span>
-        <button onClick={handleLogout}>Sign Out</button>
-      </span>
+        <img alt="logo" className="NetworkLogo" src={logo} />
+        <div>
+            <span>
+                <Button variant="info" onClick={handleLogout}>
+                    Sign Out
+                </Button>
+            </span>
+        </div>
     </div>
   )
 }

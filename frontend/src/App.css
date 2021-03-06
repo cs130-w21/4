@@ -1,6 +1,32 @@
 .App {
   text-align: center;
-  background-color: #e9e5c2;
+  background-color: #00c4cc4a;
+}
+
+.Login-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.Create-account {
+  margin-top: 20px;
+  margin-left: 0px;
+}
+
+.NetworkLogoLogin {
+  height: 200px;
+  width: 360px;
+  margin-bottom: 20px;
+}
+
+.NetworkLogo {
+  height: 80px;
+  width: 144px;
 }
 
 .App-logo {
@@ -16,11 +42,28 @@
 
 .Nav-bar {
   color: white;
-  background-color: #8eb9a6;
+  background-color: #000000;
   width: 100%;
-  height: 75px;
+  height: 100px;
   align-items: center;
   display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 30px;
+}
+
+.Contact-buttons {
+  margin-left: -930px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.Add-button {
+  margin-right: 10px;
+}
+
+.Logout-button {
+  margin-right: 1700px;
 }
 
 .Contact-format {
@@ -59,7 +102,8 @@
   background-color: white;
   margin-left: 700px;
   border: none;
-  height: 80%;
+  height: 40px;
+  font-size: 20px;
   padding: 10px;
 }
 
@@ -78,13 +122,13 @@
   margin-top: 10px;
   border-color: white;
 }
-.Grid-contact-container{
+.Grid-contact-container {
   display: grid;
   grid-template-columns: auto auto;
 }
 
 .App-header {
-  background-color: #e9e5c2;
+  background-color: #027f8670;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

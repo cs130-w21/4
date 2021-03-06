@@ -152,6 +152,7 @@ class Database {
       delete contactObject._id
       contactObject.type = 'contact'
       await collection.insertOne(contactObject)
+      return contactObject // now contains _id
     }
     catch (err) {
       throw errorTransform(err, 401, "Failed adding contact")
@@ -282,19 +283,17 @@ async function test() {
       // console.log(`${username}'s network:`)
       // console.log(networkObject)
 
-  //     // test queryAddContact
-  //     var newContact = {
-  //       '_id'   : null,
-  //       'first' : 'Saumya',
-  //       'last'  : 'Dedhia'
-  //     }
-  //     // queryAddContact failure
-  //     await db.queryAddContact(db_username, wrongpassword, collection, newContact).catch(errorHandler)
-  //     // queryAddContact success
-  //     await db.queryAddContact(db_username, db_password, collection, newContact)
-  //     networkObject = await db.queryNetworkObject(db_username, db_password, collection)
-  //     console.log("Updated network:")
-  //     console.log(networkObject)
+      // test queryAddContact
+      // var newContact = {
+      //   _id   : null,
+      //   first : 'Saumya',
+      //   last  : 'Dedhia',
+      //   notes : 'queryAddContact returns insertedContact'
+      // }
+      // queryAddContact success
+      // contactObject = await db.queryAddContact(collection, newContact)
+      // console.log("Inserted contact:")
+      // console.log(contactObject)
 
   //     // test queryUpdateContact
   //     var contactObject = networkObject.contacts[0]
@@ -315,4 +314,4 @@ async function test() {
   // await db.queryRegisterUser(newUser)
 }
 
-// test()
+test()
