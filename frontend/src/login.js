@@ -17,7 +17,7 @@ import { useAuth } from "./use-auth.js"
 
 /**
  * Login component
- * @module 
+ * @module
  */
 
 /**
@@ -130,59 +130,61 @@ function RegisterUserMenu({onRegister, ...rest}) {
       <Modal.Body>
         <form onSubmit={evt => onRegister(evt, {first, last, email, username, password})}>
           <div>
-            <InputGroup>
-              <FormControl
-                  type="text"
-                  name="first"
-                  value={first}
-                  placeholder="Ex. John"
-                  onChange={(evt) => setFirst(evt.target.value)}
-              />
-            </InputGroup>
-          </div>
-          <div>
-            <InputGroup>
-              <FormControl
-                  type="text"
-                  name="last"
-                  value={last}
-                  placeholder="Ex. Doe"
-                  onChange={(evt) => setLast(evt.target.value)}
-              />
-            </InputGroup>
-          </div>
-          <div>
-            <InputGroup>
-              <FormControl
-                  type="text"
-                  name="email"
-                  value={email}
-                  placeholder="Ex. John@Doe.com"
-                  onChange={(evt) => setEmail(evt.target.value)}
-              />
-            </InputGroup>
-          </div>
-          <div>
-            <InputGroup>
-              <FormControl
-                  type="text"
-                  name="username"
-                  value={username}
-                  placeholder="Ex. johndoe"
-                  onChange={(evt) => setUsername(evt.target.value)}
-              />
-            </InputGroup>
-          </div>
-          <div>
-            <InputGroup>
-              <FormControl
-                  type="password"
-                  name="password"
-                  value={password}
-                  placeholder="..."
-                  onChange={(evt) => setPassword(evt.target.value)}
-              />
-            </InputGroup>
+            <div>
+              <InputGroup>
+                <FormControl
+                    type="text"
+                    name="first"
+                    value={first}
+                    placeholder="First Name"
+                    onChange={(evt) => setFirst(evt.target.value)}
+                />
+              </InputGroup>
+            </div>
+            <div>
+              <InputGroup>
+                <FormControl
+                    type="text"
+                    name="last"
+                    value={last}
+                    placeholder="Last Name"
+                    onChange={(evt) => setLast(evt.target.value)}
+                />
+              </InputGroup>
+            </div>
+            <div>
+              <InputGroup>
+                <FormControl
+                    type="text"
+                    name="email"
+                    value={email}
+                    placeholder="Email Address"
+                    onChange={(evt) => setEmail(evt.target.value)}
+                />
+              </InputGroup>
+            </div>
+            <div>
+              <InputGroup>
+                <FormControl
+                    type="text"
+                    name="username"
+                    value={username}
+                    placeholder="username"
+                    onChange={(evt) => setUsername(evt.target.value)}
+                />
+              </InputGroup>
+            </div>
+            <div>
+              <InputGroup>
+                <FormControl
+                    type="password"
+                    name="password"
+                    value={password}
+                    placeholder="password"
+                    onChange={(evt) => setPassword(evt.target.value)}
+                />
+              </InputGroup>
+            </div>
           </div>
           <div>
             <input type="submit" value="Sign Up" />
