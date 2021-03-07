@@ -108,9 +108,12 @@ async function contactAdd(req, res, next) {
         if(!req?.session?.loggedIn) {
             throw createError(401, null, "Need to log in to add new contact")
         }
-
-        await db.queryAddContact(req.session.collection, req.body);
-        return res.status(200).end()
+        console.log("rat")
+        contactObject = await db.queryAddContact(req.session.collection, req.body);
+        response = contactObject
+        console.log("shim")
+        console.log(response)
+        return res.status(200).send(response)
     } catch(err) {
         throw errorTransform(err, 500, "Error adding contact")
     }

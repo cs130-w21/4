@@ -107,7 +107,7 @@ class Database {
       const users_collection = database.collection(this.#users_cn_name)
 
       // create a collection
-      var num = randomNDigitString(5)
+      var num = this.#randomNDigitString(5)
       var personal_network = `user-network-${num}`
       await database.createCollection(personal_network)
       userObject.collection = personal_network
@@ -151,8 +151,10 @@ class Database {
       // insert contactObject
       delete contactObject._id
       contactObject.type = 'contact'
-      await collection.insertOne(contactObject)
-      return contactObject // now contains _id
+      var returnStatus = await collection.insertOne(contactObject)
+      contactObject["_id"] = returnStatus.insertedId
+      console.log("test")
+      return contactObject
     }
     catch (err) {
       throw errorTransform(err, 401, "Failed adding contact")
