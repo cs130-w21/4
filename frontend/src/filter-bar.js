@@ -12,7 +12,7 @@ import { useCore } from "./use-core.js"
 
 /**
  * Filter-bar component
- * @module 
+ * @module
  */
 
 /**
@@ -110,7 +110,7 @@ export default function Filterbar(props) {
 
 
   //implement on onChange function for toggle button
-  
+
   /**
    * Purpose: renders pop-up modal and buttons. It
    * also receives the user's input to the fields and
@@ -144,6 +144,7 @@ export default function Filterbar(props) {
               <form onSubmit={evt => handleSubmit(evt)}>
                 <div>
                   <div>
+                    <label>First Name</label>
                     <InputGroup>
                       <FormControl
                           type="text"
@@ -154,10 +155,10 @@ export default function Filterbar(props) {
                       />
                     </InputGroup>
                   </div>
-                  <label>First Name</label>
                 </div>
                 <div>
                   <div>
+                    <label>Last Name</label>
                     <InputGroup>
                       <FormControl
                           type="text"
@@ -168,10 +169,10 @@ export default function Filterbar(props) {
                       />
                     </InputGroup>
                   </div>
-                  <label>Last Name</label>
                 </div>
                 <div>
                   <div>
+                    <label>Email</label>
                     <InputGroup>
                       <FormControl
                           type="text"
@@ -182,10 +183,10 @@ export default function Filterbar(props) {
                       />
                     </InputGroup>
                   </div>
-                  <label>Email</label>
                 </div>
                 <div>
                   <div>
+                    <label>Phone</label>
                     <InputGroup>
                       <FormControl
                           type="text"
@@ -196,10 +197,10 @@ export default function Filterbar(props) {
                       />
                     </InputGroup>
                   </div>
-                  <label>Phone</label>
                 </div>
                 <div>
                   <div>
+                    <label>Company</label>
                     <InputGroup>
                       <FormControl
                           type="text"
@@ -210,10 +211,10 @@ export default function Filterbar(props) {
                       />
                     </InputGroup>
                   </div>
-                  <label>Company</label>
                 </div>
                 <div>
                   <div>
+                    <label>Role</label>
                     <InputGroup>
                       <FormControl
                           type="text"
@@ -224,10 +225,10 @@ export default function Filterbar(props) {
                       />
                     </InputGroup>
                   </div>
-                  <label>Role</label>
                 </div>
                 <div>
                   <div>
+                    <label>Date Met</label>
                     <InputGroup>
                       <FormControl
                           type="date"
@@ -238,10 +239,10 @@ export default function Filterbar(props) {
                       />
                     </InputGroup>
                   </div>
-                  <label>Date Met</label>
                 </div>
                 <div>
                   <div>
+                    <label>School Attended</label>
                     <InputGroup>
                       <FormControl
                           type="text"
@@ -252,9 +253,9 @@ export default function Filterbar(props) {
                       />
                     </InputGroup>
                   </div>
-                  <label>School Attended</label>
                 </div>
                 <div>
+                  <label>General Notes</label>
                   <Form.Group>
                     <Form.Control
                         as="textarea" rows={3}
@@ -265,7 +266,6 @@ export default function Filterbar(props) {
                         onChange={(evt) => setNotes(evt.target.value)}
                     />
                   </Form.Group>
-                  <label>General Notes</label>
                 </div>
               </form>
             </Modal.Body>

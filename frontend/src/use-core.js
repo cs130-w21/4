@@ -6,7 +6,7 @@ import React, {
 
 /**
  * Frontend API functions
- * @module 
+ * @module
  */
 
 /**
@@ -187,11 +187,9 @@ function useProvideCore() {
         return null;
       }
 
-      console.log(response);
-      setCoreObject((prev, props) => {
-        prev.networkObject.contacts.push(response);
-        return prev;
-      });
+      let coreCopy = {...coreObject};
+      coreCopy.networkObject.contacts.push(response);
+      setCoreObject(coreCopy);
 
       return response;
     });
