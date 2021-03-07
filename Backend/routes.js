@@ -19,7 +19,7 @@ const path = require('path')
  */
 function all(req, res, next) {
     console.log(req.path)
-    res.sendFile(path.resolve('../frontend/build' + req.path));
+    res.sendFile(path.resolve('./frontend/build' + req.path));
     //res.sendFile(path.resolve('../4/frontend/build' + req.path));
 }
 
@@ -202,7 +202,7 @@ function errorHandler(inputFunction) {
 
 
 ////// REGISTER ROUTES //////
-router.get('/', (req, res) => res.sendFile(path.resolve('../frontend/build/index.html')));
+router.get('/', (req, res) => res.sendFile(path.resolve('./frontend/build/index.html')));
 router.post('/api/login', errorHandler(login));
 router.post('/api/logout', errorHandler(logout));
 router.post('/api/register', errorHandler(register));
