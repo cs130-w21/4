@@ -4,7 +4,7 @@
   "description": "[![Build Status](https://travis-ci.org/cs130-w21/template.svg?branch=master)](https://travis-ci.org/cs130-w21/template) [![Release](https://img.shields.io/github/v/release/cs130-w21/template?label=release)](https://github.com/cs130-w21/template/releases/latest)",
   "main": "index.js",
   "scripts": {
-    "test": "npm test",
+    "test": "node ./node_modules/mocha/bin/mocha",
     "jsdoc": "node ./node_modules/jsdoc/jsdoc.js -c ./documentation/conf.json -r",
     "start": "node app.js",
     "heroku-postbuild": "cd frontend && npm install && npm run build"
@@ -24,6 +24,7 @@
     "bcrypt": "^5.0.0",
     "better-docs": "^2.3.2",
     "chai": "^4.3.0",
+    "chai-http": "^4.3.0",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
@@ -33,6 +34,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "jsdoc": "^3.6.6",
+    "mocha": "^8.3.1",
     "mongodb": "^3.6.3",
     "react-icons": "^4.2.0"
   },

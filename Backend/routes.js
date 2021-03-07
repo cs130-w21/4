@@ -33,7 +33,7 @@ function all(req, res, next) {
  */
 async function login(req, res, next) {
     try {
-        userObject = await db.queryUserObject(req.body.username, req.body.password);
+        userObject = await db.queryUserObject(req?.body?.username, req?.body?.password);
 
         req.session.loggedIn = true;
         req.session.userID = userObject._id
