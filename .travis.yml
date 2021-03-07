@@ -9,6 +9,7 @@ script:
 - npm install heroku
 - npm install chai
 - npm install chai-http
+- npm install mocha
 after_success:
 - npm test
 deploy:
