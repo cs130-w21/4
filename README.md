@@ -13,20 +13,29 @@ This repository houses our web application created for our capstone project. It 
 
 
 ### How to build
-There are two methods of building this application: manually and automatically; we deployed our application with [Heroku](https://heroku.com/) and utilze [Travis CI](https://www.travis-ci.com/) to automatically deploy after it passes our unit tests, which will be explained shortly. Due to the structure of our project, to manually build and run the application via IDE or CLI you can take the following steps:
+There are threee methods of building this application: by script, manually, and automatically; we deployed our application with [Heroku](https://heroku.com/) and utilze [Travis CI](https://www.travis-ci.com/) to automatically deploy after it passes our unit tests, which will be explained shortly. 
+
+#### Recommended local build
+If you wish to save yourself some effort you can use the shell script "build.sh" (found in the main folder of this repository) to start the application via an IDE or CLI. All you need to do is ensure you are in the main folder, type ```./build.sh```, and you should see a message stating "Node.js server is running on port 4001." And you're done!
+
+#### Second option for local build
+If you wish to manually build and run the application via IDE or CLI you can take the following steps:
 * Ensure you are in the repository (/4)
 * In the main folder, type ```node app.js``` in the command line. This will start the server via ```localhost:4001``` in your browser.
 * Navigate to the "frontend" folder, then type ```npm run build``` in the command line. This will create an optimized build of the frontend files.
   * If you only wish to develop within the frontend directory without re-building every change you can simply type the command ```npm start``` in the command line. If you do this, you do not need to re-start the server. 
-* Open your browser and type ```localhost:4001``` in the search bar and press enter. You should see the application up and running.
+* Open your browser and type ```localhost:4001``` in the search bar and press enter. You should see the application up and running. <br>
 
+Common errors occuring during the build process can be solved in the following steps:
+* In the main folder, type ```rm -rf /node_modules``` in the command line.
+* Then type ```rm package-lock.json``` (DO NOT DELETE ```package.json```!)
+* Finally type ```npm install```. This will update the depedencies and will likely solve compilation problems.
+
+#### Recommended deployment build
 If you wish to build the code automatically all you need to do is either commit code to the repository and a  [Travis CI](https://www.travis-ci.com/) build will start automatically; should the code pass our pre-defined unit tests, then the code will be deployed thanks to the deployment components of the .travis.yml file. If you do not have code to commit then you can navigate to Travis CI, and given you have access to the repository, you will be able to restart the build and the process will then be the same as stated previously.
 
 
-Common errors occuring during the build process (typically in the IDE) can be solved in the following steps:
-* In the main folder, type ```rm -rf /node_modules``` in the command line.
-* Then type ```rm package-lock.json``` (DO NOT DELETE ```package.json```!)
-* Finally type ```npm install```. This will update the depedencies and will likely solve compilation problems. 
+ 
 
 
 ### Code Authors:
