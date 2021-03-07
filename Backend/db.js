@@ -153,7 +153,6 @@ class Database {
       contactObject.type = 'contact'
       var returnStatus = await collection.insertOne(contactObject)
       contactObject["_id"] = returnStatus.insertedId
-      console.log("test")
       return contactObject
     }
     catch (err) {
