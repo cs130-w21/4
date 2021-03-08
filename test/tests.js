@@ -21,6 +21,7 @@ const testUserObject = {
 }
 
 /* below is used for testing the add contact functionality of the web app */
+const testOriginalNotes = "test general notes"
 const testAddObj = {
     "_id": "",
     "groups": "",
@@ -33,7 +34,7 @@ const testAddObj = {
     "dateMet": "01/01/2001",
     "dateLastInteracted": "",
     "schoolAttended": "test university",
-    "notes": "test general notes"
+    "notes": testOriginalNotes
 }
 
 /* below is used for testing the modify contact functionality of the web app */
@@ -117,26 +118,54 @@ describe("API Tests", function() {
             await logout()
         })
 
+        // send a request to add a contact
+        // return the response
+        async function addContact() {
+            return await requester
+                .post('/api/contact/add')
+                .send(testAddObj)
+        }
         /**
          * Purpose: to test the functionality of adding a new contact.
          */
         describe("POST /api/contact/add", function() {
             it("should return status 200", async () => {
-                var res = await requester
-                    .post('/api/contact/add')
-                    .send(testAddObj)
+                var res = await addContact()
                 expect(res).to.have.status(200)
                 expect(res.body).to.have.property('_id')
             })
         })
 
-        /**
-        * Purpose: to test the functionality of updating a contact.
-        */
+        describe("Tests that require a contactObject", function() {
+            beforeEach(async function () {
+                var res = await addContact()
+                this.currentTest.contactObject = res.body
+            })
 
-        /**
-         * Purpose: to test the functionality of deleting a contact.
-         */
+            /**
+            * Purpose: to test the functionality of updating a contact.
+            */
+            describe("POST /api/contact/update", async function() {
+                var contactObject = this.currentTest.contactObject
+                expect(contactObject.notes).to.equal(testOriginalNotes)
+                var updatedNotes = "modified by test"
+                contactObject.notes = updatedNotes
+                var resUpdate = await requester
+                    .post('/api/contact/update')
+                    .send(this.currentTest.contactObject)
+                expect(resUpdate).to.have.status(200)
+                var resCore = await requester
+                    .get('/api/core')
+                expect(resCore).to.have.status(200)
+                expect(resCore.body).to.have.property('networkObject')
+                expect(resCore.body.networkObject).to.include(contactObject) // checks for the updated notes section
+            })
+
+            /**
+             * Purpose: to test the functionality of deleting a contact.
+             */
+        })
+
     })
 })
 
