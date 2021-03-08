@@ -6,6 +6,8 @@ const { NOTIMP } = require('dns');
 const { resolve } = require('path');
 const expect = chai.expect
 const app = require('../Backend/routes.js')
+chai.use(require('chai-like'))
+chai.use(require('chai-things'))
 
 /**
  * Test Suite
@@ -136,35 +138,34 @@ describe("API Tests", function() {
             })
         })
 
-        describe("update and delete contacts", function() {
+        describe("Tests that require a contactObject", function() {
             beforeEach(async function () {
                 var res = await addContact()
                 expect(res).to.have.status(200)
                 this.currentTest.contactObject = res.body
             })
 
-            it("test", function() {
-                expect(this.test).to.have.property('contactObject')
-            })
             /**
             * Purpose: to test the functionality of updating a contact.
             */
-            it("should return status 200 and update a contact", async function() {
-                expect(this.test).to.have.property('contactObject')
-                var contactObject = this.test.contactObject
-                expect(contactObject.notes).to.equal(testOriginalNotes)
-                var updatedNotes = "modified by test"
-                contactObject.notes = updatedNotes
-                var resUpdate = await requester
-                    .post('/api/contact/update')
-                    .send(contactObject)
-                expect(resUpdate).to.have.status(200)
-                var resCore = await requester
-                    .post('/api/core')
-                expect(resCore).to.have.status(200)
-                expect(resCore.body).to.have.property('networkObject')
-                expect(resCore.body.networkObject).to.have.property('contacts')
-                // expect(resCore.body.networkObject.contacts).to.include(contactObject) // this assertion fails!
+            describe("POST /api/contact/update", function() {
+                it("should return status 200 and update a contact", async function() {
+                    expect(this.test).to.have.property('contactObject')
+                    var contactObject = this.test.contactObject
+                    expect(contactObject.notes).to.equal(testOriginalNotes)
+                    var updatedNotes = "modified by test"
+                    contactObject.notes = updatedNotes
+                    var resUpdate = await requester
+                        .post('/api/contact/update')
+                        .send(contactObject)
+                    expect(resUpdate).to.have.status(200)
+                    var resCore = await requester
+                        .post('/api/core')
+                    expect(resCore).to.have.status(200)
+                    expect(resCore.body).to.have.property('networkObject')
+                    expect(resCore.body.networkObject).to.have.property('contacts')
+                    expect(resCore.body.networkObject.contacts).to.contain.something.like(contactObject)
+                })
             })
 
             /**

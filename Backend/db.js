@@ -148,11 +148,16 @@ class Database {
     try {
       const collection = await this.#getCollection(client, network_name)
 
-      // insert contactObject
+      // convert to expected database format
       delete contactObject._id
       contactObject.type = 'contact'
+
+      // insert contactObject
       var returnStatus = await collection.insertOne(contactObject)
+
+      // convert to expected app format
       contactObject["_id"] = returnStatus.insertedId
+      delete contactObject.type
       return contactObject
     }
     catch (err) {
