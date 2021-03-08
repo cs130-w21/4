@@ -1,3 +1,4 @@
+const { doesNotMatch } = require('assert');
 var assert = require('assert');
 const chai = require("chai")
 const chaiHttp = require("chai-http");
@@ -61,15 +62,17 @@ const testModifyObj = {
 // const axios = require('axios');
 
 describe("API Tests", function() {
-    var requester = chai.request(app).keepOpen()
+    var requester = chai.request("http://localhost:4001").keepOpen()
+    //var requester = chai.request(app).keepOpen()
 
     describe("POST /api/login", function() {
         it("should return status 200", async function() {
+            //var res = await chai.request("http://localhost:4001")
             var res = await requester
                 .post('/api/login')
                 .set('content-type', 'application/json')
-                .send({rat: "testUserObject"})
-            expect(res.status).to.equal(200)
+                .send(testUserObject)
+            expect(res).to.have.status(200)
         })
     })
 
@@ -86,8 +89,7 @@ describe("API Tests", function() {
     //     })
     // })
 
-
-
+    requester.close()
 })
 
 /**
