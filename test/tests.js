@@ -171,28 +171,30 @@ describe("API Tests", function() {
             /**
              * Purpose: to test the functionality of deleting a contact.
              */
-             it("should return status 200 and delete a contact", async function() {
-                var contactObject = this.test.contactObject
+             describe("POST /api/contact/delete", function() {
+                it("should return status 200 and delete a contact", async function() {
+                    var contactObject = this.test.contactObject
 
-                //retrieve core before deletion and verify contact is inside
-                var resCore = await requester
-                    .post('/api/core')
-                expect(resCore).to.have.status(200)
-                //expect(resCore.body.networkObject.contacts).to.include(contactObject)
-                expect(resCore.body.networkObject.contacts.some(contact => contact._id == contactObject._id)).to.be.true
+                    //retrieve core before deletion and verify contact is inside
+                    var resCore = await requester
+                        .post('/api/core')
+                    expect(resCore).to.have.status(200)
+                    //expect(resCore.body.networkObject.contacts).to.include(contactObject)
+                    expect(resCore.body.networkObject.contacts.some(contact => contact._id == contactObject._id)).to.be.true
 
-                //hit the deletion endpoint
-                var resDelete = await requester
-                    .post('/api/contact/delete')
-                    .send(contactObject)
-                expect(resDelete).to.have.status(200)
+                    //hit the deletion endpoint
+                    var resDelete = await requester
+                        .post('/api/contact/delete')
+                        .send(contactObject)
+                    expect(resDelete).to.have.status(200)
 
-                //retrieve core after deletion and verify contact is not inside anymore
-                var resCore = await requester
-                    .post('/api/core')
-                expect(resCore).to.have.status(200)
-                expect(resCore.body.networkObject.contacts.some(contact => contact._id == contactObject._id)).to.be.false
-            })
+                    //retrieve core after deletion and verify contact is not inside anymore
+                    var resCore = await requester
+                        .post('/api/core')
+                    expect(resCore).to.have.status(200)
+                    expect(resCore.body.networkObject.contacts.some(contact => contact._id == contactObject._id)).to.be.false
+                })
+             })
         })
 
     })
