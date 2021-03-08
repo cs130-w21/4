@@ -25,6 +25,8 @@
     "better-docs": "^2.3.2",
     "chai": "^4.3.0",
     "chai-http": "^4.3.0",
+    "chai-like": "^1.1.1",
+    "chai-things": "^0.2.0",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",

@@ -6,6 +6,8 @@ const { NOTIMP } = require('dns');
 const { resolve } = require('path');
 const expect = chai.expect
 const app = require('../Backend/routes.js')
+chai.use(require('chai-like'))
+chai.use(require('chai-things'))
 
 /**
  * Test Suite
@@ -142,9 +144,6 @@ describe("API Tests", function() {
                 this.currentTest.contactObject = res.body
             })
 
-            it("test", function() {
-                expect(this.test).to.have.property('contactObject')
-            })
             /**
             * Purpose: to test the functionality of updating a contact.
             */
@@ -163,7 +162,7 @@ describe("API Tests", function() {
                 expect(resCore).to.have.status(200)
                 expect(resCore.body).to.have.property('networkObject')
                 expect(resCore.body.networkObject).to.have.property('contacts')
-                // expect(resCore.body.networkObject.contacts).to.include(contactObject) // this assertion fails!
+                expect(resCore.body.networkObject.contacts).to.contain.something.like(contactObject)
             })
 
             /**
