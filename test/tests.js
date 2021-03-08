@@ -53,8 +53,19 @@ const testModifyObj = {
 
 // const axios = require('axios');
 
+var requester
+
+beforeEach(async function() {
+    requester = chai.request.agent("http://localhost:4001")
+})
+
+afterEach(async function() {
+    requester.close()
+})
+
 describe("API Tests", function() {
-    var requester = chai.request.agent("http://localhost:4001").keepOpen()
+    //var requester = chai.request("http://localhost:4001")
+    //var requester = chai.request.agent("http://localhost:4001")
     //var requester = chai.request(app).keepOpen()
 
     // send a login request
@@ -66,6 +77,13 @@ describe("API Tests", function() {
             .send(testUserObject)
     }
     
+    async function logout() {
+        return await requester
+            .post('/api/logout')
+            .set('content-type', 'application/json')
+            .send()
+    }
+
     /**
      * Purpose: to test the functionality of logging in.
      */
@@ -77,10 +95,26 @@ describe("API Tests", function() {
         })
     })
 
+    /**
+     * Purpose: to test the functionality of logging out.
+     */
+     describe("POST /api/logout", function() {
+        it("should return status 200", async function() {
+            await login()
+            var res = await logout()
+            expect(res).to.have.status(200)
+        })
+    })
+
     describe("Tests that require login", function() {
-        before(async function() {
+        beforeEach(async function() {
             // login
             await login()
+        })
+
+        afterEach(async function() {
+            // logout
+            await logout()
         })
 
         /**
@@ -103,16 +137,7 @@ describe("API Tests", function() {
         /**
          * Purpose: to test the functionality of deleting a contact.
          */
-
-        /**
-         * Purpose: to test the functionality of logging out.
-         */
-
     })
-
-
-
-    requester.close()
 })
 
 
