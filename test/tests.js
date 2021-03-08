@@ -51,68 +51,72 @@ const testModifyObj = {
     "notes": "test general notes"
 }
 
-/**
- * Purpose: to test the functionality of logging in.
- */
-
-/**
- * Purpose: to test the functionality of logging out.
- */
-
 // const axios = require('axios');
 
 describe("API Tests", function() {
-    var requester = chai.request("http://localhost:4001").keepOpen()
+    var requester = chai.request.agent("http://localhost:4001").keepOpen()
     //var requester = chai.request(app).keepOpen()
 
+    // send a login request
+    // return the response
+    async function login() {
+        return await requester
+            .post('/api/login')
+            .set('content-type', 'application/json')
+            .send(testUserObject)
+    }
+    
+    /**
+     * Purpose: to test the functionality of logging in.
+     */
     describe("POST /api/login", function() {
         it("should return status 200", async function() {
             //var res = await chai.request("http://localhost:4001")
-            var res = await requester
-                .post('/api/login')
-                .set('content-type', 'application/json')
-                .send(testUserObject)
+            var res = await login()
             expect(res).to.have.status(200)
         })
     })
 
-    // describe("POST /api/contact/add", function() {
-    //     it("should return status 200", async () => {
-    //         requester
-    //             .post('/api/contact/add')
-    //             .send(testAddObj)
-    //             .then(function(res) {
-    //                 expect(res.status).to.equal(200)
-    //                 expect("_id" in res).to.be.true
-    //             })
-    //             .catch()
-    //     })
-    // })
+    describe("Tests that require login", function() {
+        before(async function() {
+            // login
+            await login()
+        })
+
+        /**
+         * Purpose: to test the functionality of adding a new contact.
+         */
+        describe("POST /api/contact/add", function() {
+            it("should return status 200", async () => {
+                var res = await requester
+                    .post('/api/contact/add')
+                    .send(testAddObj)
+                expect(res).to.have.status(200)
+                expect(res.body).to.have.property('_id')
+            })
+        })
+
+        /**
+        * Purpose: to test the functionality of updating a contact.
+        */
+
+        /**
+         * Purpose: to test the functionality of deleting a contact.
+         */
+
+        /**
+         * Purpose: to test the functionality of logging out.
+         */
+
+    })
+
+
 
     requester.close()
 })
 
-/**
- * Purpose: to test the functionality of adding a new contact.
- */
-// describe("POST /api/contact/add", () => {
-//     it("should return status 200", async () => {
-//         let res = await chai
-//             .request(app)
-//             .post('/api/contact/add')
-//             .send(testAddObj)
 
-//         expect(res.status).to.equal(200)
-//     })
-// })
 
-/**
- * Purpose: to test the functionality of updating a contact.
- */
-
-/**
- * Purpose: to test the functionality of deleting a contact.
- */
 
 
 
