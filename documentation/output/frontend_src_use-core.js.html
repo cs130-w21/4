@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: frontend/src/use-core.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: frontend/src/use-core.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {
+  useState,
+  useContext,
+  createContext
+} from "react";
+
+/**
+ * Frontend API functions
+ * @module
+ */
+
+/**
+ * Purpose: handles concerns regarding accessing the
+ * user's information (login, contacts, etc)
+ */
+const core = {
+  coreObject: null,
+  async getCore() {
+    let response = await fetch("/api/core", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      }
+    })
+    .then(response => response.json())
+    .catch(err => {
+
+      if (err.status === 401) {
+        return null;
+      }
+    });
+
+    return response;
+  },
+
+  /**
+   * Purpose: to contact the backend (which, in turn, contacts the
+   * database to add the contact) with the contact object provided
+   * via filter-bar.js
+   * @param contactObject - includes: first name, last name, etc,
+   * which comes from the user's input within the pop-up modal. The
+   * object is created in filter-bar.js then routed here.
+   * @return returns the result of the fetch, or null if the
+   * add was unsuccessful.
+   */
+  addContact(contactObject) {
+    let result = fetch("/api/contact/add", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(contactObject)
+    })
+    .then(response => response.json())
+    .catch(err => {
+      if (err.status === 401) {
+        return null;
+      }
+    });
+
+    return result;
+  },
+
+  /**
+   * Purpose: to contact the backend (which, in turn, contacts the
+   * database to update the contact) with the contact object provided
+   * from the edits within the expanded contact view
+   * @param contactObject - includes changes the user made
+   * in the expanded viewing of their contacts. May or may not include
+   * every field listed in filter-bar.js; depends on changes user made.
+   * @return returns the result of the fetch, or null if the
+   * update was unsuccessful.
+   */
+  updateContact(contactObject) {
+    return fetch("/api/contact/update", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      },
+      body: JSON.stringify(contactObject)
+    })
+    .then(response => {
+      if (response.status === 200) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+    .catch(err => false);
+  },
+
+  /**
+   * Purpose: to contact the backend (which, in turn, contacts the
+   * database to delete the contact) with the contact object provided
+   * @param contactObject - includes the information of the
+   * contact the user wishes to delete
+   * @return returns the result of the fetch, or null if the
+   * delete was unsuccessful.
+   */
+  deleteContact(contactObject) {
+    return fetch("/api/contact/delete", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Credentials': 'include'
+      },
+      body: JSON.stringify(contactObject)
+    })
+    .then(response => {
+      if (response.status === 200) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+    .catch(err => false);
+  }
+};
+
+const coreContext = createContext();
+
+/**
+ * Purpose: to get the user's core object which is needed
+ * in nearly all functionalities of the web app
+ * @return returns the core object itself.
+ */
+export function ProvideCore({ children }) {
+  const core = useProvideCore();
+
+  return (
+    &lt;coreContext.Provider value={core}>
+      { children }
+    &lt;/coreContext.Provider>
+  );
+}
+
+export const useCore = () => {
+  return useContext(coreContext);
+};
+
+/**
+ * Purpose: to allow user information to be fetched and handled
+ * using the core object.
+ * @return returns results from core fetch, add contact,
+ * delete contact, modify contact, and the core object itself.
+ */
+function useProvideCore() {
+
+  const [coreObject, setCoreObject] = useState(null);
+
+  /**
+   * Purpose: to fetch the core which has the information tied to a
+   * registered user; core is used when accessing, adding,
+   * modifying, listing, etc
+   * @return returns the result from the attempt to get the core. If
+   * the attempt was successful then it will return the core, if not it
+   * will return null.
+   */
+  const getCore = () => {
+    return core.getCore()
+    .then(response => {
+      if (response === null) {
+        return null;
+      }
+
+      setCoreObject(response);
+      return response;
+    });
+  };
+
+  /**
+   * Purpose: to contact core addContact work that contacts the backend.
+   * This is primarily used for routing and updating core object.
+   * @param contactObject - includes: first name, last name, etc,
+   * which comes from the user's input within the pop-up modal. The
+   * object is created in filter-bar.js then routed here.
+   * @return returns didAdd which is the result from the addContact
+   * work above, and logs whether core.addContact was successful or not.
+   */
+  const addContact = (contactObject) => {
+    return core.addContact(contactObject)
+    .then(response => {
+      if (response == null) {
+        return null;
+      }
+
+      let coreCopy = {...coreObject};
+      coreCopy.networkObject.contacts.push(response);
+      setCoreObject(coreCopy);
+
+      return response;
+    });
+  };
+
+
+  /**
+   * Purpose: to contact core updateContact work that contacts the backend.
+   * This is primarily used for routing and updating core object.
+   * @param contactObject - includes changes the user made
+   * in the expanded viewing of their contacts. May or may not include
+   * every field listed in filter-bar.js; depends on changes user made.
+   * @return returns didUpdate which is the result from the updateContact
+   * work above, and logs whether core.updateContact was successful or not.
+   */
+  const updateContact = (contactObject) => {
+    return core.updateContact(contactObject)
+    .then(didUpdate => {
+      if (didUpdate) {
+        let coreCopy = {...coreObject};
+        let contactsCopy = coreCopy.networkObject.contacts.filter((obj) => {
+          return obj["_id"] !== contactObject["_id"];
+        });
+        coreCopy.networkObject.contacts = contactsCopy;
+        coreCopy.networkObject.contacts.push(contactObject);
+        setCoreObject(coreCopy);
+      }
+
+      return didUpdate;
+    });
+  };
+
+  /**
+   * Purpose: to contact core deleteContact work that contacts the backend.
+   * This is primarily used for routing and updating core object.
+   * @param contactObject - includes information of the contact the
+   * user wishes to delete.
+   * @return returns didDelete which is the result from the deleteContact
+   * work above, and logs whether core.deleteContact was successful or not.
+   */
+  const deleteContact = (contactObject) => {
+    return core.deleteContact(contactObject)
+    .then(didDelete => {
+      if (didDelete) {
+        let coreCopy = {...coreObject};
+        let contactsCopy = coreCopy.networkObject.contacts.filter((obj) => {
+          return obj["_id"] !== contactObject["_id"];
+        });
+        coreCopy.networkObject.contacts = contactsCopy;
+        setCoreObject(coreCopy);
+      }
+
+      return didDelete;
+    });
+  };
+
+  return {
+    coreObject,
+    getCore,
+    addContact,
+    updateContact,
+    deleteContact
+  };
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Backend_error.html">Backend/error</a></li><li><a href="module-Backend_routes.html">Backend/routes</a></li><li><a href="module-frontend_src_App.html">frontend/src/App</a></li><li><a href="module-frontend_src_authentication-routing.html">frontend/src/authentication-routing</a></li><li><a href="module-frontend_src_contact-list.html">frontend/src/contact-list</a></li><li><a href="module-frontend_src_filter-bar.html">frontend/src/filter-bar</a></li><li><a href="module-frontend_src_home.html">frontend/src/home</a></li><li><a href="module-frontend_src_loading-page.html">frontend/src/loading-page</a></li><li><a href="module-frontend_src_login.html">frontend/src/login</a></li><li><a href="module-frontend_src_navigation-bar.html">frontend/src/navigation-bar</a></li><li><a href="module-frontend_src_private-route.html">frontend/src/private-route</a></li><li><a href="module-frontend_src_search-bar.html">frontend/src/search-bar</a></li><li><a href="module-frontend_src_use-auth.html">frontend/src/use-auth</a></li><li><a href="module-frontend_src_use-core.html">frontend/src/use-core</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Mar 07 2021 16:47:13 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

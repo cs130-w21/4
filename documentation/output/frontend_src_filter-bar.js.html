@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: frontend/src/filter-bar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: frontend/src/filter-bar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import React, {useState} from "react";
+import { useCore } from "./use-core.js"
+
+/**
+ * Filter-bar component
+ * @module
+ */
+
+/**
+ * Purpose: this function handles user input in regards to
+ * adding contacts. It renders the pop-up modal which allows
+ * the user to enter information for a given contact they
+ * wish to save in their personal network
+ * @param {object} props
+ * @return {JSX.Element} returns the rendering of the add contact
+ * button and the input modal
+ */
+export default function Filterbar(props) {
+
+  /* variables to hold user input field values */
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [company, setCompany] = useState("");
+  const [role, setRole] = useState("");
+  const [date, setDate] = useState("");
+  const [school, setSchool] = useState("");
+  const [notes, setNotes] = useState("");
+  const core = useCore();
+
+  /* modal handling */
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    clearFields();
+  }
+
+  /**
+   * Purpose: to clear fields after successful submission and
+   * handling of newly entered contact information; to ensure
+   * the modal input fields are clear, and ready for the next
+   * time a contact is added.
+   * @name clearFields
+   * @function
+   */
+  const clearFields = () => {
+    setFirstname('')
+    setLastname('')
+    setEmail('')
+    setPhone('')
+    setCompany('')
+    setRole('')
+    setDate('')
+    setSchool('')
+    setNotes('')
+  }
+
+  /**
+   * Purpose: to create a contact object with the user's newly
+   * entered contact information, then send it to use-core.js
+   * which contacts the database. The results from use-core.js
+   * will dictate whether the user is notified of a successful
+   * add or an unsuccessful one.
+   * @name handleSubmit
+   * @function
+   * @param evt - a trigger that sends the signal to initiate
+   * the new contact submission process.
+   * @return {Promise&lt;void>}
+   */
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
+    const addContactObj = {
+      "_id": "",
+      "groups": "",
+      "first": firstname,
+      "last": lastname,
+      "email": email,
+      "phone": phone,
+      "company": company,
+      "role": role,
+      "dateMet": date,
+      "dateLastInteracted": "",
+      "schoolAttended": school,
+      "notes": notes
+    }
+
+    /* send contact obj to use-core.js &amp; wait for result */
+    let result = core.addContact(addContactObj);
+    if (result) {
+      /* good add */
+      alert("New contact added to your network!");
+    }
+    else {
+      /* bad add */
+      console.log("Cannot process request.");
+    }
+    handleClose();
+  }
+
+
+  //implement on onChange function for toggle button
+
+  /**
+   * Purpose: renders pop-up modal and buttons. It
+   * also receives the user's input to the fields and
+   * directs it to the proper variable to contain the given
+   * value.
+   * @name render
+   * @function
+   */
+  return (
+      &lt;div className="Contact-buttons">
+        &lt;div className="Button-group">
+          &lt;Button className="Add-button" variant="outline-dark" onClick={handleShow}>
+            Add Contact
+          &lt;/Button>{' '}
+          &lt;DropdownButton variant="secondary" id="dropdown-basic-button" title="Order By">
+              &lt;Dropdown.Item onSelect={() => props.handleSortChange(true)} active={props.sort.forwards}>A-Z&lt;/Dropdown.Item>
+              &lt;Dropdown.Item onSelect={() => props.handleSortChange(false)} active={!props.sort.forwards}>Z-A&lt;/Dropdown.Item>
+              &lt;Dropdown.Divider />
+              &lt;Dropdown.Item onSelect={() => props.handleOrderChange("first")} active={props.sort.orderBy === "first"}>First Name&lt;/Dropdown.Item>
+              &lt;Dropdown.Item onSelect={() => props.handleOrderChange("last")} active={props.sort.orderBy === "last"}>Last Name&lt;/Dropdown.Item>
+              &lt;Dropdown.Item onSelect={() => props.handleOrderChange("role")} active={props.sort.orderBy === "role"}>Role&lt;/Dropdown.Item>
+              &lt;Dropdown.Item onSelect={() => props.handleOrderChange("company")} active={props.sort.orderBy === "company"}>Company&lt;/Dropdown.Item>
+            &lt;/DropdownButton>
+        &lt;/div>
+        &lt;>
+          &lt;Modal show={show} onHide={handleClose}>
+            &lt;Modal.Header closeButton>
+              &lt;Modal.Title>Add Contact&lt;/Modal.Title>
+            &lt;/Modal.Header>
+            &lt;Modal.Body>
+              &lt;form onSubmit={evt => handleSubmit(evt)}>
+                &lt;div>
+                  &lt;div>
+                    &lt;label>First Name&lt;/label>
+                    &lt;InputGroup>
+                      &lt;FormControl
+                          type="text"
+                          name="firstname"
+                          value={firstname}
+                          placeholder="Ex. John"
+                          onChange={(evt) => setFirstname(evt.target.value)}
+                      />
+                    &lt;/InputGroup>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div>
+                  &lt;div>
+                    &lt;label>Last Name&lt;/label>
+                    &lt;InputGroup>
+                      &lt;FormControl
+                          type="text"
+                          name="lastname"
+                          value={lastname}
+                          placeholder="Ex. Doe"
+                          onChange={(evt) => setLastname(evt.target.value)}
+                      />
+                    &lt;/InputGroup>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div>
+                  &lt;div>
+                    &lt;label>Email&lt;/label>
+                    &lt;InputGroup>
+                      &lt;FormControl
+                          type="text"
+                          name="email"
+                          value={email}
+                          placeholder="Ex. Name@example.com"
+                          onChange={(evt) => setEmail(evt.target.value)}
+                      />
+                    &lt;/InputGroup>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div>
+                  &lt;div>
+                    &lt;label>Phone&lt;/label>
+                    &lt;InputGroup>
+                      &lt;FormControl
+                          type="text"
+                          name="phone"
+                          value={phone}
+                          placeholder="Ex. (000)000-0000"
+                          onChange={(evt) => setPhone(evt.target.value)}
+                      />
+                    &lt;/InputGroup>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div>
+                  &lt;div>
+                    &lt;label>Company&lt;/label>
+                    &lt;InputGroup>
+                      &lt;FormControl
+                          type="text"
+                          name="company"
+                          value={company}
+                          placeholder="Ex. Google"
+                          onChange={(evt) => setCompany(evt.target.value)}
+                      />
+                    &lt;/InputGroup>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div>
+                  &lt;div>
+                    &lt;label>Role&lt;/label>
+                    &lt;InputGroup>
+                      &lt;FormControl
+                          type="text"
+                          name="role"
+                          value={role}
+                          placeholder="Ex. Software Engineer"
+                          onChange={(evt) => setRole(evt.target.value)}
+                      />
+                    &lt;/InputGroup>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div>
+                  &lt;div>
+                    &lt;label>Date Met&lt;/label>
+                    &lt;InputGroup>
+                      &lt;FormControl
+                          type="date"
+                          name="date"
+                          value={date}
+                          placeholder="Ex. 00/00/0000"
+                          onChange={(evt) => setDate(evt.target.value)}
+                      />
+                    &lt;/InputGroup>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div>
+                  &lt;div>
+                    &lt;label>School Attended&lt;/label>
+                    &lt;InputGroup>
+                      &lt;FormControl
+                          type="text"
+                          name="school"
+                          value={school}
+                          placeholder="Ex. UCLA"
+                          onChange={(evt) => setSchool(evt.target.value)}
+                      />
+                    &lt;/InputGroup>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div>
+                  &lt;label>General Notes&lt;/label>
+                  &lt;Form.Group>
+                    &lt;Form.Control
+                        as="textarea" rows={3}
+                        type="textarea"
+                        name="notes"
+                        value={notes}
+                        placeholder="Ex. Introduced by ..."
+                        onChange={(evt) => setNotes(evt.target.value)}
+                    />
+                  &lt;/Form.Group>
+                &lt;/div>
+              &lt;/form>
+            &lt;/Modal.Body>
+            &lt;Modal.Footer>
+              &lt;Button variant="secondary" onClick={handleClose}>
+                Close
+              &lt;/Button>
+              &lt;Button variant="primary" onClick={evt => handleSubmit(evt)}>
+                Save Changes
+              &lt;/Button>
+            &lt;/Modal.Footer>
+          &lt;/Modal>
+        &lt;/>
+      &lt;/div>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Backend_error.html">Backend/error</a></li><li><a href="module-Backend_routes.html">Backend/routes</a></li><li><a href="module-frontend_src_App.html">frontend/src/App</a></li><li><a href="module-frontend_src_authentication-routing.html">frontend/src/authentication-routing</a></li><li><a href="module-frontend_src_contact-list.html">frontend/src/contact-list</a></li><li><a href="module-frontend_src_filter-bar.html">frontend/src/filter-bar</a></li><li><a href="module-frontend_src_home.html">frontend/src/home</a></li><li><a href="module-frontend_src_loading-page.html">frontend/src/loading-page</a></li><li><a href="module-frontend_src_login.html">frontend/src/login</a></li><li><a href="module-frontend_src_navigation-bar.html">frontend/src/navigation-bar</a></li><li><a href="module-frontend_src_private-route.html">frontend/src/private-route</a></li><li><a href="module-frontend_src_search-bar.html">frontend/src/search-bar</a></li><li><a href="module-frontend_src_use-auth.html">frontend/src/use-auth</a></li><li><a href="module-frontend_src_use-core.html">frontend/src/use-core</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Mar 07 2021 16:47:13 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

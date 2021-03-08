@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: frontend/src/login.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: frontend/src/login.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {
+  useState
+} from "react";
+
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import logo from './mpn_logo.png';
+
+import { useAuth } from "./use-auth.js"
+
+/**
+ * Login component
+ * @module
+ */
+
+/**
+ * Purpose: to collect the user's login credentials via
+ * the input form, then send said credentials to use-auth.js
+ * to verify thus allowing the user to login &amp; view their
+ * personal network (given their credentials are correct)
+ * @param props
+ * @return returns the rendering of the login page (a submit buttons and
+ * 2 input forms; one for username, one for password.
+ */
+export default function Login(props) {
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showMenu, setShowMenu] = useState(false);
+
+  const auth = useAuth();
+
+  const handleLogin = async (evt) => {
+    evt.preventDefault();
+    let response = await auth.login(username, password);
+    if (response) {
+        // nothing for now
+    }
+
+    // TODO: display error message on permission denied
+    else {
+      console.log("Permission denied");
+    }
+  }
+
+  const handleShowMenu = (evt) => {
+    evt.preventDefault();
+    setShowMenu(true);
+  }
+
+  const handleRegisterUser = async (evt, userObject) => {
+    evt.preventDefault();
+    let success = await auth.register(userObject);
+    if (success) {
+      setShowMenu(false);
+    }
+
+    // TODO: display error message on permission denied
+    else {
+      console.log("Unable to create new account");
+    }
+  }
+
+  return (
+    &lt;div className="Login-page">
+      &lt;img alt="logo" className="NetworkLogoLogin" src={logo} />
+      &lt;div>
+        &lt;form onSubmit={evt => handleLogin(evt)}>
+          &lt;div>
+            &lt;label>
+              &lt;input type="text" name="username" value={username} placeholder="username" onChange={(evt) => setUsername(evt.target.value)} />
+            &lt;/label>
+          &lt;/div>
+          &lt;div>
+            &lt;label>
+              &lt;input type="password" name="password" value={password} placeholder="password" onChange={(evt) => setPassword(evt.target.value)} />
+            &lt;/label>
+          &lt;/div>
+          &lt;div>
+            &lt;input type="submit" value="Login" />
+          &lt;/div>
+        &lt;/form>
+          &lt;div className="Create-account">
+          &lt;form onSubmit={evt => handleShowMenu(evt)}>
+            &lt;input type="submit" value="Create New Account" />
+          &lt;/form>
+        &lt;/div>
+      &lt;/div>
+      &lt;RegisterUserMenu show={showMenu} onHide={()=> setShowMenu(false)} onRegister={handleRegisterUser} />
+    &lt;/div>
+  );
+}
+
+/**
+ * Purpose: to allow the user to view the registration
+ * form and input their information within it
+ * @param onRegister - a flag that will signal the
+ * need to interact with handleRegisterUser
+ * @param rest - assists with handling of the modal
+ * @return {JSX.Element} returns the rendering of the
+ * new user registration form
+ */
+function RegisterUserMenu({onRegister, ...rest}) {
+
+  const [first, setFirst] = useState("");
+  const [last, setLast] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  return (
+    &lt;Modal
+      {...rest}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      &lt;Modal.Header closeButton>
+        &lt;Modal.Title id="contained-modal-title-vcenter" centered>
+          Sign Up
+        &lt;/Modal.Title>
+      &lt;/Modal.Header>
+      &lt;Modal.Body>
+        &lt;form onSubmit={evt => onRegister(evt, {first, last, email, username, password})}>
+          &lt;div>
+            &lt;div>
+              &lt;InputGroup>
+                &lt;FormControl
+                    type="text"
+                    name="first"
+                    value={first}
+                    placeholder="First Name"
+                    onChange={(evt) => setFirst(evt.target.value)}
+                />
+              &lt;/InputGroup>
+            &lt;/div>
+            &lt;div>
+              &lt;InputGroup>
+                &lt;FormControl
+                    type="text"
+                    name="last"
+                    value={last}
+                    placeholder="Last Name"
+                    onChange={(evt) => setLast(evt.target.value)}
+                />
+              &lt;/InputGroup>
+            &lt;/div>
+            &lt;div>
+              &lt;InputGroup>
+                &lt;FormControl
+                    type="text"
+                    name="email"
+                    value={email}
+                    placeholder="Email Address"
+                    onChange={(evt) => setEmail(evt.target.value)}
+                />
+              &lt;/InputGroup>
+            &lt;/div>
+            &lt;div>
+              &lt;InputGroup>
+                &lt;FormControl
+                    type="text"
+                    name="username"
+                    value={username}
+                    placeholder="username"
+                    onChange={(evt) => setUsername(evt.target.value)}
+                />
+              &lt;/InputGroup>
+            &lt;/div>
+            &lt;div>
+              &lt;InputGroup>
+                &lt;FormControl
+                    type="password"
+                    name="password"
+                    value={password}
+                    placeholder="password"
+                    onChange={(evt) => setPassword(evt.target.value)}
+                />
+              &lt;/InputGroup>
+            &lt;/div>
+          &lt;/div>
+          &lt;div>
+            &lt;input type="submit" value="Sign Up" />
+          &lt;/div>
+        &lt;/form>
+      &lt;/Modal.Body>
+    &lt;/Modal>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Backend_error.html">Backend/error</a></li><li><a href="module-Backend_routes.html">Backend/routes</a></li><li><a href="module-frontend_src_App.html">frontend/src/App</a></li><li><a href="module-frontend_src_authentication-routing.html">frontend/src/authentication-routing</a></li><li><a href="module-frontend_src_contact-list.html">frontend/src/contact-list</a></li><li><a href="module-frontend_src_filter-bar.html">frontend/src/filter-bar</a></li><li><a href="module-frontend_src_home.html">frontend/src/home</a></li><li><a href="module-frontend_src_loading-page.html">frontend/src/loading-page</a></li><li><a href="module-frontend_src_login.html">frontend/src/login</a></li><li><a href="module-frontend_src_navigation-bar.html">frontend/src/navigation-bar</a></li><li><a href="module-frontend_src_private-route.html">frontend/src/private-route</a></li><li><a href="module-frontend_src_search-bar.html">frontend/src/search-bar</a></li><li><a href="module-frontend_src_use-auth.html">frontend/src/use-auth</a></li><li><a href="module-frontend_src_use-core.html">frontend/src/use-core</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Mar 07 2021 16:47:13 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

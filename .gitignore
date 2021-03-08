@@ -3,5 +3,5 @@ node_modules/*
 Backend/node_modules/*
 Frontend/node_modules/*
 frontend/.eslintcache
-documentation/output/*
+# documentation/output/*
 frontend/build
