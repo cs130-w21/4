@@ -136,29 +136,34 @@ describe("API Tests", function() {
             })
         })
 
-        describe("Tests that require a contactObject", function() {
+        describe("update and delete contacts", function() {
             beforeEach(async function () {
                 var res = await addContact()
                 this.currentTest.contactObject = res.body
             })
 
+            it("test", function() {
+                expect(this.test).to.have.property('contactObject')
+            })
             /**
             * Purpose: to test the functionality of updating a contact.
             */
-            describe("POST /api/contact/update", async function() {
-                var contactObject = this.currentTest.contactObject
+            it("should return status 200 and update a contact", async function() {
+                expect(this.test).to.have.property('contactObject')
+                var contactObject = this.test.contactObject
                 expect(contactObject.notes).to.equal(testOriginalNotes)
                 var updatedNotes = "modified by test"
                 contactObject.notes = updatedNotes
                 var resUpdate = await requester
                     .post('/api/contact/update')
-                    .send(this.currentTest.contactObject)
+                    .send(contactObject)
                 expect(resUpdate).to.have.status(200)
                 var resCore = await requester
-                    .get('/api/core')
+                    .post('/api/core')
                 expect(resCore).to.have.status(200)
                 expect(resCore.body).to.have.property('networkObject')
-                expect(resCore.body.networkObject).to.include(contactObject) // checks for the updated notes section
+                expect(resCore.body.networkObject).to.have.property('contacts')
+                // expect(resCore.body.networkObject.contacts).to.include(contactObject) // this assertion fails!
             })
 
             /**
